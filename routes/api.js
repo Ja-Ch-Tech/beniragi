@@ -110,4 +110,25 @@ router.get('/users/numberUserByType', (req, res) => {
          })
 })
 
+//Permet de recuperer l'identifiant d'un user
+router.get('/getSessionUser', (req, res) => {
+    let id = req.session.id_user_beni ? req.session.id_user_beni : null,
+        obj = {
+            "user_id": id
+        };
+
+    res.status(200);
+    res.send(obj)
+});
+
+//Route pour la recuperation des informations d'un user
+router.get('/getUserInfos/:user_id', (req, res) => {
+    axios.get(`${API}/users/details/${req.params.user_id}`)
+        .then(response => {
+            res.status(200).send(response.data);
+        })
+        .catch(err => {
+            res.status(500).res.send(err);
+        })
+});
 module.exports = router;

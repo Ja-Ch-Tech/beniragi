@@ -90,4 +90,23 @@ const getAllTypesUser = (callback) => {
     });
 }
 
-export { getHostApi, customDate, getAllTypesUser }
+//Permet de recuperer l'id du user en session
+const getUserId = (callback) => {
+    $.ajax({
+        type: 'GET',
+        url: "api/getSessionUser",
+        dataType: "json",
+        success: function (data) {            
+            if (data.user_id) {
+                callback(true, data);
+            }else{
+                callback(false, null);
+            }
+        },
+        error : function (err) {
+            callback(err);
+        }
+    });
+}
+
+export { getHostApi, customDate, getAllTypesUser,getUserId }
