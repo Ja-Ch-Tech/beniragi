@@ -1,0 +1,261 @@
+@html.extend('layout', function(model) {
+  @html.block('content', function(model) {
+      <!-- Dashboard Container -->
+      <div class="dashboard-container">
+
+        <!-- Dashboard Sidebar
+        ================================================== -->
+        <div class="dashboard-sidebar">
+          <div class="dashboard-sidebar-inner" data-simplebar>
+            <div class="dashboard-nav-container">
+
+              <!-- Responsive Navigation Trigger -->
+              <a href="#" class="dashboard-responsive-nav-trigger">
+                <span class="hamburger hamburger--collapse" >
+                  <span class="hamburger-box">
+                    <span class="hamburger-inner"></span>
+                  </span>
+                </span>
+                <span class="trigger-title">Dashboard Navigation</span>
+              </a>
+              
+              <!-- Navigation -->
+              <div class="dashboard-nav">
+                <div class="dashboard-nav-inner">
+
+                  <ul data-submenu-title="Start">
+                    <li class="active"><a href="/profile/123/dashboard"><i class="icon-material-outline-dashboard"></i> Dashboard</a></li>
+                    <li><a href="/profile/123/messages"><i class="icon-material-outline-question-answer"></i> Messages <span class="nav-tag">2</span></a></li>
+                    <li><a href="/profile/123/feedback"><i class="icon-material-outline-feedback"></i> Feedback (normal) <span class="nav-tag">12</span></a></li>
+
+                    <li><a href="/profile/123/favoris"><i class="icon-material-outline-favorite"></i> Favoris (employeur)</a></li>
+                    <li><a href="/profile/123/contacts"><i class="icon-feather-users"></i> Contacts (employeur)</a></li>
+                    
+                  </ul>
+
+                  <ul data-submenu-title="COMPTE">
+                    <li><a href="/profile/123/parametres"><i class="icon-material-outline-settings"></i> Parametres</a></li>
+                    <li><a href="index-logged-out.html"><i class="icon-material-outline-power-settings-new"></i> Deconnexion</a></li>
+                  </ul>
+                  
+                </div>
+              </div>
+              <!-- Navigation / End -->
+
+            </div>
+          </div>
+        </div>
+        <!-- Dashboard Sidebar / End -->
+
+
+        <!-- Dashboard Content
+        ================================================== -->
+        <div class="dashboard-content-container" data-simplebar>
+          <div class="dashboard-content-inner" >
+            
+            <!-- BLOQUE FAISANT APPEL A CHAQUE PARTIE DU PROFILE CLIENT-->
+            @html.block('blocuser', function(model){
+
+            })
+
+            <!-- Footer -->
+            <div class="dashboard-footer-spacer"></div>
+            <div class="small-footer margin-top-15">
+              <div class="small-footer-copyrights">
+                <p>
+                    Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Designed by <a href="#" style="color: blue" target="_blank">Ja'Ch Tech</a>
+               </p>
+              </div>
+              <ul class="footer-social-links">
+                <li>
+                  <a href="#" title="Facebook" data-tippy-placement="top">
+                    <i class="icon-brand-facebook-f"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" title="Twitter" data-tippy-placement="top">
+                    <i class="icon-brand-twitter"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" title="Google Plus" data-tippy-placement="top">
+                    <i class="icon-brand-google-plus-g"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" title="LinkedIn" data-tippy-placement="top">
+                    <i class="icon-brand-linkedin-in"></i>
+                  </a>
+                </li>
+              </ul>
+              <div class="clearfix"></div>
+            </div>
+            <!-- Footer / End -->
+            
+          </div>
+        </div>
+        <!-- Dashboard Content / End -->
+
+      </div>
+      <!-- Dashboard Container / End -->
+      <!-- Leave a Review for Freelancer Popup ================================================== -->
+      <div id="small-dialog-2" class="zoom-anim-dialog mfp-hide dialog-with-tabs">
+
+        <!--Tabs -->
+        <div class="sign-in-form">
+
+          <ul class="popup-tabs-nav">
+          </ul>
+
+          <div class="popup-tabs-container">
+
+            <!-- Tab -->
+            <div class="popup-tab-content" id="tab2">
+              
+              <!-- Welcome Text -->
+              <div class="welcome-text">
+                <h3>Laissez un feedback </h3>
+                <span>Noté <a href="#">Peter Valentín</a> par rapport à sa facon de travailler</span>
+              </div>
+                
+              <!-- Form -->
+              <form method="post" id="leave-review-form">
+
+                <div class="feedback-yes-no">
+                  <div class="submit-field">
+                    <strong>Sur quel projet aviez vous travailler ?</strong>
+                    <input type="text" class="with-border" placeholder="Nom du projet">
+                  </div>
+                </div>
+                <div class="feedback-yes-no">
+                  <strong>A-t-il finit son travail à temps ?</strong>
+                  <div class="radio">
+                    <input id="radio-3" name="radio2" type="radio" required>
+                    <label for="radio-3"><span class="radio-label"></span> OUI</label>
+                  </div>
+
+                  <div class="radio">
+                    <input id="radio-4" name="radio2" type="radio" required>
+                    <label for="radio-4"><span class="radio-label"></span> NON</label>
+                  </div>
+                </div>
+
+                <div class="feedback-yes-no">
+                  <strong>Note du travail</strong>
+                  <div class="leave-rating">
+                    <input type="radio" name="rating" id="rating-radio-1" value="1" required>
+                    <label for="rating-radio-1" class="icon-material-outline-star"></label>
+                    <input type="radio" name="rating" id="rating-radio-2" value="2" required>
+                    <label for="rating-radio-2" class="icon-material-outline-star"></label>
+                    <input type="radio" name="rating" id="rating-radio-3" value="3" required>
+                    <label for="rating-radio-3" class="icon-material-outline-star"></label>
+                    <input type="radio" name="rating" id="rating-radio-4" value="4" required>
+                    <label for="rating-radio-4" class="icon-material-outline-star"></label>
+                    <input type="radio" name="rating" id="rating-radio-5" value="5" required>
+                    <label for="rating-radio-5" class="icon-material-outline-star"></label>
+                  </div><div class="clearfix"></div>
+                </div>
+
+                <textarea class="with-border" placeholder="Un commentaire" name="message2" id="message2" cols="7" required></textarea>
+
+              </form>
+              
+              <!-- Button -->
+              <button class="button full-width button-sliding-icon ripple-effect" type="submit" form="leave-review-form">Valider <i class="icon-material-outline-arrow-right-alt"></i></button>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!-- Leave a Review Popup / End -->
+
+      <!-- Make an Offer Popup ================================================== -->
+      <div id="small-dialog" class="zoom-anim-dialog mfp-hide dialog-with-tabs">
+
+        <!--Tabs -->
+        <div class="sign-in-form">
+
+          <ul class="popup-tabs-nav">
+            <li><a href="#tab">Make an Offer</a></li>
+          </ul>
+
+          <div class="popup-tabs-container">
+
+            <!-- Tab -->
+            <div class="popup-tab-content" id="tab">
+              
+              <!-- Welcome Text -->
+              <div class="welcome-text">
+                <h3>Discuter sur votre projet avec David</h3>
+              </div>
+                
+              <!-- Form -->
+              <form method="post">
+
+                <div class="input-with-icon-left">
+                  <i class="icon-material-outline-account-circle"></i>
+                  <input disabled="disabled" type="text" class="input-text with-border" name="name" id="name" placeholder="Votre nom" value="Josue mbuyu" />
+                </div>
+
+                <div class="input-with-icon-left">
+                  <i class="icon-material-baseline-mail-outline"></i>
+                  <input disabled="disabled" type="text" class="input-text with-border" name="emailaddress" id="emailaddress" value="josuembuyu94@gmail.com" placeholder="Votre adresse email"/>
+                </div>
+
+                <textarea name="textarea" cols="10" placeholder="Votre message" class="with-border"></textarea>
+
+                <div class="uploadButton margin-top-25">
+                  <input class="uploadButton-input" type="file" accept="image/*, application/pdf" id="upload" multiple/>
+                  <label class="uploadButton-button ripple-effect" for="upload">Attacher un fichier</label>
+                  <span class="uploadButton-file-name">Extensions valide: zip, pdf, png, jpg <br> Max. taille fichier: 50 MB.</span>
+                </div>
+
+              </form>
+              
+              <!-- Button -->
+              <button class="button margin-top-35 full-width button-sliding-icon ripple-effect" type="submit">Envoyer le message <i class="icon-material-outline-arrow-right-alt"></i></button>
+
+            </div>
+            <!-- Login -->
+            <div class="popup-tab-content" id="loginn">
+              
+              <!-- Welcome Text -->
+              <div class="welcome-text">
+                <h3>Discuss Your Project With Tom</h3>
+              </div>
+                
+              <!-- Form -->
+              <form method="post" id="make-an-offer-form">
+
+                <div class="input-with-icon-left">
+                  <i class="icon-material-outline-account-circle"></i>
+                  <input type="text" class="input-text with-border" name="name2" id="name2" placeholder="First and Last Name" required/>
+                </div>
+
+                <div class="input-with-icon-left">
+                  <i class="icon-material-baseline-mail-outline"></i>
+                  <input type="text" class="input-text with-border" name="emailaddress2" id="emailaddress2" placeholder="Email Address" required/>
+                </div>
+
+                <textarea name="textarea" cols="10" placeholder="Message" class="with-border"></textarea>
+
+                <div class="uploadButton margin-top-25">
+                  <input class="uploadButton-input" type="file" accept="image/*, application/pdf" id="upload-cv" multiple/>
+                  <label class="uploadButton-button" for="upload-cv">Add Attachments</label>
+                  <span class="uploadButton-file-name">Allowed file types: zip, pdf, png, jpg <br> Max. files size: 50 MB.</span>
+                </div>
+
+              </form>
+              
+              <!-- Button -->
+              <button class="button full-width button-sliding-icon ripple-effect" type="submit" form="make-an-offer-form">Make an Offer <i class="icon-material-outline-arrow-right-alt"></i></button>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!-- Make an Offer Popup / End -->
+  })
+})

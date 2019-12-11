@@ -58,18 +58,9 @@
 									<div class="item-description">
 										<p>Excellent programmer - fully carried out my project in a very professional manner. </p>
 									</div>
-								</div>
-							</div>
-						</li>
-						<li>
-							<div class="boxed-list-item">
-								<!-- Content -->
-								<div class="item-content">
-									<h4>WordPress Theme Installation</h4>
-									<div class="item-details margin-top-10">
-										<div class="star-rating" data-rating="5.0"></div>
-										<div class="detail-item"><i class="icon-material-outline-date-range"></i> June 2018</div>
-									</div>
+									<a class="button gray pull-right ripple-effect margin-top-5 margin-bottom-10"><i class="icon-feather-user"></i>
+				                        EMMANUEL MATONDO
+				                    </a>
 								</div>
 							</div>
 						</li>
@@ -85,6 +76,9 @@
 									<div class="item-description">
 										<p>I was extremely impressed with the quality of work AND how quickly he got it done. He then offered to help with another side part of the project that we didn't even think about originally.</p>
 									</div>
+									<a class="button gray pull-right ripple-effect margin-top-5 margin-bottom-10"><i class="icon-feather-user"></i>
+				                        EMMANUEL MATONDO
+				                    </a>
 								</div>
 							</div>
 						</li>
@@ -100,6 +94,9 @@
 									<div class="item-description">
 										<p>Awesome work, definitely will rehire. Poject was completed not only with the requirements, but on time, within our small budget.</p>
 									</div>
+									<a class="button gray pull-right ripple-effect margin-top-5 margin-bottom-10"><i class="icon-feather-user"></i>
+				                        EMMANUEL MATONDO
+				                    </a>
 								</div>
 							</div>
 						</li>
@@ -134,7 +131,7 @@
 					</div>
 
 					<!-- Button -->
-					<a href="#small-dialog" class="apply-now-button popup-with-zoom-anim margin-bottom-50"> <i class="icon-feather-message-square"></i> Ecrire</a>
+					<a href="#small-dialog" class="apply-now-button popup-with-zoom-anim margin-bottom-50"> <i class="icon-feather-message-square"></i> Faire une offre</a>
 
 					<!-- Freelancer Indicators -->
 					<div class="sidebar-widget">

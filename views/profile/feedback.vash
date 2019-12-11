@@ -1,0 +1,76 @@
+@html.extend('profile/profile_layout', function(model){
+    @html.append('blocuser', function(model){
+        <!-- Dashboard Headline -->
+        <div class="dashboard-headline">
+          <h3>Feedback emit sur vous</h3>
+
+          <!-- Breadcrumbs -->
+          <nav id="breadcrumbs" class="dark">
+            <ul>
+              <li><a href="#">Home</a></li>
+              <li><a href="#">Dashboard</a></li>
+              <li>feedback</li>
+            </ul>
+          </nav>
+        </div>
+    
+        <!-- Row -->
+        <div class="row">
+
+          <!-- Dashboard Box -->
+          <div class="col-xl-12">
+            <div class="dashboard-box margin-top-0">
+
+              <!-- Headline -->
+              <div class="headline">
+                <h3><i class="icon-material-outline-face"></i> Rate Freelancers</h3>
+              </div>
+
+              <div class="content">
+                <ul class="dashboard-box-list">
+                  <li>
+                    <div class="boxed-list-item">
+                      <!-- Content -->
+                      <div class="item-content">
+                        <h4>Help Fix Laravel PHP issue</h4>
+                        <div class="item-details margin-top-10">
+                          <div class="star-rating" data-rating="5.0"></div>
+                          <div class="detail-item"><i class="icon-material-outline-date-range"></i> August 2018</div>
+                        </div>
+                        <div class="item-description">
+                          <p>Excellent programmer - helped me fixing small issue.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <a class="button gray pull-right ripple-effect margin-top-5 margin-bottom-10"><i class="icon-feather-user"></i>
+                        JOSUEMBUYU
+                    </a>
+                  </li>
+                  <li>
+                    <div class="boxed-list-item">
+                      <!-- Content -->
+                      <div class="item-content">
+                        <h4>Help Fix Laravel PHP issue</h4>
+                        <div class="item-details margin-top-10">
+                          <div class="star-rating" data-rating="5.0"></div>
+                          <div class="detail-item"><i class="icon-material-outline-date-range"></i> August 2018</div>
+                        </div>
+                        <div class="item-description">
+                          <p>Excellent programmer - helped me fixing small issue.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <a class="button gray pull-right ripple-effect margin-top-5 margin-bottom-10"><i class="icon-feather-user"></i>
+                        EMMANUEL MATONDO
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+        <!-- Row / End -->
+    })
+})

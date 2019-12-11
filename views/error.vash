@@ -1,7 +1,37 @@
 @html.extend('layout', function(model) {
   @html.block('content', function(model) {
-    <h1>@model.message</h1>
-    <h2>@model.error.status</h2>
-    <pre>@model.error.stack</pre>
+    	<div id="titlebar" class="gradient">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+
+						<h2>404 Page introuvable</h2>
+
+						<!-- Breadcrumbs -->
+						<nav id="breadcrumbs" class="dark">
+							<ul>
+								<li><a href="/">ACCUEIL</a></li>
+								<li>404 Not Found</li>
+							</ul>
+						</nav>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+
+			<div class="row">
+				<div class="col-xl-12">
+
+					<section id="not-found" class="center margin-top-50 margin-bottom-25">
+						<h2>404 <i class="icon-line-awesome-question-circle"></i></h2>
+						<p>La page que vous voulez atteindre est introuvable, sorry</p>
+					</section>
+
+				</div>
+			</div>
+
+		</div>
   })
 })
