@@ -105,7 +105,7 @@ th span::after {
   bottom: -16px;
   position: absolute;
   right: 0;
-  border-bottom: 1px solid #2a41e8;
+  border-bottom: 1px solid #2b5278;
 }
 
 #footer {
@@ -128,7 +128,7 @@ th span::after {
 #footer li:last-child { border:none; }
 
 #footer li span {
-   color: #2a41e8;
+   color: #2b5278;
 }
 
 .margin-top-20 { margin-top: 20px; }

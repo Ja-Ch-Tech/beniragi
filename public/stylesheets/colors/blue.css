@@ -1,31 +1,31 @@
 /* ------------------------------------------------------------------- */
-/* #2a41e8 (42,65,232)
+/* #5d455a (42,65,232)
 ---------------------------------------------------------------------- */
 .numbered.color ol > li::before {
-     border:1px solid #2a41e8;
-     color:#2a41e8;
+     border:1px solid #5d455a;
+     color:#5d455a;
 }
  .numbered.color.filled ol > li::before {
-     border:1px solid #2a41e8;
-     background-color:#2a41e8;
+     border:1px solid #5d455a;
+     background-color:#5d455a;
 }
  .radio input[type="radio"]:checked + label .radio-label {
-     background-color:#2a41e8;
-     border-color:#2a41e8;
+     background-color:#5d455a;
+     border-color:#5d455a;
 }
  .checkbox input:checked + label span.checkbox-icon {
-     background-color:#2a41e8;
-     border-color:#2a41e8;
+     background-color:#5d455a;
+     border-color:#5d455a;
 }
  .slider-handle {
-     border:2px solid #2a41e8;
+     border:2px solid #5d455a;
 }
  .infoBox-close:hover {
      color:#fff;
-     background-color:#2a41e8;
+     background-color:#5d455a;
 }
  .message-bubble.me .message-text:before {
-     border-left:6px solid #2a41e8;
+     border-left:6px solid #5d455a;
 }
  a,
  .header-widget .log-in-button:hover i,
@@ -81,7 +81,7 @@
  .help-icon,
  .header-widget .log-in-button:hover,
  .header-widget .log-in-button:hover i {
-     color:#2a41e8;
+     color:#5d455a;
 }
 #backtotop a,
  .header-notifications-trigger span,
@@ -148,7 +148,7 @@
  .messages-inbox ul li:before,
  .message-by h5 i,
  .message-bubble.me .message-text {
-     background-color:#2a41e8;
+     background-color:#5d455a;
 }
  .transparent-header #navigation > ul li:hover ul li:hover a:after,
  .transparent-header #navigation > ul li:hover a:after,
@@ -165,18 +165,18 @@
  .slick-prev:hover,
  .slick-next:hover,
  .bootstrap-select.btn-group .bs-actionsbox div button:hover {
-     background:#2a41e8;
+     background:#5d455a;
 }
  .uploadButton .uploadButton-button,
  .pricing-plan .button {
-     color:#2a41e8;
-     border:1px solid #2a41e8;
+     color:#5d455a;
+     border:1px solid #5d455a;
 }
  .payment-tab-trigger > input:checked ~ label::before,
  .dashboard-nav ul li.active-submenu,
  .dashboard-nav ul li.active,
  .dashboard-nav ul li:hover {
-     border-color:#2a41e8;
+     border-color:#5d455a;
 }
 
  #navigation ul ul.dropdown-nav ul.dropdown-nav li:hover a:after,
@@ -210,22 +210,22 @@
      background-color: rgba(42,65,232,.07);
 }
  .freelancers-grid-layout .freelancer-details a.button {
-     box-shadow: 0 4px 12px rgba(42,65,232,0.1);
+     box-shadow: 0 4px 12px rgba(93,62,110,0.15);
 }
  .freelancer-details a.button:hover {
-     box-shadow: 0 4px 12px rgba(42,65,232,0.2);
+     box-shadow: 0 4px 12px rgba(93,62,110,0.15);
 }
  .freelancers-list-layout .freelancer-details a.button {
-     box-shadow: 0 4px 12px rgba(42,65,232,0.15);
+     box-shadow: 0 4px 12px rgba(93,62,110,0.15);
 }
  .freelancers-list-layout .freelancer-details a.button:hover {
-     box-shadow: 0 4px 12px rgba(42,65,232,0.25);
+     box-shadow: 0 4px 12px rgba(93,62,110,0.15);
 }
  .letters-list a.current {
      box-shadow: 0 2px 8px rgba(42,65,232,0.25);
 }
  span.button, button.button, input[type="button"], input[type="submit"], a.button {
-     box-shadow: 0 4px 12px rgba(42,65,232,0.15);
+     box-shadow: 0 4px 12px rgba(93,62,110,0.15);
 }
  .move-on-hover {
      box-shadow: 0 4px 12px rgba(42,65,232,0.1);
@@ -259,7 +259,7 @@
      box-shadow: 0 4px 12px rgba(42,65,232,0.15);
 }
  .category-box:hover {
-     box-shadow: 0 4px 12px rgba(42,65,232,0.2);
+     box-shadow: 0 4px 12px rgba(93,62,110,0.2);
 }
  .photo-box:hover {
      box-shadow: 0 4px 12px rgba(42,65,232,0.25);
@@ -356,5 +356,5 @@
 
  #navigation ul ul.dropdown-nav ul.dropdown-nav li:hover a:after,
  #navigation ul ul.dropdown-nav li:hover a:after {
-     background-color:#2a41e8;
+     background-color:#5d455a;
  }

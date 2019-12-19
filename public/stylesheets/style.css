@@ -297,7 +297,7 @@ img { max-width: 100%; }
 	box-shadow: 0 0 18px 0 rgba(0, 0, 0, 0.12);
 	font-size: 16px;
 	height: 82px;
-	background-color: #fff;
+	background-color: #2c2b2b;
 }
 
 #header .container,
@@ -2621,7 +2621,7 @@ body #backtotop a {
 }
 
 #backtotop a:after {
-  content: "";
+  content: "юд▒";
   font-family: "Feather-Icons";
   position: relative;
   display: block;
@@ -5830,7 +5830,7 @@ span.bookmark-icon {
 	right: 35px;
 	top: 35px;
 	cursor: pointer;
-	background-color: #eee;
+	background-color: #333;
 	color: #c0c0c0;
 	display: block;
 	height: 39px;
@@ -7970,7 +7970,7 @@ input:checked + .switch-button:before {
 .category-box-content h3 {
 	font-size: 16px;
 	font-weight: 600;
-	color: #333;
+	color: #fff;
 	margin: 0;
 	padding: 0;
 	transition: 0.35s;
@@ -9655,7 +9655,7 @@ transform: translateY(-18px);
 .slick-next.slick-disabled {
     pointer-events: none;
 	cursor: default;
-	background-color: #e8e8e8;
+	background-color: #ccc;
 	box-shadow: none;
 }
 
@@ -13015,7 +13015,7 @@ a.attachment-box:hover i {
 }
 
 .freelancer-indicators .indicator {
-	width: calc(100% - 31px);
+	width: calc(50% - 31px);
 	margin-right: 30px;
 	margin-bottom: 20px;
 	display: flex;
@@ -14908,7 +14908,7 @@ ul.dashboard-box-list > li:hover {
 		font-size: 26px;
 		line-height: 36px;
 		font-weight: 500;
-		color: #333;
+		color: #fff;
 	}
 
 	.section-headline h4 {
