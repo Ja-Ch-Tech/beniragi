@@ -1,31 +1,31 @@
 /* ------------------------------------------------------------------- */
-/* #5d455a (42,65,232)
+/* #3696f5 (42,65,232)
 ---------------------------------------------------------------------- */
 .numbered.color ol > li::before {
-     border:1px solid #5d455a;
-     color:#5d455a;
+     border:1px solid #3696f5;
+     color:#3696f5;
 }
  .numbered.color.filled ol > li::before {
-     border:1px solid #5d455a;
-     background-color:#5d455a;
+     border:1px solid #3696f5;
+     background-color:#3696f5;
 }
  .radio input[type="radio"]:checked + label .radio-label {
-     background-color:#5d455a;
-     border-color:#5d455a;
+     background-color:#3696f5;
+     border-color:#3696f5;
 }
  .checkbox input:checked + label span.checkbox-icon {
-     background-color:#5d455a;
-     border-color:#5d455a;
+     background-color:#3696f5;
+     border-color:#3696f5;
 }
  .slider-handle {
-     border:2px solid #5d455a;
+     border:2px solid #3696f5;
 }
  .infoBox-close:hover {
      color:#fff;
-     background-color:#5d455a;
+     background-color:#3696f5;
 }
  .message-bubble.me .message-text:before {
-     border-left:6px solid #5d455a;
+     border-left:6px solid #3696f5;
 }
  a,
  .header-widget .log-in-button:hover i,
@@ -81,7 +81,7 @@
  .help-icon,
  .header-widget .log-in-button:hover,
  .header-widget .log-in-button:hover i {
-     color:#5d455a;
+     color:#ad344b;
 }
 #backtotop a,
  .header-notifications-trigger span,
@@ -148,7 +148,7 @@
  .messages-inbox ul li:before,
  .message-by h5 i,
  .message-bubble.me .message-text {
-     background-color:#5d455a;
+     background-color:#3696f5;
 }
  .transparent-header #navigation > ul li:hover ul li:hover a:after,
  .transparent-header #navigation > ul li:hover a:after,
@@ -165,18 +165,18 @@
  .slick-prev:hover,
  .slick-next:hover,
  .bootstrap-select.btn-group .bs-actionsbox div button:hover {
-     background:#5d455a;
+     background:#3696f5;
 }
  .uploadButton .uploadButton-button,
  .pricing-plan .button {
-     color:#5d455a;
-     border:1px solid #5d455a;
+     color:#3696f5;
+     border:1px solid #3696f5;
 }
  .payment-tab-trigger > input:checked ~ label::before,
  .dashboard-nav ul li.active-submenu,
  .dashboard-nav ul li.active,
  .dashboard-nav ul li:hover {
-     border-color:#5d455a;
+     border-color:#3696f5;
 }
 
  #navigation ul ul.dropdown-nav ul.dropdown-nav li:hover a:after,
@@ -356,5 +356,5 @@
 
  #navigation ul ul.dropdown-nav ul.dropdown-nav li:hover a:after,
  #navigation ul ul.dropdown-nav li:hover a:after {
-     background-color:#5d455a;
+     background-color:#3696f5;
  }

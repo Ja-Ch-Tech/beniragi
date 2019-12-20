@@ -12,12 +12,13 @@
 ================================================== -->
 <link rel="stylesheet" href="/stylesheets/style.css">
 <link rel="stylesheet" href="/stylesheets/colors/blue.css">
+<link rel="stylesheet" href="/stylesheets/jach_style.css">
 
 </head>
 <body>
 
 <!-- Wrapper -->
-<div style="background-color: #333;" id="wrapper" class="@model.classWrapper">
+<div id="wrapper" class="@model.classWrapper bg_noir__principal">
 
 <!-- Header Container
 ================================================== -->

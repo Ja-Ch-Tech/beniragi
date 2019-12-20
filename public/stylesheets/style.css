@@ -390,7 +390,7 @@ header.fullwidth .container {
 	top: 50%;
 	transform: translateY(-50%);
 	transition: 0.3s;
-	color: #666;
+	color: #fff;
 	display: block;
 	margin: 0 -3px;
 }
@@ -1072,7 +1072,7 @@ ul.user-menu-small-nav li a:hover i { color: #66676b; }
 
 #navigation ul li a,
 #navigation ul ul li a {
-	color: #666;
+	color: #fff;
 	cursor: pointer; 
 }
 
@@ -5843,7 +5843,7 @@ span.bookmark-icon {
 .bookmark-icon.bookmarked { animation: bookmarked-shadow 0.3s; }
 
 @keyframes bookmarked-shadow {
-  0% { box-shadow: 0 0 0 0 rgba(254,179,66,0.8); }
+  0% { box-shadow: 0 0 0 0 rgba(173,52,75,0.8); }
   100% { box-shadow: 0 0 0 10px rgba(0,0,0,0); }
 }
 
@@ -5865,7 +5865,7 @@ span.bookmark-icon {
 }
 
 .bookmark-icon.bookmarked {
-	background-color: #feb342;
+	background-color: #ad344b;
 	color: #fff;
 }
 
@@ -6729,7 +6729,7 @@ table.basic-table { margin-bottom: 0; }
 	font-family: "Material-Icons";
 	content: "\e988";
 	display: block;
-	color: #febe42;
+	color: #ad344b;
 	font-size: 22px;
 }
 
@@ -6746,7 +6746,7 @@ table.basic-table { margin-bottom: 0; }
 
 .star-rating .star.half:before { color: #ddd; }
 .star-rating .star.half:after {
-	color: #febe42;
+	color: #ad344b;
 	position: absolute;
 	top:0;
 	width: 50%;
@@ -6760,7 +6760,7 @@ table.basic-table { margin-bottom: 0; }
 	content: attr(data-rating);
 	float: left;
 	border-radius: 4px;
-	background-color: #febe42;
+	background-color: #ad344b;
 	color: #fff;
 	font-size: 14px;
 	line-height: 15px;
