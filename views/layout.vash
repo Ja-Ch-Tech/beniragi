@@ -286,9 +286,13 @@
 					
 				<!-- Form -->
 				<form method="post" id="login-form">
+					<div id="errorLogin" style="opacity: 0; transition: opacity 0.5s ease 0s; display: none;" class="notification error closeable">
+						<p></p>
+						<a class="close" href="#"></a>
+					</div>
 					<div class="input-with-icon-left">
 						<i class="icon-material-baseline-mail-outline"></i>
-						<input type="text" class="input-text with-border" name="emailaddress" id="emailaddress" placeholder="Adresse email" required/>
+						<input type="email" class="input-text with-border" name="email" id="email" placeholder="Adresse email" required/>
 					</div>
 
 					<div class="input-with-icon-left">
@@ -299,7 +303,7 @@
 				</form>
 				
 				<!-- Button -->
-				<button class="button full-width button-sliding-icon ripple-effect" type="submit" form="login-form">Se connecter <i class="icon-material-outline-arrow-right-alt"></i></button>
+				<button id="login-button" class="button full-width button-sliding-icon ripple-effect" type="submit" form="login-form">Se connecter <i class="icon-material-outline-arrow-right-alt"></i></button>
 				
 				<!-- Social Login -->
 				<div class="social-login-separator"><span>or</span></div>
@@ -385,6 +389,7 @@
 <script src="/javascripts/magnific-popup.min.js"></script>
 <script src="/javascripts/slick.min.js"></script>
 <script src="/javascripts/custom.js"></script>
+<script src="/javascripts/api/users_api.js"></script>
 
 <!-- Snackbar // documentation: https://www.polonel.com/snackbar/ -->
 <script>
