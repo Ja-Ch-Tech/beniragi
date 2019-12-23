@@ -28,8 +28,9 @@ router.post('/register', (req, res) => {
             .then(datas => {
 
                 if (datas.data.getEtat) {
-                    req.session.id_user_beni = datas.data.getObjet._id;
-                    req.session.type_user_beni = datas.data.getObjet.type;
+
+                    req.session.id_user_beni = datas.getObjet._id;
+                    req.session.id_type_user_beni = datas.getObjet.id_type;
 
                     res.status(200);
                     res.send(datas.data);
@@ -61,21 +62,18 @@ router.post('/login', (req, res) => {
 
         axios.post(`${API}/users/login`, data)
             .then(datas => {
-
-                if (datas.data.getEtat) {
-                    req.session.id_user_beni = datas.data.getObjet.id_client;
-                    req.session.type_user_beni = datas.data.getObjet.type;
-
-                    if (req.session.id_user_beni) {
-
-                        res.status(200);
-                        res.send(datas.data);
-                    }
+                if (datas.getEtat) {
+                    req.session.id_user_beni = datas.getObjet.id_user;
+                    req.session.id_type_user_beni = datas.getObjet.id_type;
+                    req.session.type_user_beni = datas.getObjet.typeUser;
+                    
+                    res.status(200);
+                    res.send(datas);
 
                 } else {
 
-                    res.status(200);
-                    res.send(datas.data)
+                    res.status(500);
+                    res.send(datas)
                 }
             })
             .catch(error => {
@@ -84,6 +82,19 @@ router.post('/login', (req, res) => {
     } else {
         res.send({ getEtat: false, getMessage: "Veuillez remplir tous les champs" })
     }
+})
+
+//Recupere les types des utilisateurs
+router.get('/users/getAllTypes', (req, res) => {
+    axios.get(`${API}/type_users/getAll`)
+        .then(response => {
+            res.status(200);
+            res.send(response)
+        })
+        .catch(err => {
+            res.status(500);
+            res.send(err);
+        })
 })
 
 module.exports = router;

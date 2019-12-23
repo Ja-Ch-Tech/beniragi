@@ -5,6 +5,7 @@ $(document).ready(function () {
 function initUsers() {
 	login();
 	register();
+
 }
 
 //Permet de connecter un utilisateur
@@ -48,5 +49,67 @@ function login() {
 
 //Permet d'enregistrer un utilisateur
 function register() {
-	
+	//Dynamisation des types users
+	getAllTypesUser(function (types) {
+		if (types) {
+			var sortieType = 0;
+			types.map(type => {
+				sortieType++;
+				var typeChecked = function () {
+					if (sortieType == 1) {
+						return 'checked = "checked"';
+					}else{
+						return '';
+					}
+				},
+				 type = `<div>
+						<input type="radio" name="id_type" id="${type.intitule}-radio" class="account-type-radio" ${typeChecked()} value="${type._id}" />
+						<label for="${type.intitule}-radio" class="ripple-effect-dark">${type.intitule}</label>
+					</div>`;
+
+				$("#accountTypes").append(type);
+			});
+			
+		}
+	})
+
+	//Lors de la soumission du bouton inscription
+	$("#register-account-form").on('submit', e => {
+		e.preventDefault();
+		var inputs = e.target.elements,
+			objData = {},
+			err = [];
+
+		for (let index = 0; index < inputs.length; index++) {
+            var name = e.target.elements[index].name;
+            if (/input/i.test(e.target.elements[index].localName)) {
+            	if (e.target.elements[index].type == "radio") {
+            		if (e.target.elements[index].checked) {
+            			objData[name] = e.target.elements[index].value;
+            		}
+            	}else{
+            		objData[name] = e.target.elements[index].value;
+            	}
+            	
+            }
+            	
+        }
+		
+		$.ajax({
+	        url : 'api/register',
+	        type : 'POST',
+	        dataType: "json",
+        	data: objData,
+        	beforeSend : function () {
+        		$("#register-button").text("Enregistrement ...");
+        	},
+	        success : function (user) {
+	        	console.log(user);
+	        },
+	        error : function (err) {
+	        	console.log(err);
+	        }
+	    })
+
+	})
 }

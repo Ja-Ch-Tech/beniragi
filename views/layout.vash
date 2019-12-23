@@ -323,39 +323,26 @@
 					<p>C'est gratuit</p>
 				</div>
 
-				<!-- Account Type -->
-				<div class="account-type">
-					<div>
-						<input type="radio" name="account-type-radio" id="freelancer-radio" class="account-type-radio" checked/>
-						<label for="freelancer-radio" class="ripple-effect-dark"><i class="icon-material-outline-account-circle"></i> Freelancer</label>
-					</div>
-
-					<div>
-						<input type="radio" name="account-type-radio" id="employer-radio" class="account-type-radio"/>
-						<label for="employer-radio" class="ripple-effect-dark"><i class="icon-material-outline-business-center"></i> Employeur</label>
-					</div>
-				</div>
-					
+				
 				<!-- Form -->
 				<form method="post" id="register-account-form">
+					<!-- Account Type -->
+					<div id="accountTypes" class="account-type">
+					</div>
+					
 					<div class="input-with-icon-left">
 						<i class="icon-material-baseline-mail-outline"></i>
-						<input type="text" class="input-text with-border" name="emailaddress-register" id="emailaddress-register" placeholder="Adresse email" required/>
+						<input type="email" class="input-text with-border" name="email" id="emailaddress-register" placeholder="Adresse email" required/>
 					</div>
 
-					<div class="input-with-icon-left" title="Should be at least 8 characters long" data-tippy-placement="bottom">
+					<div class="input-with-icon-left" title="Doit avoir aumoins 5 caracteres" data-tippy-placement="bottom">
 						<i class="icon-material-outline-lock"></i>
-						<input type="password" class="input-text with-border" name="password-register" id="password-register" placeholder="Creez un mot de passe" required/>
-					</div>
-
-					<div class="input-with-icon-left">
-						<i class="icon-material-outline-lock"></i>
-						<input type="password" class="input-text with-border" name="password-repeat-register" id="password-repeat-register" placeholder="Confirmer votre mot de passe" required/>
+						<input min="5" type="password" class="input-text with-border" name="password" id="password-register" placeholder="Creez un mot de passe" required/>
 					</div>
 				</form>
 				
 				<!-- Button -->
-				<button class="margin-top-10 button full-width button-sliding-icon ripple-effect" type="submit" form="register-account-form">Terminer <i class="icon-material-outline-arrow-right-alt"></i></button>
+				<button id="register-button" class="margin-top-10 button full-width button-sliding-icon ripple-effect" type="submit" form="register-account-form">Terminer <i class="icon-material-outline-arrow-right-alt"></i></button>
 				
 				<!-- Social Login -->
 				<div class="social-login-separator"><span>or</span></div>
@@ -389,6 +376,7 @@
 <script src="/javascripts/magnific-popup.min.js"></script>
 <script src="/javascripts/slick.min.js"></script>
 <script src="/javascripts/custom.js"></script>
+<script src="/javascripts/api/init.js"></script>
 <script src="/javascripts/api/users_api.js"></script>
 
 <!-- Snackbar // documentation: https://www.polonel.com/snackbar/ -->
