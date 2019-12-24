@@ -1,3 +1,7 @@
+function getHostApi() {
+    return "https://api-beniragi-service.herokuapp.com/"
+}
+
 //fonction de modélisation de la date
 function customDate(date) {
     var myDate = new Date(date),
@@ -71,7 +75,7 @@ function customDate(date) {
 function getAllTypesUser(callback) {
     $.ajax({
         type: 'GET',
-        url: "/api/getAllTypesUsers",
+        url: "api/users/getAllTypes",
         dataType: "json",
         success: function (data) {
             if (data.getEtat) {

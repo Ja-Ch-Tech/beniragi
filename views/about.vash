@@ -1,0 +1,63 @@
+@html.extend('layout', function(model) {
+  @html.block('content', function(model) {
+	<div id="titlebar" class="gradient">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+
+					<h2 class="color_white">A propos de beniragi services</h2>
+
+					<!-- Breadcrumbs -->
+					<nav id="breadcrumbs" class="dark">
+						<ul>
+							<li><a href="/">Accueil</a></li>
+							<li><a href="/about">Page d'apropos</a></li>
+						</ul>
+					</nav>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-xl-12">
+				<p class="color_text_black_2">
+					Pour chaque situation, trouvez le prestataire de service dont les compétences répondent à vos attentes et à votre niveau d’exigence.
+					Bénéficiez des services qui vous faciliteront la vie ! Moins de stress, plus de temps libre. Bienvenue sur Beniragi Services !
+				</p>
+
+
+			</div>
+			<div class="col-xl-8">
+				<h2 class="color_white">NOTRE ENTREPRISE</h2><br>
+				<p class="color_text_black_2">
+					Beniragi est la plateforme de réservation de tous vos services ! elle est une plateforme qui vous donne accès à tous les types de services dont vous souhaiterez être bénéficiaire.
+
+				</p>
+				<p class="color_text_black_2">
+					Beniragi vous permet de trouver facilement les services que vous souhaitez, et vous facilite les choses lorsque vous n’avez pas le temps ou les moyens nécessaires pour effectuer certaines tâches telles que : monter un meuble en kit, faire vos petits travaux, déménager, trouver un(e) coiffeur(se), un(e) maquilleur(se), un photographe pour un anniversaire ou un mariage, ou encore un développeur d’applications.
+
+				</p>
+				<p class="color_text_black_2">
+					Beniragi est à votre disposition pour vous accompagner dans vos projets et vous mettre en contact avec des personnes adaptées pour vous rendre service selon vos besoins.
+
+				</p>
+			</div>
+			<div class="col-xl-4">
+				<h2 class="color_white">NOS OBJECTIFS</h2>
+				<p class="color_text_black_2">
+					Grâce à sa plateforme numérique, Beniragi Services a pour mission de développer une communauté d’échange de services fiable et efficace ! 
+				</p>
+				<p class="color_text_black_2">
+					Les ouvriers sont évalués après chaque coup de main, ce qui permet à la communauté Beniragi Services de veiller à sa propre fiabilité.
+				</p>
+				<p class="color_text_black_2">
+					Se rendre service, c’est simple et efficace grâce à Beniragi Services !
+				</p>
+			</div>
+		</div>
+	</div>
+  })
+})

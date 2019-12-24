@@ -7,7 +7,8 @@
 <title>@model.title - beniragi services</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
+<link rel="apple-touch-icon" href="/images/JACOB.png">
+<link rel="shortcut icon" href="/images/JACOB.png">
 <!-- CSS
 ================================================== -->
 <link rel="stylesheet" href="/stylesheets/style.css">
@@ -34,7 +35,7 @@
 				<!-- Logo -->
 				<div id="logo">
 					<a href="/">
-						<img src="/images/logo.png" alt="">
+						<img src="/images/JACOB.png" alt="">
 					</a>
 				</div>
 
@@ -62,7 +63,7 @@
 						</li>
 
 						<li>
-							<a href="/">A PROPOS</a>
+							<a href="/about">A PROPOS</a>
 						</li>
 
 					</ul>

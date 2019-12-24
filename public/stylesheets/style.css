@@ -329,7 +329,7 @@ header.fullwidth .container {
 	display: inline-block;
 	position: absolute;
 	right: 25px;
-	background-color: #fff;
+	background-color: transparent;
 	flex: 1;
 }
 
