@@ -71,7 +71,7 @@ function customDate(date) {
 function getAllTypesUser(callback) {
     $.ajax({
         type: 'GET',
-        url: "/api/getAllTypesUsers",
+        url: "api/getAllTypeUsers",
         dataType: "json",
         success: function (data) {
             if (data.getEtat) {

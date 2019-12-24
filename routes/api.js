@@ -84,17 +84,14 @@ router.post('/login', (req, res) => {
     }
 })
 
-//Recupere les types des utilisateurs
-router.get('/users/getAllTypes', (req, res) => {
+router.get('/getAllTypeUsers', (req,  res) => {
     axios.get(`${API}/type_users/getAll`)
-        .then(response => {
-            res.status(200);
-            res.send(response)
-        })
-        .catch(err => {
-            res.status(500);
-            res.send(err);
-        })
+         .then(response => {
+             res.status(200).send(response.data);
+         })
+         .catch(err => {
+             res.status(500).send(err);
+         })
 })
 
 module.exports = router;
