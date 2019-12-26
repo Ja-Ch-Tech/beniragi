@@ -30,7 +30,7 @@ function login() {
         	},
 	        success : function (infos) {
 	        	console.log(infos);
-	        	$("#login-button").text("Se connecter");
+	        	$("#login-button").html(`Se connecter <i class="icon-material-outline-arrow-right-alt"></i>`);
 	        	if (infos.getEtat) {
 	        		window.location.href = '/';
 	        	}else{
@@ -101,10 +101,18 @@ function register() {
 	        dataType: "json",
         	data: objData,
         	beforeSend : function () {
-        		$("#register-button").text("Enregistrement ...");
+        		$("#register-button").html("Veuillez patienter ...");
         	},
 	        success : function (user) {
-	        	console.log(user);
+	        	console.log(user)
+	        	$("#register-button").html(`Terminer <i class="icon-material-outline-arrow-right-alt"></i>`);
+	        	if (user.getEtat) {
+	        		window.location.href = '/'
+	        	}else{
+	        		$("#errorRegister")[0].style.display = 'block';
+	        		$("#errorRegister")[0].style.opacity = '1';
+	        		$("#errorRegister p")[0].innerHTML = user.getMessage;
+	        	}
 	        },
 	        error : function (err) {
 	        	console.log(err);
