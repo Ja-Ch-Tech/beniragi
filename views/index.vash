@@ -48,15 +48,8 @@
 				<!-- Stats -->
 				<div class="row">
 					<div class="col-md-12">
-						<ul class="intro-stats margin-top-45 hide-under-992px">
-							<li>
-								<strong class="counter">1,586</strong>
-								<span>Employeurs</span>
-							</li>
-							<li>
-								<strong class="counter">3,543</strong>
-								<span>Candidats</span>
-							</li>
+						<ul class="intro-stats margin-top-45 hide-under-992px" id="statsUser">
+							<!-- Dynamic content -->
 						</ul>
 					</div>
 				</div>

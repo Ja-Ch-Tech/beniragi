@@ -380,8 +380,7 @@
 <script src="/javascripts/magnific-popup.min.js"></script>
 <script src="/javascripts/slick.min.js"></script>
 <script src="/javascripts/custom.js"></script>
-<script src="/javascripts/api/init.js"></script>
-<script src="/javascripts/api/users_api.js"></script>
+<script src="/javascripts/api/router.js" type="module"></script>
 
 <!-- Snackbar // documentation: https://www.polonel.com/snackbar/ -->
 <script>

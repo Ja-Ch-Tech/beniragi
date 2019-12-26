@@ -7,6 +7,10 @@ var session = require("cookie-session");
 
 var app = express();
 
+app.use(session({
+    secret: "FrdrcpeterBeniragiWebSite4586324"
+}))
+
 /* GET users listing. */
 router.get('/', function (req, res, next) {
     res.send('respond with a resource');
@@ -22,7 +26,7 @@ router.post('/register', (req, res) => {
             email: req.body.email,
             password: req.body.password,
             id_type: req.body.id_type
-        }
+        };
 
         axios.post(`${API}/users/register`, data)
             .then(inscription => {
@@ -32,13 +36,11 @@ router.post('/register', (req, res) => {
                     req.session.id_user_beni = inscription.data.getObjet._id;
                     req.session.id_type_user_beni = inscription.data.getObjet.id_type;
 
-                    res.status(200);
-                    res.send(inscription.data);
+                    res.status(200).send(inscription.data);
 
                 } else {
 
-                    res.status(200);
-                    res.send(inscription.data)
+                    res.status(200).send(inscription.data);
                 }
             })
             .catch(error => {
@@ -95,6 +97,17 @@ router.get('/users/getAllTypes', (req, res) => {
             res.status(500);
             res.send(err);
         })
+})
+
+//Route pour la récupération de nombre de user par type
+router.get('/users/numberUserByType', (req, res) => {
+    axios.get(`${API}/users/numberUserByType`)
+         .then(response => {
+             res.status(200).send(response.data);
+         })
+         .catch(err => {
+             res.status(500).send(err)
+         })
 })
 
 module.exports = router;

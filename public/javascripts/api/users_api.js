@@ -1,15 +1,7 @@
-$(document).ready(function () {
-    initUsers();
-});
-
-function initUsers() {
-	login();
-	register();
-
-}
+import {getAllTypesUser} from './init.js';
 
 //Permet de connecter un utilisateur
-function login() {
+const login = () => {
 	$("#login-form").on('submit', function (e) {
 		e.preventDefault();
 		var inputs = e.target.elements,
@@ -48,7 +40,7 @@ function login() {
 }
 
 //Permet d'enregistrer un utilisateur
-function register() {
+const register = () => {
 	//Dynamisation des types users
 	getAllTypesUser(function (types) {
 		if (types) {
@@ -103,15 +95,15 @@ function register() {
         	beforeSend : function () {
         		$("#register-button").html("Veuillez patienter ...");
         	},
-	        success : function (user) {
-	        	console.log(user)
+	        success : function (data) {
+	        	console.log(data)
 	        	$("#register-button").html(`Terminer <i class="icon-material-outline-arrow-right-alt"></i>`);
-	        	if (user.getEtat) {
+	        	if (data.getEtat) {
 	        		window.location.href = '/'
 	        	}else{
 	        		$("#errorRegister")[0].style.display = 'block';
 	        		$("#errorRegister")[0].style.opacity = '1';
-	        		$("#errorRegister p")[0].innerHTML = user.getMessage;
+	        		$("#errorRegister p")[0].innerHTML = data.getMessage;
 	        	}
 	        },
 	        error : function (err) {
@@ -121,3 +113,31 @@ function register() {
 
 	})
 }
+
+/**
+ * Module pour la récupération de nombre d'utilisateur par type
+ */
+const getStatsUsers = () => {
+	$.ajax({
+		type: 'GET',
+		url: "api/users/numberUserByType",
+		dataType: "json",
+		success: function (data) {
+			if (data.getEtat) {
+				data.getObjet.map(value => {
+					var content = `<li>
+										<strong class="counter">${value.count}</strong>
+										<span>${value.typeUser}</span>
+									</li>`;
+					
+					$("#statsUser").append(content);
+				})
+			}
+		},
+		error: function (err) {
+			callback(err)
+		}
+	});
+}
+
+export { login, register, getStatsUsers }
