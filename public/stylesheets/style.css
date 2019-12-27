@@ -456,7 +456,7 @@ header.fullwidth .container {
 .header-notifications-trigger,
 .header-notifications-trigger a {
 	font-size: 22px;
-	color: #333;
+	color: #fff;
 	position: relative;
 	top: 55%;
 	transform: translate3d(0,-50%,0);

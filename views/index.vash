@@ -171,7 +171,8 @@
 				</div>
 			</div>
 		</div>
-
+		@{
+    	if(model.user_session == ""){ 
 		<div class="section padding-top-60 padding-bottom-75 bg_noir_secondaire">
 			<div class="container">
 				<div class="row">
@@ -227,7 +228,7 @@
 				</div>
 			</div>
 		</div>
-
+		}}
 		<div style="background-color: #333;" class="section gray padding-top-65 padding-bottom-70 full-width-carousel-fix">
 			<div class="container">
 				<div class="row">
