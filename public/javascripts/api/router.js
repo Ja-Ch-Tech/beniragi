@@ -1,5 +1,5 @@
-import { getHostApi } from './init.js';
-import { login, register, getStatsUsers as statsUsers, getNav } from './users_api.js';
+import { getHostApi, getUserId } from './init.js';
+import { login, register, getStatsUsers as statsUsers, getNav, activeAccount } from './users_api.js';
 
 (() => {
     login();
@@ -10,6 +10,18 @@ import { login, register, getStatsUsers as statsUsers, getNav } from './users_ap
     //#region /
         if (pathName == "/") {
             statsUsers();
+        }
+    //#endregion
+
+    //#region/
+        if (pathName.split("/")[1] == "profile" && pathName.split("/")[2] == "activation") {
+            getUserId(function (state, user_id) {
+            	if (state) {
+            		activeAccount(user_id.user_id);
+            	}else{
+            		window.location.href = '/';
+            	}
+            })
         }
     //#endregion
 })();

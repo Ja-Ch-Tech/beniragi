@@ -1,5 +1,10 @@
 const getHostApi = () => {
-    return "https://api-beniragi-service.herokuapp.com/"
+    //return "http://localhost:3456/";
+    return "https://api-beniragi-service.herokuapp.com/";
+}
+
+const getHostWeb = () => {
+    return "http://localhost:3000/"; //Local
 }
 
 //fonction de modélisation de la date
@@ -75,7 +80,7 @@ const customDate = (date) => {
 const getAllTypesUser = (callback) => {
     $.ajax({
         type: 'GET',
-        url: "api/users/getAllTypes",
+        url: "/api/users/getAllTypes",
         dataType: "json",
         success: function (data) {            
             if (data.getEtat) {
@@ -94,7 +99,7 @@ const getAllTypesUser = (callback) => {
 const getUserId = (callback) => {
     $.ajax({
         type: 'GET',
-        url: "api/getSessionUser",
+        url: getHostWeb() + "api/getSessionUser",
         dataType: "json",
         success: function (data) {            
             if (data.user_id) {
@@ -109,4 +114,4 @@ const getUserId = (callback) => {
     });
 }
 
-export { getHostApi, customDate, getAllTypesUser,getUserId }
+export { getHostApi, customDate, getAllTypesUser,getUserId, getHostWeb }

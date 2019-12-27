@@ -1,4 +1,4 @@
-import { getAllTypesUser, getUserId } from './init.js';
+import { getAllTypesUser, getUserId, getHostWeb } from './init.js';
 
 //Permet de connecter un utilisateur
 const login = () => {
@@ -13,7 +13,7 @@ const login = () => {
         }
 
         $.ajax({
-            url: 'api/login',
+            url: getHostWeb() + 'api/login',
             type: 'POST',
             dataType: "json",
             data: objData,
@@ -88,7 +88,7 @@ const register = () => {
         }
 
         $.ajax({
-            url: 'api/register',
+            url: getHostWeb() + 'api/register',
             type: 'POST',
             dataType: "json",
             data: objData,
@@ -99,7 +99,7 @@ const register = () => {
                 console.log(data)
                 $("#register-button").html(`Terminer <i class="icon-material-outline-arrow-right-alt"></i>`);
                 if (data.getEtat) {
-                    window.location.href = '/'
+                    window.location.href = '/profile/activation';
                 } else {
                     $("#errorRegister")[0].style.display = 'block';
                     $("#errorRegister")[0].style.opacity = '1';
@@ -120,7 +120,7 @@ const register = () => {
 const getStatsUsers = () => {
     $.ajax({
         type: 'GET',
-        url: "api/users/numberUserByType",
+        url: getHostWeb() + "api/users/numberUserByType",
         dataType: "json",
         success: function(data) {
             if (data.getEtat) {
@@ -135,7 +135,7 @@ const getStatsUsers = () => {
             }
         },
         error: function(err) {
-            callback(err)
+            console.log(err)
         }
     });
 }
@@ -146,7 +146,7 @@ const getStatsUsers = () => {
 const getUserInfos = (user_id, callback) => {
 	$.ajax({
         type: 'GET',
-        url: "api/getUserInfos/" + user_id,
+        url: getHostWeb() + "api/getUserInfos/" + user_id,
         dataType: "json",
         success: function (data) {  
             callback(data);
@@ -162,18 +162,73 @@ const getUserInfos = (user_id, callback) => {
 const getNav = () => {
 
 	getUserId(function (state, user) {
+        console.log(state);
 		var navContent;
 		if (state) {
 			//Recuperation des informations du user
 			getUserInfos(user.user_id, function (infos) {
-				console.log(infos);
+                console.log("infos");
+                if (infos.getEtat) {
+
+                }else{
+                    navContent = `<!-- Lien vers l'activation d'un compte -->
+                    <div class="header-widget hide-on-mobile">
+                        <a href="/profile/activation" class="log-in-button"><i class="icon-line-awesome-unlock-alt"></i> <span>Activer votre compte</span></a>
+                    </div>`;
+                    $("#navMenu").prepend(navContent);
+                }
 			});
 		}else{
-			navContent = ``;
-			$("#navMenu").append(navContent);
+
+			navContent = `<!-- USER NON CONNECTER -->
+                <div class="header-widget">
+                    <a href="#sign-in-dialog" class="popup-with-zoom-anim log-in-button"><i class="icon-feather-log-in"></i> <span>Connexion / Inscription</span></a>
+                </div>`;
+			//$("#navMenu").prepend(navContent);
 		}
 	});
 }
 
+/**
+ * Module permettant d'activer un compte utilisateur
+ */
+ const activeAccount = (user_id) => {
+    $("#activate-form").on('submit', e => {
+        e.preventDefault();
+        var input = e.target.elements[0],
+            code;
+        
+        if (input.value.trim(" ") == "") {
+            Snackbar.show({
+                text: "Inserez un code d'activation !",
+                pos: 'bottom-center',
+                showAction: true,
+                actionText: "Fermer",
+                duration: 10000,
+                textColor: '#fff',
+                backgroundColor: '#ad344b'
+            }); 
+        }else{
+            code = parseInt(input.value);
 
-export { login, register, getStatsUsers, getNav }
+            $.ajax({
+                type: 'POST',
+                url: getHostWeb() + "api/profile/activation",
+                dataType: "json",
+                data: {
+                    user_id : user_id,
+                    code : code
+                },
+                success: function (data) {            
+                    console.log(data);
+                },
+                error : function (err) {
+                    console.log(err);
+                }
+            });
+        }
+    });
+ }
+
+
+export { login, register, getStatsUsers, getNav, activeAccount }

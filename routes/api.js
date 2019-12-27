@@ -148,4 +148,35 @@ router.get('/getUserInfos/:user_id', (req, res) => {
             res.status(500).res.send(err);
         })
 });
+
+//Route pour l'activation d'un compte utilisateur
+router.post('/profile/activation', (req, res) => {
+
+    var data = {
+        id_user: req.body.user_id,
+        code: req.body.code
+    };
+
+    if (Empty(data)) {
+
+        axios.post(`${API}/code/activation`, data)
+            .then(user => {
+                if (user.data.getEtat) {
+                    res.status(200);
+                    res.send(user.data);
+
+                } else {
+
+                    res.status(200);
+                    res.send(user.data)
+                }
+            })
+            .catch(error => {
+                res.send(error)
+            })
+    } else {
+        res.send({ getEtat: false, getMessage: "Veuillez remplir tous les champs" })
+    }
+});
+
 module.exports = router;

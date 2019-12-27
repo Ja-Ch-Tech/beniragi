@@ -77,10 +77,9 @@
 
 			<!-- Right Side Content / End -->
 			<div id="navMenu" class="right-side">
-				<!-- USER NON CONNECTER -->
 				<div class="header-widget">
-					<a href="#sign-in-dialog" class="popup-with-zoom-anim log-in-button"><i class="icon-feather-log-in"></i> <span>Connexion / Inscription</span></a>
-				</div>
+                    <a href="#sign-in-dialog" class="popup-with-zoom-anim log-in-button"><i class="icon-feather-log-in"></i> <span>Connexion / Inscription</span></a>
+                </div>
 				<!-- Mobile Navigation Button -->
 				<span class="mmenu-trigger">
 					<button class="hamburger hamburger--collapse" type="button">
