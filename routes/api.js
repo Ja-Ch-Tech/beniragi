@@ -127,4 +127,15 @@ router.get('/users/numberUserByType', (req, res) => {
         })
 })
 
+//Récupération des métiers
+router.get('/jobs/gets/:limit', (req, res) => {
+    axios.get(`${API}/jobs/get/${parseInt(req.params.limit)}`)
+         .then(response => {
+             res.status(200).send(response.data)
+         })
+         .catch(err => {
+             res.status(500).send(err);
+         })
+})
+
 module.exports = router;
