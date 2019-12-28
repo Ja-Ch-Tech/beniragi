@@ -1,6 +1,20 @@
 var express = require('express');
 var router = express.Router();
 
+/*Activation d'un compte*/
+router.get('/activation', function(req, res, next) {
+  if (req.session.id_user_beni) {
+      res.render('profile/activation', { 
+        title: 'Activation compte',
+        classWrapper: '',
+        classHeader: '',
+        footer: '' 
+      });
+  }else{
+      res.redirect("../");
+  }
+  
+});
 /* Dashboard candidat */
 router.get('/:id/dashboard', function(req, res, next) {
   res.render('profile/dashboard', { 

@@ -6,8 +6,23 @@ router.get('/', function(req, res, next) {
   res.render('index', { 
   	title: 'Biensure sur beniragi',
   	classWrapper: 'wrapper-with-transparent-header',
-  	classHeader: 'transparent-header' 
+  	classHeader: 'transparent-header' ,
+  	user_session : req.session.id_user_beni
   });
 });
+
+router.get("/logout", (req, res) => {
+
+    if (req.session.id_user_beni) {
+
+        req.session.id_user_beni = null;
+        req.session.id_type_user_beni = null;
+
+    } else {
+        res.redirect("/");
+    }
+
+    res.redirect("/");
+})
 
 module.exports = router;

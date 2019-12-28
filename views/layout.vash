@@ -7,8 +7,8 @@
 <title>@model.title - beniragi services</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<link rel="apple-touch-icon" href="/images/JACOB.png">
-<link rel="shortcut icon" href="/images/JACOB.png">
+<link rel="apple-touch-icon" href="/images/bs13.png">
+<link rel="shortcut icon" href="/images/bs13.png">
 <!-- CSS
 ================================================== -->
 <link rel="stylesheet" href="/stylesheets/style.css">
@@ -35,7 +35,7 @@
 				<!-- Logo -->
 				<div id="logo">
 					<a href="/">
-						<img src="/images/JACOB.png" alt="">
+						<img src="/images/bs13.png" alt="">
 					</a>
 				</div>
 
@@ -76,13 +76,7 @@
 
 
 			<!-- Right Side Content / End -->
-			<div class="right-side">
-
-				<!-- USER NON CONNECTER -->
-				<div class="header-widget">
-					<a href="#sign-in-dialog" class="popup-with-zoom-anim log-in-button"><i class="icon-feather-log-in"></i> <span>Connexion / Inscription</span></a>
-				</div>
-
+			<div id="navMenu" class="right-side">
 				
 				<!-- Mobile Navigation Button -->
 				<span class="mmenu-trigger">
@@ -122,14 +116,7 @@
 							<!-- Footer Rows Container -->
 							<div class="footer-rows-container">
 								
-								<!-- Left Side -->
-								<div class="footer-rows-left">
-									<div class="footer-row">
-										<div class="footer-row-inner footer-logo">
-											<img src="images/logo2.png" alt="">
-										</div>
-									</div>
-								</div>
+								
 								
 								<!-- Right Side -->
 								<div class="footer-rows-right">

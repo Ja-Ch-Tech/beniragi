@@ -137,5 +137,56 @@ router.get('/jobs/gets/:limit', (req, res) => {
              res.status(500).send(err);
          })
 })
+//Permet de recuperer l'identifiant d'un user
+router.get('/getSessionUser', (req, res) => {
+    let id = req.session.id_user_beni ? req.session.id_user_beni : null,
+        obj = {
+            "user_id": id
+        };
+
+    res.status(200);
+    res.send(obj)
+});
+
+//Route pour la recuperation des informations d'un user
+router.get('/getUserInfos/:user_id', (req, res) => {
+    axios.get(`${API}/users/details/${req.params.user_id}`)
+        .then(response => {
+            res.status(200).send(response.data);
+        })
+        .catch(err => {
+            res.status(500).res.send(err);
+        })
+});
+
+//Route pour l'activation d'un compte utilisateur
+router.post('/profile/activation', (req, res) => {
+
+    var data = {
+        id_user: req.body.user_id,
+        code: req.body.code
+    };
+
+    if (Empty(data)) {
+
+        axios.post(`${API}/code/activation`, data)
+            .then(user => {
+                if (user.data.getEtat) {
+                    res.status(200);
+                    res.send(user.data);
+
+                } else {
+
+                    res.status(200);
+                    res.send(user.data)
+                }
+            })
+            .catch(error => {
+                res.send(error)
+            })
+    } else {
+        res.send({ getEtat: false, getMessage: "Veuillez remplir tous les champs" })
+    }
+});
 
 module.exports = router;
