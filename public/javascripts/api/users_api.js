@@ -13,7 +13,7 @@ const login = () => {
         }
 
         $.ajax({
-            url: getHostWeb() + 'api/login',
+            url: '/api/login',
             type: 'POST',
             dataType: "json",
             data: objData,
@@ -88,7 +88,7 @@ const register = () => {
         }
 
         $.ajax({
-            url: getHostWeb() + 'api/register',
+            url: '/api/register',
             type: 'POST',
             dataType: "json",
             data: objData,
@@ -120,7 +120,7 @@ const register = () => {
 const getStatsUsers = () => {
     $.ajax({
         type: 'GET',
-        url: getHostWeb() + "api/users/numberUserByType",
+        url: "/api/users/numberUserByType",
         dataType: "json",
         success: function(data) {
             if (data.getEtat) {
@@ -146,7 +146,7 @@ const getStatsUsers = () => {
 const getUserInfos = (user_id, callback) => {
 	$.ajax({
         type: 'GET',
-        url: getHostWeb() + "api/getUserInfos/" + user_id,
+        url: "/api/getUserInfos/" + user_id,
         dataType: "json",
         success: function (data) {  
             callback(data);
@@ -156,6 +156,26 @@ const getUserInfos = (user_id, callback) => {
         }
     });
 }
+
+//Pour la définition de la visibility
+function toggleVisibility() {
+    if ($('.status-switch label.user-invisible').hasClass('current-status')) {
+        $('.status-indicator').addClass('right');
+    }
+
+    $('.status-switch label.user-invisible').on('click', function () {
+        $('.status-indicator').addClass('right');
+        $('.status-switch label').removeClass('current-status');
+        $('.user-invisible').addClass('current-status');
+    });
+
+    $('.status-switch label.user-online').on('click', function () {
+        $('.status-indicator').removeClass('right');
+        $('.status-switch label').removeClass('current-status');
+        $('.user-online').addClass('current-status');
+    });
+}
+
 /**
  * Module permettant de rendre dynamique le menu
  */
@@ -167,7 +187,7 @@ const getNav = () => {
 			//Recuperation des informations du user
 			getUserInfos(user.user_id, function (infos) {
                 console.log(infos)
-                if (infos.getEtat) {
+                if (infos.getObjet.flag) {
                     navContent = `<!--  User Notifications -->
                                 <div class="header-widget hide-on-mobile">
                                    
@@ -261,8 +281,8 @@ const getNav = () => {
                                                 
                                                 <!-- User Status Switcher -->
                                                 <div class="status-switch" id="snackbar-user-status">
-                                                    <label class="user-online current-status">Online</label>
-                                                    <label class="user-invisible">Invisible</label>
+                                                    <label class="user-online ${infos.getObjet.visibility ? `current-status`: `` }">Disponible</label>
+                                                    <label class="user-invisible ${!infos.getObjet.visibility ? `current-status` : `` }">Non-disponible</label>
                                                     <!-- Status Indicator -->
                                                     <span class="status-indicator" aria-hidden="true"></span>
                                                 </div>  
@@ -282,7 +302,8 @@ const getNav = () => {
                     $("#navMenu").prepend(navContent);
 
                     toggleDropdown("containerMessage","LinkMessage");
-					toggleDropdown("ContentUserDropdown", "linkUser");
+                    toggleDropdown("ContentUserDropdown", "linkUser");
+                    toggleVisibility();
                     
                 }else{
                     navContent = `<!-- Lien vers l'activation d'un compte -->
