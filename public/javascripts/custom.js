@@ -198,7 +198,7 @@ $(document).ready(function(){
 	/*  Notifications Boxes
 	/*----------------------------------------------------*/
 	$("a.close").removeAttr("href").on('click', function(){
-		function slideFade(elem) {
+		function slideFade(elem) {                                                                     
 			var fadeOut = { opacity: 0, transition: 'opacity 0.5s' };
 			elem.css(fadeOut).slideUp();
 		}

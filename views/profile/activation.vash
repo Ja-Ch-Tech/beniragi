@@ -1,0 +1,46 @@
+@html.extend('layout', function(model) {
+  @html.block('content', function(model) {
+	<div id="titlebar" class="gradient">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+
+					<h2 class="color_white">Activer votre compte</h2>
+					
+					<!-- Breadcrumbs -->
+					<nav id="breadcrumbs" class="dark">
+						<ul>
+							<li><a href="/">Accueil</a></li>
+							<li><a href="/profile/activation">Activation</a></li>
+						</ul>
+					</nav>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-xl-4">
+				<center>
+					<i style="color: #fff;font-size: 12em;" class="icon-line-awesome-unlock-alt"></i><br>
+				</center>
+				
+			</div>
+			<div class="col-xl-5">
+				<p style="font-size: 19px;" class="color_white">
+					Pour votre securité, benigari services souhaite s'assurer qu'il s'agit bien de vous. Nous vous avons envoyé un code d'activation dans votre boite mail, inserez le.
+				</p>
+				<form action="#" method="get" id="activate-form" class="newsletter">
+					<input type="text" name="fname" placeholder="CODE D'ACTIVATION">
+					<button type="submit"><i class="icon-line-awesome-key"></i></button>
+				</form>
+				<div id="loadercode">
+					
+				</div>
+			</div>
+		</div>
+	</div>
+  })
+})

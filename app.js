@@ -2,6 +2,7 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+var session = require('cookie-session');
 var logger = require('morgan');
 
 var apiRouter = require('./routes/api');
@@ -9,8 +10,14 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var candidatsRouter = require('./routes/candidats');
 var profileRouter = require('./routes/profile');
+var aboutRouter = require('./routes/about');
 
 var app = express();
+
+//Utilisation de la session
+app.use(session({
+  secret: "FrdrcpeterBeniragiWebSite4586324"
+}))
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -27,6 +34,7 @@ app.use('/api', apiRouter);
 app.use('/users', usersRouter);
 app.use('/candidats', candidatsRouter);
 app.use('/profile', profileRouter);
+app.use('/about', aboutRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

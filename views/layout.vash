@@ -7,7 +7,8 @@
 <title>@model.title - beniragi services</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
+<link rel="apple-touch-icon" href="/images/bs13.png">
+<link rel="shortcut icon" href="/images/bs13.png">
 <!-- CSS
 ================================================== -->
 <link rel="stylesheet" href="/stylesheets/style.css">
@@ -34,7 +35,7 @@
 				<!-- Logo -->
 				<div id="logo">
 					<a href="/">
-						<img src="/images/logo.png" alt="">
+						<img src="/images/bs13.png" alt="">
 					</a>
 				</div>
 
@@ -62,7 +63,7 @@
 						</li>
 
 						<li>
-							<a href="/">A PROPOS</a>
+							<a href="/about">A PROPOS</a>
 						</li>
 
 					</ul>
@@ -75,13 +76,7 @@
 
 
 			<!-- Right Side Content / End -->
-			<div class="right-side">
-
-				<!-- USER NON CONNECTER -->
-				<div class="header-widget">
-					<a href="#sign-in-dialog" class="popup-with-zoom-anim log-in-button"><i class="icon-feather-log-in"></i> <span>Connexion / Inscription</span></a>
-				</div>
-
+			<div id="navMenu" class="right-side">
 				
 				<!-- Mobile Navigation Button -->
 				<span class="mmenu-trigger">
@@ -121,14 +116,7 @@
 							<!-- Footer Rows Container -->
 							<div class="footer-rows-container">
 								
-								<!-- Left Side -->
-								<div class="footer-rows-left">
-									<div class="footer-row">
-										<div class="footer-row-inner footer-logo">
-											<img src="images/logo2.png" alt="">
-										</div>
-									</div>
-								</div>
+								
 								
 								<!-- Right Side -->
 								<div class="footer-rows-right">
@@ -301,7 +289,6 @@
 					</div>
 					<a href="#" class="forgot-password">Mot de passe oublié ?</a>
 				</form>
-				
 				<!-- Button -->
 				<button id="login-button" class="button full-width button-sliding-icon ripple-effect" type="submit" form="login-form">Se connecter <i class="icon-material-outline-arrow-right-alt"></i></button>
 				
@@ -380,8 +367,7 @@
 <script src="/javascripts/magnific-popup.min.js"></script>
 <script src="/javascripts/slick.min.js"></script>
 <script src="/javascripts/custom.js"></script>
-<script src="/javascripts/api/init.js"></script>
-<script src="/javascripts/api/users_api.js"></script>
+<script src="/javascripts/api/router.js" type="module"></script>
 
 <!-- Snackbar // documentation: https://www.polonel.com/snackbar/ -->
 <script>

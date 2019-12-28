@@ -48,15 +48,8 @@
 				<!-- Stats -->
 				<div class="row">
 					<div class="col-md-12">
-						<ul class="intro-stats margin-top-45 hide-under-992px">
-							<li>
-								<strong class="counter">1,586</strong>
-								<span>Employeurs</span>
-							</li>
-							<li>
-								<strong class="counter">3,543</strong>
-								<span>Candidats</span>
-							</li>
+						<ul class="intro-stats margin-top-45 hide-under-992px" id="statsUser">
+							<!-- Dynamic content -->
 						</ul>
 					</div>
 				</div>
@@ -178,7 +171,8 @@
 				</div>
 			</div>
 		</div>
-
+		@{
+    	if(model.user_session == null){ 
 		<div class="section padding-top-60 padding-bottom-75 bg_noir_secondaire">
 			<div class="container">
 				<div class="row">
@@ -234,7 +228,7 @@
 				</div>
 			</div>
 		</div>
-
+		}}
 		<div style="background-color: #333;" class="section gray padding-top-65 padding-bottom-70 full-width-carousel-fix">
 			<div class="container">
 				<div class="row">
