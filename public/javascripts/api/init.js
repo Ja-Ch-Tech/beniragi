@@ -1,3 +1,8 @@
+//Le lien vers l'API
+function getHostApi() {
+    return "https://api-beniragi-service.herokuapp.com/"
+}
+
 //fonction de modélisation de la date
 function customDate(date) {
     var myDate = new Date(date),

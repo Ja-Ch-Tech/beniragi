@@ -101,10 +101,18 @@ function register() {
 	        dataType: "json",
         	data: objData,
         	beforeSend : function () {
-        		$("#register-button").text("Enregistrement ...");
+        		$("#register-button").html("Enregistrement ...");
         	},
 	        success : function (user) {
-	        	console.log(user);
+				console.log(user);
+				$("#register-button").html(`Terminer <i class="icon-material-outline-arrow-right-alt"></i>`);
+				if (user.getEtat) {
+					window.location.href = '/';
+				} else {
+					$("#errorRegister")[0].style.display = 'block';
+	        		$("#errorRegister")[0].style.opacity = '1';
+	        		$("#errorRegister p")[0].innerHTML = user.getMessage;
+				}
 	        },
 	        error : function (err) {
 	        	console.log(err);

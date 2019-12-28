@@ -326,6 +326,10 @@
 				
 				<!-- Form -->
 				<form method="post" id="register-account-form">
+					<div id="errorRegister" style="opacity: 0; transition: opacity 0.5s ease 0s; display: none;" class="notification error closeable">
+						<p></p>
+						<a class="close" href="#"></a>
+					</div>
 					<!-- Account Type -->
 					<div id="accountTypes" class="account-type">
 					</div>

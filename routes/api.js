@@ -27,18 +27,18 @@ router.post('/register', (req, res) => {
         axios.post(`${API}/users/register`, data)
             .then(datas => {
 
-                if (datas.data.getEtat) {
+                if (datas.getEtat) {
 
                     req.session.id_user_beni = datas.getObjet._id;
                     req.session.id_type_user_beni = datas.getObjet.id_type;
 
                     res.status(200);
-                    res.send(datas.data);
+                    res.send(datas);
 
                 } else {
 
                     res.status(200);
-                    res.send(datas.data)
+                    res.send(datas)
                 }
             })
             .catch(error => {
