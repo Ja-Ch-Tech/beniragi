@@ -1,5 +1,7 @@
 import { getHostApi, getUserId } from './init.js';
 import { login, register, getStatsUsers as statsUsers, getNav, activeAccount } from './users_api.js';
+import { getJobs } from './jobs.js';
+
 
 (() => {
     login();
@@ -10,6 +12,7 @@ import { login, register, getStatsUsers as statsUsers, getNav, activeAccount } f
     //#region /
         if (pathName == "/") {
             statsUsers();
+            getJobs(8);
         }
     //#endregion
 

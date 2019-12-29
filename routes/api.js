@@ -127,6 +127,16 @@ router.get('/users/numberUserByType', (req, res) => {
         })
 })
 
+//Récupération des métiers
+router.get('/jobs/gets/:limit', (req, res) => {
+    axios.get(`${API}/jobs/get/${parseInt(req.params.limit)}`)
+         .then(response => {
+             res.status(200).send(response.data)
+         })
+         .catch(err => {
+             res.status(500).send(err);
+         })
+})
 //Permet de recuperer l'identifiant d'un user
 router.get('/getSessionUser', (req, res) => {
     let id = req.session.id_user_beni ? req.session.id_user_beni : null,

@@ -110,7 +110,7 @@
               <ul class="fields-ul">
               <li>
                 <div class="row">
-                  <div class="col-xl-6">
+                  <div class="col-xl-4">
                     <div class="submit-field">
                       <h5>Metier</h5>
                       <select class="selectpicker with-border" data-size="7" title="Select Job Type" data-live-search="true">
@@ -120,10 +120,9 @@
                       </select>
                     </div>
                   </div>
-                  <!-- CET BLOC SERA AFFICHER QUE SI C PAS UN COMPTE EMPLOYEUR
                   <div class="col-xl-4">
                     <div class="submit-field">
-                      <h5>Vos compétences <i class="help-icon" data-tippy-placement="right" title="Ajouter au maximum 10 compétences"></i></h5>
+                      <h5>Vos specialites <i class="help-icon" data-tippy-placement="right" title="Ajouter au maximum 10 compétences"></i></h5>
 
                       
                       <div class="keywords-container">
@@ -141,9 +140,9 @@
                         <div class="clearfix"></div>
                       </div>
                     </div>
-                  </div> -->
+                  </div>
 
-                  <div class="col-xl-5">
+                  <div class="col-xl-4">
                     <div class="submit-field">
                       <h5>Ajouter vos fichiers </h5>
                       

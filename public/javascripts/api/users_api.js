@@ -13,7 +13,7 @@ const login = () => {
         }
 
         $.ajax({
-            url: getHostWeb() + 'api/login',
+            url: '/api/login',
             type: 'POST',
             dataType: "json",
             data: objData,
@@ -88,7 +88,7 @@ const register = () => {
         }
 
         $.ajax({
-            url: getHostWeb() + 'api/register',
+            url: '/api/register',
             type: 'POST',
             dataType: "json",
             data: objData,
@@ -120,7 +120,7 @@ const register = () => {
 const getStatsUsers = () => {
     $.ajax({
         type: 'GET',
-        url: getHostWeb() + "api/users/numberUserByType",
+        url: "/api/users/numberUserByType",
         dataType: "json",
         success: function(data) {
             if (data.getEtat) {
@@ -146,7 +146,7 @@ const getStatsUsers = () => {
 const getUserInfos = (user_id, callback) => {
 	$.ajax({
         type: 'GET',
-        url: getHostWeb() + "api/getUserInfos/" + user_id,
+        url: "/api/getUserInfos/" + user_id,
         dataType: "json",
         success: function (data) {  
             callback(data);
@@ -156,6 +156,26 @@ const getUserInfos = (user_id, callback) => {
         }
     });
 }
+
+//Pour la définition de la visibility
+function toggleVisibility() {
+    if ($('.status-switch label.user-invisible').hasClass('current-status')) {
+        $('.status-indicator').addClass('right');
+    }
+
+    $('.status-switch label.user-invisible').on('click', function () {
+        $('.status-indicator').addClass('right');
+        $('.status-switch label').removeClass('current-status');
+        $('.user-invisible').addClass('current-status');
+    });
+
+    $('.status-switch label.user-online').on('click', function () {
+        $('.status-indicator').removeClass('right');
+        $('.status-switch label').removeClass('current-status');
+        $('.user-online').addClass('current-status');
+    });
+}
+
 /**
  * Module permettant de rendre dynamique le menu
  */
@@ -167,7 +187,7 @@ const getNav = () => {
 			//Recuperation des informations du user
 			getUserInfos(user.user_id, function (infos) {
                 console.log(infos)
-                if (infos.getEtat) {
+                if (infos.getObjet.flag) {
                     navContent = `<!--  User Notifications -->
                                 <div class="header-widget hide-on-mobile">
                                    
@@ -193,7 +213,7 @@ const getNav = () => {
                                                         <!-- Notification -->
                                                         <li class="notifications-not-read">
                                                             <a href="dashboard-messages.html">
-                                                                <span class="notification-avatar status-online"><img src="images/user-avatar-small-03.jpg" alt=""></span>
+                                                                <span class="notification-avatar status-online"><img src="/images/user-avatar-small-03.jpg" alt=""></span>
                                                                 <div class="notification-text">
                                                                     <strong>David Peterson</strong>
                                                                     <p class="notification-msg-text">Thanks for reaching out. I'm quite busy right now on many...</p>
@@ -205,7 +225,7 @@ const getNav = () => {
                                                         <!-- Notification -->
                                                         <li class="notifications-not-read">
                                                             <a href="dashboard-messages.html">
-                                                                <span class="notification-avatar status-offline"><img src="images/user-avatar-small-02.jpg" alt=""></span>
+                                                                <span class="notification-avatar status-offline"><img src="/images/user-avatar-small-02.jpg" alt=""></span>
                                                                 <div class="notification-text">
                                                                     <strong>Sindy Forest</strong>
                                                                     <p class="notification-msg-text">Hi Tom! Hate to break it to you, but I'm actually on vacation until...</p>
@@ -217,7 +237,7 @@ const getNav = () => {
                                                         <!-- Notification -->
                                                         <li class="notifications-not-read">
                                                             <a href="dashboard-messages.html">
-                                                                <span class="notification-avatar status-online"><img src="images/user-avatar-placeholder.png" alt=""></span>
+                                                                <span class="notification-avatar status-online"><img src="/images/user-avatar-placeholder.png" alt=""></span>
                                                                 <div class="notification-text">
                                                                     <strong>Marcin Kowalski</strong>
                                                                     <p class="notification-msg-text">I received payment. Thanks for cooperation!</p>
@@ -242,7 +262,7 @@ const getNav = () => {
                                     <!-- Messages -->
                                     <div id="ContentUserDropdown" class="header-notifications user-menu">
                                         <div class="header-notifications-trigger">
-                                            <a id="linkUser" href="#"><div class="user-avatar status-online"><img src="images/user-avatar-small-01.jpg" alt=""></div></a>
+                                            <a id="linkUser" href="#"><div class="user-avatar status-online"><img src="/images/user-avatar-small-01.jpg" alt=""></div></a>
                                         </div>
 
                                         <!-- Dropdown -->
@@ -253,7 +273,7 @@ const getNav = () => {
 
                                                 <!-- User Name / Avatar -->
                                                 <div class="user-details">
-                                                    <div class="user-avatar status-online"><img src="images/user-avatar-small-01.jpg" alt=""></div>
+                                                    <div class="user-avatar status-online"><img src="/images/user-avatar-small-01.jpg" alt=""></div>
                                                     <div class="user-name">
                                                         ${infos.getObjet.email} <span>${infos.getObjet.typeUser}</span>
                                                     </div>
@@ -264,6 +284,9 @@ const getNav = () => {
                                                     <label class="user-online current-status">Online</label>
                                                     <label class="user-invisible">Invisible</label>
                                                     <!-- Status Indicator -->-_
+                                                    <label class="user-online ${infos.getObjet.visibility ? `current-status`: `` }">Disponible</label>
+                                                    <label class="user-invisible ${!infos.getObjet.visibility ? `current-status` : `` }">Non-disponible</label>
+                                                    <!-- Status Indicator -->
                                                     <span class="status-indicator" aria-hidden="true"></span>
                                                 </div>  
                                         </div>
@@ -281,9 +304,52 @@ const getNav = () => {
                                 <!-- User Menu / End -->`;
                     $("#navMenu").prepend(navContent);
 
-                    toggleDropdown("containerMessage","LinkMessage");
-					toggleDropdown("ContentUserDropdown", "linkUser");
-                    
+                    /*--------------------------------------------------*/
+                    /*  Notification Dropdowns
+                    /*--------------------------------------------------*/
+                    $(".header-notifications").each(function() {
+                        var userMenu = $(this);
+                        var userMenuTrigger = $(this).find('.header-notifications-trigger a');
+
+                        $(userMenuTrigger).on('click', function(event) {
+                            event.preventDefault();
+
+                            if ( $(this).closest(".header-notifications").is(".active") ) {
+                                close_user_dropdown();
+                            } else {
+                                close_user_dropdown();
+                                userMenu.addClass('active');
+                            }
+                        });
+                    });
+
+                    // Closing function
+                    function close_user_dropdown() {
+                        $('.header-notifications').removeClass("active");
+                    }
+
+                    // Closes notification dropdown on click outside the conatainer
+                    var mouse_is_inside = false;
+
+                    $( ".header-notifications" ).on( "mouseenter", function() {
+                    mouse_is_inside=true;
+                    });
+                    $( ".header-notifications" ).on( "mouseleave", function() {
+                    mouse_is_inside=false;
+                    });
+
+                    $("body").mouseup(function(){
+                        if(! mouse_is_inside) close_user_dropdown();
+                    });
+
+                    // Close with ESC
+                    $(document).keyup(function(e) { 
+                        if (e.keyCode == 27) {
+                            close_user_dropdown();
+                        }
+                    });
+                    toggleVisibility();
+                   
                 }else{
                     navContent = `<!-- Lien vers l'activation d'un compte -->
                     <div class="header-widget hide-on-mobile">
