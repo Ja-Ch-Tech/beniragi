@@ -464,5 +464,14 @@ const getNav = () => {
     });
  }
 
-
-export { login, register, getStatsUsers, getNav, activeAccount }
+ /**
+ * Module permettant de dynamiser la sidebar du profile
+ */
+const sidebar = () => {
+    getUserId(function (state, user) {
+        if (state) {
+            
+        }
+    })
+}
+export { login, register, getStatsUsers, getNav, activeAccount, sidebar }
