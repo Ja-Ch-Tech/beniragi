@@ -16,7 +16,7 @@ router.get('/activation', function(req, res, next) {
   
 });
 /* Dashboard candidat */
-router.get('/:id/dashboard', function(req, res, next) {
+router.get('/dashboard', function(req, res, next) {
   if (req.session.id_user_beni) {
     res.render('profile/dashboard', { 
       title: 'Votre tabeau de board',
@@ -47,7 +47,7 @@ router.get('/:id/messages', function(req, res, next) {
 
 
 /*Parametres*/
-router.get('/:id/parametres', function(req, res, next) {
+router.get('/parametres', function(req, res, next) {
   if (req.session.id_user_beni) {
     res.render('profile/parametres', { 
       title: 'parametres',

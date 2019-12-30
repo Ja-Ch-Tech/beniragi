@@ -155,7 +155,7 @@ router.get('/getUserInfos/:user_id', (req, res) => {
             res.status(200).send(response.data);
         })
         .catch(err => {
-            res.status(500).res.send(err);
+            res.status(500).send(err);
         })
 });
 
@@ -188,5 +188,16 @@ router.post('/profile/activation', (req, res) => {
         res.send({ getEtat: false, getMessage: "Veuillez remplir tous les champs" })
     }
 });
+
+//Route pour la récupération des stats
+router.get('/users/stats', (req, res) => {
+    axios.get(`${API}/users/stats/${req.session.id_user_beni}`)
+         .then(response => {
+             res.status(200).send(response.data)
+         })
+         .catch(err => {
+             res.status(500).send(err)
+         })
+})
 
 module.exports = router;

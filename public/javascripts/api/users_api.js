@@ -292,8 +292,8 @@ const getNav = () => {
                                         </div>
                                         
                                         <ul class="user-menu-small-nav">
-                                            <li><a href="/profile/${user.user_id}/dashboard"><i class="icon-material-outline-dashboard"></i> Dashboard</a></li>
-                                            <li><a href="/profile/${user.user_id}/parametres"><i class="icon-material-outline-settings"></i> Settings</a></li>
+                                            <li><a href="/profile/dashboard"><i class="icon-material-outline-dashboard"></i> Dashboard</a></li>
+                                            <li><a href="/profile/parametres"><i class="icon-material-outline-settings"></i> Settings</a></li>
                                             <li><a href="/logout"><i class="icon-material-outline-power-settings-new"></i> Logout</a></li>
                                         </ul>
 
@@ -420,7 +420,7 @@ const getNav = () => {
 
             $.ajax({
                 type: 'POST',
-                url: getHostWeb() + "api/profile/activation",
+                url: "/api/profile/activation",
                 dataType: "json",
                 data: {
                     user_id : user_id,
@@ -474,4 +474,44 @@ const sidebar = () => {
         }
     })
 }
-export { login, register, getStatsUsers, getNav, activeAccount, sidebar }
+
+/**
+ * Module permettant de dynamiser les stats qui sont dans le dashboard du client
+ */
+const statsInDashboard = () => {
+    $.ajax({
+        type: 'GET',
+        url: "/api/users/stats",
+        dataType: "json",
+        success: function (data) {
+            var content = `<div class="fun-fact" data-fun-fact-color="#36bd78">
+                                <div class="fun-fact-text">
+                                    <span>Note moyenne</span>
+                                    <h4>${data.getObjet.average}</h4>
+                                </div>
+                                <div class="fun-fact-icon"><i class="icon-material-outline-gavel"></i></div>
+                            </div>
+                            <div class="fun-fact" data-fun-fact-color="#b81b7f">
+                                <div class="fun-fact-text">
+                                    <span>Nombre visite profile</span>
+                                    <h4>${data.getObjet.nbreView}</h4>
+                                </div>
+                                <div class="fun-fact-icon"><i class="icon-feather-eye"></i></div>
+                            </div>
+                            <div class="fun-fact" data-fun-fact-color="#efa80f">
+                                <div class="fun-fact-text">
+                                    <span>Feedback</span>
+                                    <h4>${data.getObjet.nbreFeedBack}</h4>
+                                </div>
+                                <div class="fun-fact-icon"><i class="icon-material-outline-feedback"></i></div>
+                            </div>`;
+
+            $("#miniStats").html(content);
+        },
+        error: function (err) {
+            console.log(err)
+        }
+    });
+}
+
+export { login, register, getStatsUsers, getNav, activeAccount, sidebar, statsInDashboard }
