@@ -1,4 +1,4 @@
-import { getAllTypesUser, getUserId, getHostWeb } from './init.js';
+import { getAllTypesUser, getUserId } from './init.js';
 
 //Permet de connecter un utilisateur
 const login = () => {

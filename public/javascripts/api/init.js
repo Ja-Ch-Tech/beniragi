@@ -100,7 +100,7 @@ const getAllTypesUser = (callback) => {
 const getUserId = (callback) => {
     $.ajax({
         type: 'GET',
-        url: getHostWeb() + "api/getSessionUser",
+        url: "/api/getSessionUser",
         dataType: "json",
         success: function (data) {            
             if (data.user_id) {
