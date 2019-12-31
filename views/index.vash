@@ -1,6 +1,6 @@
 @html.extend('layout', function(model) {
   @html.block('content', function(model) {
-    	<div class="intro-banner dark-overlay" data-background-image="images/steady-hand-co-2nj7TTqdLu4-unsplash.jpg">
+    	<div class="intro-banner dark-overlay" data-background-image="images/IMG_1084.PNG">
 			<div class="container">
 				<!-- Transparent Header Spacer -->
 			<div class="transparent-header-spacer"></div>
@@ -26,7 +26,7 @@
 							<div class="intro-search-field with-autocomplete">
 								<label for="autocomplete-input" class="field-title ripple-effect">Où ?</label>
 								<div class="input-with-icon">
-									<input id="autocomplete-input" type="text" placeholder="Localisation ou ville">
+									<input style="background-color:#fff;" id="autocomplete-input" type="text" placeholder="Localisation ou ville">
 									<i class="icon-material-outline-location-on"></i>
 								</div>
 							</div>
@@ -34,7 +34,7 @@
 							<!-- Search Field -->
 							<div class="intro-search-field">
 								<label for ="intro-keywords" class="field-title ripple-effect">Metier</label>
-								<input id="intro-keywords" type="text" placeholder="Tapez le Metier que vous cherchez">
+								<input style="background-color:#fff;" id="intro-keywords" type="text" placeholder="Tapez le Metier que vous cherchez">
 							</div>
 
 							<!-- Button -->

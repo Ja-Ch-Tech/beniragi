@@ -280,12 +280,12 @@
 					</div>
 					<div class="input-with-icon-left">
 						<i class="icon-material-baseline-mail-outline"></i>
-						<input type="email" class="input-text with-border" name="email" id="email" placeholder="Adresse email" required/>
+						<input style="background-color:#fff;border-color:#ccc;"  type="email" class="input-text with-border" name="email" id="email" placeholder="Adresse email" required/>
 					</div>
 
 					<div class="input-with-icon-left">
 						<i class="icon-material-outline-lock"></i>
-						<input type="password" class="input-text with-border" name="password" id="password" placeholder="Mot de passe" required/>
+						<input style="background-color:#fff;border-color:#ccc;"  type="password" class="input-text with-border" name="password" id="password" placeholder="Mot de passe" required/>
 					</div>
 					<a href="#" class="forgot-password">Mot de passe oublié ?</a>
 				</form>
@@ -323,12 +323,12 @@
 					
 					<div class="input-with-icon-left">
 						<i class="icon-material-baseline-mail-outline"></i>
-						<input type="email" class="input-text with-border" name="email" id="emailaddress-register" placeholder="Adresse email" required/>
+						<input style="background-color:#fff;border-color:#ccc;"  type="email" class="input-text with-border" name="email" id="emailaddress-register" placeholder="Adresse email" required/>
 					</div>
 
 					<div class="input-with-icon-left" title="Doit avoir aumoins 5 caracteres" data-tippy-placement="bottom">
 						<i class="icon-material-outline-lock"></i>
-						<input min="5" type="password" class="input-text with-border" name="password" id="password-register" placeholder="Creez un mot de passe" required/>
+						<input style="background-color:#fff;border-color:#ccc;"  min="5" type="password" class="input-text with-border" name="password" id="password-register" placeholder="Creez un mot de passe" required/>
 					</div>
 				</form>
 				

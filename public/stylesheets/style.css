@@ -2653,6 +2653,7 @@ body #backtotop a {
 .sidebar-widget h3 {
 	font-size: 20px;
 	margin-bottom: 20px;
+	color: #fff;
 }
 
 
@@ -2928,7 +2929,7 @@ body #backtotop a {
     top: 0;
     left: 0;
     z-index: 15;
-    background: linear-gradient(to right,rgba(247,247,247,1) 50%,rgba(247,247,247,0.8) 70%,rgba(247,247,247,0.8) 90%);
+    background:#2c2b2b;
 }
 
 .single-page-header:after {
@@ -3021,7 +3022,7 @@ body #backtotop a {
 }
 
 .single-page-header .header-details h3 {
-	color: #333;
+	color: #fff;
 	font-size: 26px;
 	margin: 0;
 	padding: 0;
@@ -3945,6 +3946,7 @@ span.blog-item-tag {
 .single-page-section h3 {
 	margin-bottom: 20px;
 	font-size: 20px;
+	color: #fff;
 }
 .single-page-section .job-listing h3.job-listing-title { margin-bottom: 0; }
 
@@ -12521,13 +12523,13 @@ body .pac-container {
 }
 
 .boxed-list-headline {
-	background-color: #f2f2f2;
+	background-color: #2c2b2b;
 	border-radius: 4px;
 	padding: 20px 35px;
 }
 
-.boxed-list-headline h3 { font-size: 18px; }
-.boxed-list-headline h3 span { color: #888; }
+.boxed-list-headline h3 { font-size: 18px;color: #fff; }
+.boxed-list-headline h3 span { color: #fff; }
 
 .boxed-list-headline h3 i {
 	font-size: 18px;
@@ -12554,7 +12556,7 @@ body .pac-container {
 }
 
 .boxed-list ul.boxed-list-ul > li:nth-child(2n) {
-	background-color: #fafafa;
+	background-color: transparent;
 }
 
 /* Fields UL */
@@ -12996,7 +12998,7 @@ a.attachment-box:hover i {
 .profile-overview .overview-item strong {
 	display: block;
 	font-weight: 600;
-	color: #333;
+	color: #fff;
 	font-size: 18px;
 	margin-bottom: 5px;
 }
@@ -13024,7 +13026,7 @@ a.attachment-box:hover i {
 }
 
 .freelancer-indicators .indicator strong {
-	color: #333;
+	color: #fff;
 	font-weight: 600;
 }
 

@@ -116,7 +116,7 @@
 					<div class="clearfix"></div>
 					<!-- Pagination / End -->
 
-				</div>>
+				</div>
 
 			</div>
 			
@@ -250,15 +250,15 @@
 
 						<div class="input-with-icon-left">
 							<i class="icon-material-outline-account-circle"></i>
-							<input disabled="disabled" type="text" class="input-text with-border" name="name" id="name" placeholder="Votre nom" value="Josue mbuyu" />
+							<input style="background-color:#fff;border-color:#ccc;" disabled="disabled" type="text" class="input-text with-border" name="name" id="name" placeholder="Votre nom" value="Josue mbuyu" />
 						</div>
 
 						<div class="input-with-icon-left">
 							<i class="icon-material-baseline-mail-outline"></i>
-							<input disabled="disabled" type="text" class="input-text with-border" name="emailaddress" id="emailaddress" value="josuembuyu94@gmail.com" placeholder="Votre adresse email"/>
+							<input style="background-color:#fff;border-color:#ccc;"  disabled="disabled" type="text" class="input-text with-border" name="emailaddress" id="emailaddress" value="josuembuyu94@gmail.com" placeholder="Votre adresse email"/>
 						</div>
 
-						<textarea name="textarea" cols="10" placeholder="Votre message" class="with-border"></textarea>
+						<textarea style="background-color:#fff;border-color:#ccc;"  name="textarea" cols="10" placeholder="Votre message" class="with-border"></textarea>
 
 						<div class="uploadButton margin-top-25">
 							<input class="uploadButton-input" type="file" accept="image/*, application/pdf" id="upload" multiple/>
