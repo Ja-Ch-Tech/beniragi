@@ -84,7 +84,7 @@ router.post('/login', (req, res) => {
                 if (user.data.getEtat) {
                     req.session.id_user_beni = user.data.getObjet.id_user;
                     req.session.id_type_user_beni = user.data.getObjet.id_type;
-                    req.session.type_user_beni = user.data.getObjet.typeUser;
+                    req.session.isEmployer = user.data.getObjet.isEmployer;
 
                     res.status(200);
                     res.send(user.data);
@@ -140,8 +140,10 @@ router.get('/jobs/gets/:limit', (req, res) => {
 //Permet de recuperer l'identifiant d'un user
 router.get('/getSessionUser', (req, res) => {
     let id = req.session.id_user_beni ? req.session.id_user_beni : null,
+        isEmployer = req.session.isEmployer ? req.session.isEmployer : null
         obj = {
-            "user_id": id
+            "user_id": id,
+            "isEmployer": isEmployer
         };
 
     res.status(200);
@@ -150,7 +152,9 @@ router.get('/getSessionUser', (req, res) => {
 
 //Route pour la recuperation des informations d'un user
 router.get('/getUserInfos/:user_id', (req, res) => {
-    axios.get(`${API}/users/details/${req.params.user_id}`)
+    var id = req.session.id_user_beni ? req.session.id_user_beni : null;
+
+    axios.get(`${API}/users/details/${req.params.user_id}/${id}`)
         .then(response => {
             res.status(200).send(response.data);
         })

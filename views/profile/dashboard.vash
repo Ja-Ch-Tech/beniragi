@@ -18,27 +18,7 @@
 <div class="fun-facts-container" id="miniStats">
 	<!-- Dynamic content -->
 	 <!-- POUR UN COMPTE EMPLOYEUR
-          <div class="fun-fact" data-fun-fact-color="#36bd78">
-            <div class="fun-fact-text">
-              <span>Offres</span>
-              <h4>22</h4>
-            </div>
-            <div class="fun-fact-icon"><i class="icon-material-outline-local-offer"></i></div>
-          </div>
-          <div class="fun-fact" data-fun-fact-color="#b81b7f">
-            <div class="fun-fact-text">
-              <span>Favoris</span>
-              <h4>4</h4>
-            </div>
-            <div class="fun-fact-icon"><i class="icon-material-outline-favorite"></i></div>
-          </div>
-          <div class="fun-fact" data-fun-fact-color="#efa80f">
-            <div class="fun-fact-text">
-              <span>Feedback</span>
-              <h4>28</h4>
-            </div>
-            <div class="fun-fact-icon"><i class="icon-material-outline-feedback"></i></div>
-          </div> -->
+           -->
 	<!-- Last one has to be hidden below 1600px, sorry :( -->
 	<div class="fun-fact" data-fun-fact-color="#2a41e6">
 		<div class="fun-fact-text">

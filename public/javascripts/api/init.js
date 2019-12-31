@@ -1,7 +1,7 @@
 
 const getHostApi = () => {
-    return "http://localhost:3456/";
-    //return "https://api-beniragi-service.herokuapp.com/";
+    //return "http://localhost:3456/";
+    return "https://api-beniragi-service.herokuapp.com/";
 }
 
 const getHostWeb = () => {
@@ -115,4 +115,4 @@ const getUserId = (callback) => {
     });
 }
 
-export { getHostApi, customDate, getAllTypesUser,getUserId, getHostWeb }
+export { getHostApi, customDate, getAllTypesUser, getUserId, getHostWeb }

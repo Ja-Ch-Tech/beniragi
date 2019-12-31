@@ -24,7 +24,26 @@ const login = () => {
                 console.log(infos);
                 $("#login-button").html(`Se connecter <i class="icon-material-outline-arrow-right-alt"></i>`);
                 if (infos.getEtat) {
-                    window.location.href = '/';
+                    
+                    if (infos.getObjet.flag) {
+                        window.location.reload();
+                    } else {
+                        Snackbar.show({
+                            text: "Ce compte n'est pas activé !",
+                            pos: 'bottom-center',
+                            showAction: true,
+                            actionText: "Fermer",
+                            duration: 3000,
+                            textColor: '#fff',
+                            backgroundColor: '#f00'
+                        });
+
+                        //Redirection dans la page d'activation
+                        setTimeout(() => {
+                            window.location.href = '/profile/activation';
+                        }, 3100);
+                    }
+
                 } else {
                     $("#errorLogin")[0].style.display = 'block';
                     $("#errorLogin")[0].style.opacity = '1';
@@ -186,7 +205,6 @@ const getNav = () => {
 		if (state) {
 			//Recuperation des informations du user
 			getUserInfos(user.user_id, function (infos) {
-                console.log(infos)
                 if (infos.getObjet.flag) {
                     navContent = `<!--  User Notifications -->
                                 <div class="header-widget hide-on-mobile">
@@ -281,12 +299,8 @@ const getNav = () => {
                                                 
                                                 <!-- User Status Switcher -->
                                                 <div class="status-switch" id="snackbar-user-status">
-                                                    <label class="user-online current-status">Online</label>
-                                                    <label class="user-invisible">Invisible</label>
-                                                    <!-- Status Indicator -->-_
                                                     <label class="user-online ${infos.getObjet.visibility ? `current-status`: `` }">Disponible</label>
                                                     <label class="user-invisible ${!infos.getObjet.visibility ? `current-status` : `` }">Non-disponible</label>
-                                                    <!-- Status Indicator -->
                                                     <span class="status-indicator" aria-hidden="true"></span>
                                                 </div>  
                                         </div>
@@ -435,7 +449,7 @@ const getNav = () => {
                     $("#loadercode").html(``);
                     if (data.getEtat) {
                         Snackbar.show({
-                            text: "Votre compte a ete active avec success !",
+                            text: "Votre compte a été activé !",
                             pos: 'bottom-center',
                             showAction: true,
                             actionText: "Fermer",
@@ -446,7 +460,7 @@ const getNav = () => {
                         window.location.href = "/";
                     } else {
                         Snackbar.show({
-                            text: "Code d'activation incorrect, reessayez !",
+                            text: "Code d'activation incorrect, réessayez !",
                             pos: 'bottom-center',
                             showAction: true,
                             actionText: "Fermer",
@@ -479,12 +493,14 @@ const sidebar = () => {
  * Module permettant de dynamiser les stats qui sont dans le dashboard du client
  */
 const statsInDashboard = () => {
-    $.ajax({
-        type: 'GET',
-        url: "/api/users/stats",
-        dataType: "json",
-        success: function (data) {
-            var content = `<div class="fun-fact" data-fun-fact-color="#36bd78">
+    getUserId((isGet, user) => {
+        $.ajax({
+            type: 'GET',
+            url: "/api/users/stats",
+            dataType: "json",
+            success: function (data) {
+                if (!user.isEmployer) {
+                    var content = `<div class="fun-fact" data-fun-fact-color="#36bd78">
                                 <div class="fun-fact-text">
                                     <span>Note moyenne</span>
                                     <h4>${data.getObjet.average}</h4>
@@ -506,12 +522,39 @@ const statsInDashboard = () => {
                                 <div class="fun-fact-icon"><i class="icon-material-outline-feedback"></i></div>
                             </div>`;
 
-            $("#miniStats").html(content);
-        },
-        error: function (err) {
-            console.log(err)
-        }
-    });
+                    $("#miniStats").html(content);
+                } else {
+                    var content = `<div class="fun-fact" data-fun-fact-color="#36bd78">
+                                        <div class="fun-fact-text">
+                                        <span>Offres</span>
+                                        <h4>${data.getObjet.nbreOffer}</h4>
+                                        </div>
+                                        <div class="fun-fact-icon"><i class="icon-material-outline-local-offer"></i></div>
+                                    </div>
+                                    <div class="fun-fact" data-fun-fact-color="#b81b7f">
+                                        <div class="fun-fact-text">
+                                        <span>Favoris</span>
+                                        <h4>4</h4>
+                                        </div>
+                                        <div class="fun-fact-icon"><i class="icon-material-outline-favorite"></i></div>
+                                    </div>
+                                    <div class="fun-fact" data-fun-fact-color="#efa80f">
+                                        <div class="fun-fact-text">
+                                        <span>Feedback</span>
+                                        <h4>${data.getObjet.nbreFeedBack}</h4>
+                                        </div>
+                                        <div class="fun-fact-icon"><i class="icon-material-outline-feedback"></i></div>
+                                    </div>`;
+                    $("#miniStats").html(content)
+                }
+                
+            },
+            error: function (err) {
+                console.log(err)
+            }
+        });
+    })
+    
 }
 
 export { login, register, getStatsUsers, getNav, activeAccount, sidebar, statsInDashboard }
