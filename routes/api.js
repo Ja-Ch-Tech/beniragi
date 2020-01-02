@@ -14,7 +14,7 @@ app.use(session({
 //Test si un objet est vide
 const Empty = object => {
     let flag = false;
-    
+
     for (const value in object) {
         if (object[value] != "" && object.hasOwnProperty(value)) {
             flag = true;
@@ -23,7 +23,7 @@ const Empty = object => {
             break;
         }
     }
-    
+
     return flag;
 }
 
@@ -34,7 +34,7 @@ router.get('/', function (req, res, next) {
 
 //Creation d'un compte
 router.post('/register', (req, res) => {
-    
+
     var data = {
         email: req.body.email,
         password: req.body.password,
@@ -130,21 +130,21 @@ router.get('/users/numberUserByType', (req, res) => {
 //Récupération des métiers
 router.get('/jobs/gets/:limit', (req, res) => {
     axios.get(`${API}/jobs/get/${parseInt(req.params.limit)}`)
-         .then(response => {
-             res.status(200).send(response.data)
-         })
-         .catch(err => {
-             res.status(500).send(err);
-         })
+        .then(response => {
+            res.status(200).send(response.data)
+        })
+        .catch(err => {
+            res.status(500).send(err);
+        })
 })
 //Permet de recuperer l'identifiant d'un user
 router.get('/getSessionUser', (req, res) => {
     let id = req.session.id_user_beni ? req.session.id_user_beni : null,
-        isEmployer = req.session.isEmployer ? req.session.isEmployer : null
-        obj = {
-            "user_id": id,
-            "isEmployer": isEmployer
-        };
+        isEmployer = req.session.isEmployer ? true : false;
+    obj = {
+        "user_id": id,
+        "isEmployer": isEmployer
+    };
 
     res.status(200);
     res.send(obj)
@@ -196,12 +196,50 @@ router.post('/profile/activation', (req, res) => {
 //Route pour la récupération des stats
 router.get('/users/stats', (req, res) => {
     axios.get(`${API}/users/stats/${req.session.id_user_beni}`)
-         .then(response => {
-             res.status(200).send(response.data)
-         })
-         .catch(err => {
-             res.status(500).send(err)
-         })
+        .then(response => {
+            res.status(200).send(response.data)
+        })
+        .catch(err => {
+            res.status(500).send(err)
+        })
+})
+
+//Récupération des données du graphe
+router.get('/view/getGraphForSixMonth', (req, res) => {
+    axios.get(`${API}/view/graphVisit/${req.session.id_user_beni}`)
+        .then(response => {
+            var formatData = response.data;
+
+            if (formatData.getObjet.length > 0) {
+                var responseOut = {
+                        month: [],
+                        visit: []
+                    },
+                    outGraph = 0;
+
+                formatData.getObjet.map((data, index, tab) => {
+                    responseOut.month.push(data.month);
+                    responseOut.visit.push(data.nbreVisite);
+
+                    outGraph++;
+
+                    if (outGraph == tab.length) {
+                        var formatOut = {
+                            getEtat: true,
+                            getObjet: responseOut
+                        };
+
+                        res.status(200).send(formatOut);
+                    }
+                })
+            } else {
+                res.status(202).send({getEtat: false})
+            }
+
+        })
+        .catch(err => {
+            res.status(500).send(err)
+        })
 })
 
 module.exports = router;

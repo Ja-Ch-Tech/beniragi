@@ -201,7 +201,6 @@ function toggleVisibility() {
 const getNav = () => {
 
 	getUserId(function (state, user) {
-        console.log(state);
         
 		var navContent;
 		if (state) {
