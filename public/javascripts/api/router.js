@@ -1,6 +1,7 @@
 import { getHostApi, getUserId } from './init.js';
 import { login, register, getStatsUsers as statsUsers, getNav, activeAccount, statsInDashboard as miniStats } from './users_api.js';
 import { getJobs } from './jobs.js';
+import { graph } from './view.js';
 
 
 (() => {
@@ -28,6 +29,7 @@ import { getJobs } from './jobs.js';
 
             if (/dashboard/i.test(pathName.split("/")[pathName.split("/").length - 1])) {
                 miniStats();
+                graph();
             }
 
             if (/parametres/i.test(pathName.split("/")[pathName.split("/").length - 1])) {
