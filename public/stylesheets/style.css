@@ -6942,7 +6942,7 @@ table.basic-table { margin-bottom: 0; }
 .keywords-list {
 	display: block;
 	float: left;
-	height: 0;
+	height: auto;
 }
 
 .keyword {

@@ -1,7 +1,7 @@
 
 const getHostApi = () => {
-    //return "http://localhost:3456/";
-    return "https://api-beniragi-service.herokuapp.com/";
+    return "http://localhost:3456/";
+    //return "https://api-beniragi-service.herokuapp.com/";
 }
 
 const getHostWeb = () => {
@@ -115,4 +115,20 @@ const getUserId = (callback) => {
     });
 }
 
-export { getHostApi, customDate, getAllTypesUser, getUserId, getHostWeb }
+//Verifie si les champs sont vides
+const NoEmpty = object => {
+    let flag = false;
+    
+    for (const value in object) {
+        if (object[value] != "" && object.hasOwnProperty(value)) {
+            flag = true;
+        } else {
+            flag = false;
+            break;
+        }
+    }
+    
+    return flag;
+}
+
+export { getHostApi, customDate, getAllTypesUser, getUserId, getHostWeb, NoEmpty }

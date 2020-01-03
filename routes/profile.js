@@ -31,7 +31,7 @@ router.get('/dashboard', function(req, res, next) {
 });
 
 /*Message*/
-router.get('/:id/messages', function(req, res, next) {
+router.get('/messages', function(req, res, next) {
   if (req.session.id_user_beni) {
     res.render('profile/messages', { 
       title: 'Messages',
@@ -62,7 +62,7 @@ router.get('/parametres', function(req, res, next) {
 });
 
 /*Feedback*/
-router.get('/:id/feedback', function(req, res, next) {
+router.get('/feedback', function(req, res, next) {
   if (req.session.id_user_beni) {
     res.render('profile/feedback', { 
       title: 'feedback',
@@ -77,7 +77,7 @@ router.get('/:id/feedback', function(req, res, next) {
 });
 
 /*Favoris*/
-router.get('/:id/favoris', function(req, res, next) {
+router.get('/favoris', function(req, res, next) {
   if (req.session.id_user_beni) {
     res.render('profile/favoris', { 
       title: 'favoris',
@@ -92,7 +92,7 @@ router.get('/:id/favoris', function(req, res, next) {
 });
 
 /*Contacts*/
-router.get('/:id/contacts', function(req, res, next) {
+router.get('/contacts', function(req, res, next) {
   if (req.session.id_user_beni) {
     res.render('profile/contacts', { 
       title: 'contacts',

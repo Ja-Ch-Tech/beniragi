@@ -1,5 +1,5 @@
 import { getHostApi, getUserId } from './init.js';
-import { login, register, getStatsUsers as statsUsers, getNav, activeAccount, sidebar, statsInDashboard as miniStats } from './users_api.js';
+import { login, register, getStatsUsers as statsUsers, getNav, activeAccount, statsInDashboard as miniStats } from './users_api.js';
 import { getJobs } from './jobs.js';
 
 
@@ -18,7 +18,6 @@ import { getJobs } from './jobs.js';
 
     //#region Profile
         if (pathName.split("/")[1] == "profile") {
-            sidebar()
             if (pathName.split("/")[2] == "activation") {
                 getUserId(function (state, user_id) {
                     if (state) {
@@ -29,6 +28,10 @@ import { getJobs } from './jobs.js';
 
             if (/dashboard/i.test(pathName.split("/")[pathName.split("/").length - 1])) {
                 miniStats();
+            }
+
+            if (/parametres/i.test(pathName.split("/")[pathName.split("/").length - 1])) {
+                //inputsJob(null);
             }
             
         }

@@ -1,5 +1,4 @@
-import { getAllTypesUser, getUserId } from './init.js';
-
+import { getAllTypesUser, getUserId, NoEmpty, getHostApi } from './init.js';
 //Permet de connecter un utilisateur
 const login = () => {
     $("#login-form").on('submit', function(e) {
@@ -26,7 +25,7 @@ const login = () => {
                 if (infos.getEtat) {
                     
                     if (infos.getObjet.flag) {
-                        window.location.reload();
+                         window.location.reload();
                     } else {
                         Snackbar.show({
                             text: "Ce compte n'est pas activé !",
@@ -201,9 +200,9 @@ function toggleVisibility() {
 const getNav = () => {
 
 	getUserId(function (state, user) {
-        console.log(state);
         
-		var navContent;
+        var navContent,
+        pathName = window.location.pathname;
 		if (state) {
 			//Recuperation des informations du user
 			getUserInfos(user.user_id, function (infos) {
@@ -317,8 +316,15 @@ const getNav = () => {
                                     </div>
 
                                 </div>
-                                <!-- User Menu / End -->`;
-                    $("#navMenu").prepend(navContent);
+                                <!-- User Menu / End -->
+                                <span class="mmenu-trigger">
+                                <button class="hamburger hamburger--collapse" type="button">
+                                    <span class="hamburger-box">
+                                        <span class="hamburger-inner"></span>
+                                    </span>
+                                </button>
+                            </span>`;
+                    $("#navMenu").html(navContent);
 
                     /*--------------------------------------------------*/
                     /*  Notification Dropdowns
@@ -365,22 +371,31 @@ const getNav = () => {
                         }
                     });
                     toggleVisibility();
-                   
+                    //Remplissage des informations sur le user dans les details
+                    if (/profile/i.test(pathName.split("/")[1]) && /parametres/i.test(pathName.split("/")[2])) {
+                        userParameters(user, infos);
+                    }
                 }else{
                     navContent = `<!-- Lien vers l'activation d'un compte -->
                     <div class="header-widget hide-on-mobile">
                         <a href="/profile/activation" class="log-in-button"><i class="icon-line-awesome-unlock-alt"></i> <span>Activer votre compte</span></a>
                     </div>`;
-                    $("#navMenu").prepend(navContent);
+                    $("#navMenu").html(navContent);
                 }
-			});
+            });
+            
+
+            //Dynamisation de la sidebar
+            if (/profile/i.test(pathName.split("/")[1])) {
+                sidebar(user);
+            }
 		}else{
 
 			navContent = `<!-- USER NON CONNECTER -->
                 <div class="header-widget">
                     <a href="#sign-in-dialog" class="popup-with-zoom-anim log-in-button"><i class="icon-feather-log-in"></i> <span>Connexion / Inscription</span></a>
                 </div>`;
-			$("#navMenu").prepend(navContent);
+			$("#navMenu").html(navContent);
 
 			//chargement du popup de connexion et inscription
 			$('.popup-with-zoom-anim').magnificPopup({
@@ -401,17 +416,536 @@ const getNav = () => {
 		}
 	});
 }
-/**
- * Cette fonction permet de faire le toggle des dropdown
- */
- const toggleDropdown = (content, link) => {
-    $("#" + link).on('click', function (e) {
-        e.preventDefault();
 
-        $("#" + content)[0].classList.toggle('active');
-       
+
+/**
+ * Module permettant pre remplire les informations du user dans la page parametres
+ */
+const userParameters = (user, details) => {
+    console.log(details)
+    var content = `<!-- Dashboard Box -->
+    <div class="col-xl-12">
+      <div class="dashboard-box margin-top-0">
+
+        <!-- Headline -->
+        <div class="headline">
+          <h3><i class="icon-material-outline-account-circle"></i> Mon compte</h3>
+        </div>
+
+        <div class="content with-padding padding-bottom-0">
+            
+            <div class="row">
+                
+                <div class="col-auto">
+                    <div class="avatar-wrapper" data-tippy-placement="bottom" title="Modifier la photo de profile">
+                        <img class="profile-pic" src="" alt="image de profile" />
+                        <div class="upload-button"></div>
+                        <input class="file-upload" type="file" accept="image/*"/>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <form id="updateInfosForm" autocomplete="off" method="post" action="#">
+                        <div class="row">
+
+                            <div class="col-xl-4">
+                                <div class="submit-field">
+                                    <h5>Nom <span class="color_red">(*)</span></h5>
+                                    <input onkeyup="$(this).val().length > 3 ? $('#registerInfosBtn').slideDown() : ''" name="nom" onkeyup="" type="text" class="with-border" placeholder="Inserez votre nom" value="${details.getObjet.identity.name ? details.getObjet.identity.name : ""}">
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4">
+                                <div class="submit-field">
+                                    <h5>Postnom <span class="color_red">(*)</span></h5>
+                                    <input onkeyup="$(this).val().length > 3 ? $('#registerInfosBtn').slideDown() : ''" name="postnom" type="text" class="with-border" placeholder="Inserez votre postnom" value="${details.getObjet.identity.postName ? details.getObjet.identity.postName : ""}">
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="submit-field">
+                                    <h5>Prénom <span class="color_red">(*)</span></h5>
+                                    <input onkeyup="$(this).val().length > 3 ? $('#registerInfosBtn').slideDown() : ''" name="prenom" type="text" class="with-border" placeholder="Inserez votre prenom" value="${details.getObjet.identity.lastName ? details.getObjet.identity.lastName : ""}">
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4">
+                                <!-- Account Type -->
+                                <div class="submit-field">
+                                    <h5>Type de compte</h5>
+                                    <div class="account-type">
+                                    <div>
+                                        <label style="padding: 10px;" for="freelancer-radio" class="ripple-effect-dark"><i class="icon-material-outline-business-center"></i> ${details.getObjet.typeUser}</label>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4">
+                                <div class="submit-field">
+                                    <h5>Email <span class="color_red">(*)</span></h5>
+                                    <input disabled type="email" placeholder="Inserez votre adresse email" class="with-border" value="${details.getObjet.email ? details.getObjet.email : ""}">
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4">
+                                <div class="submit-field">
+                                    <h5>Numéro de téléphone <span class="color_red">(*)</span></h5>
+                                    <input onkeyup="$(this).val().length > 3 ? $('#registerInfosBtn').slideDown() : ''" name="numero" type="text" class="with-border" placeholder="Inserez votre numéro de téléphone" value="${details.getObjet.identity.phoneNumber ? details.getObjet.identity.phoneNumber : ""}">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="submit-field">
+                                    <h5>Votre biographie</h5>
+                                    <textarea cols="30" placeholder="Une petite presentation de ce vous etes" rows="5" class="with-border"></textarea>
+                                </div>
+                          </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="row">
+                <!-- Button -->
+                <div id="registerInfosBtn" style="display:none;" class="col-xl-12">
+                    <center>
+                        <button type="submit" form="updateInfosForm" class="button ripple-effect big margin-top-30 float-right"><i class="icon-line-awesome-save"></i> Enregistrer</ button>
+                    </center>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard Box -->
+    <div class="col-xl-12">
+      <div class="dashboard-box">
+
+        <!-- Headline -->
+        <div class="headline">
+          <h3><i class="icon-material-outline-face"></i>Mon profile </h3> 
+        </div>
+
+        <div class="content">
+          <ul class="fields-ul">
+            <li>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="submit-field">
+                    <h5>Metier</h5>
+                    <select id="inputJob" class="selectpicker with-border" data-size="7" title="Selectionnez un metier" data-live-search="true">
+                      <option  value="">Selectionnez un metier</option>
+                    </select>
+                    <div id="jobLoader"></div>
+                  </div>
+                </div>
+                <div class="col-md-8">
+                  <div class="submit-field">
+                    <h5>Vos specialites <i class="help-icon" data-tippy-placement="right" title="Ajouter au maximum 10 compétences"></i></h5>
+
+                    
+                    <div class="keywords-container">
+                      <div class="keyword-input-container">
+                        <input type="text" class="keyword-input with-border" placeholder="Ajouter une specialite" value =""/>
+                        <button class="keyword-input-button ripple-effect"><i class="icon-material-outline-add"></i></button>
+                      </div>
+                      <div class="keywords-list">
+                        <span class="keyword"><span class="keyword-remove"></span><span class="keyword-text">Angular</span></span>
+                        <span class="keyword"><span class="keyword-remove"></span><span class="keyword-text">Vue JS</span></span>
+                        <span class="keyword"><span class="keyword-remove"></span><span class="keyword-text">iOS</span></span>
+                        <span class="keyword"><span class="keyword-remove"></span><span class="keyword-text">Android</span></span>
+                        <span class="keyword"><span class="keyword-remove"></span><span class="keyword-text">Laravel</span></span>
+                      </div>
+                      <div class="clearfix"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="row">
+                
+
+                <div class="col-md-6">
+                  <div class="submit-field">
+                    <h5>Ville de residence</h5>
+                    <select class="selectpicker with-border" data-size="7" title="Select Job Type" data-live-search="true">
+                      <option value="" selected>Selectionnez une votre ville actuelle</option>
+                      <option value="US">United States</option>
+                      <option value="UY">Kinshasa</option>
+                      <option value="UZ">Kolwezi</option>
+                      <option value="YE">Lubumbashi</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="submit-field">
+                        <h5>Ajouter vos fichiers </h5>
+                        
+                        <!-- Attachments -->
+                        <div class="attachments-container margin-top-0 margin-bottom-0">
+                        <div class="attachment-box ripple-effect">
+                            <span>Cover Letter</span>
+                            <i>PDF</i>
+                            <button class="remove-attachment" data-tippy-placement="top" title="Remove"></button>
+                        </div>
+                        <div class="attachment-box ripple-effect">
+                            <span>Contract</span>
+                            <i>DOCX</i>
+                            <button class="remove-attachment" data-tippy-placement="top" title="Remove"></button>
+                        </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        
+                        <!-- Upload Button -->
+                        <div class="uploadButton margin-top-0">
+                        <input class="uploadButton-input" type="file" accept="image/*, application/pdf" id="upload" multiple/>
+                        <label class="uploadButton-button ripple-effect" for="upload">Selectionnez</label>
+                        <span class="uploadButton-file-name">Taille maximum: 10 MB</span>
+                        </div>
+
+                    </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard Box -->
+    <div class="col-md-12">
+      <div id="test1" class="dashboard-box">
+
+        <!-- Headline -->
+        <div class="headline">
+          <h3><i class="icon-material-outline-lock"></i> Mot de passe et securité</h3>
+        </div>
+
+        <div class="content with-padding">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="submit-field">
+                <h5>Mot de passe actuel</h5>
+                <input type="password" class="with-border">
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="submit-field">
+                <h5>Nouveau mot de passe</h5>
+                <input type="password" class="with-border">
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="submit-field">
+                <h5>Retapez le nouveau mot de passe</h5>
+                <input type="password" class="with-border">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+              <!-- Button -->
+              <div class="col-md-12">
+                  <center>
+                    <a href="#" class="button ripple-effect big margin-top-30 float-right"><i class="icon-line-awesome-save"></i> Enregistrer</a>
+                  </center>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>`;
+    $("#parametersContent").html(content);
+    
+    avatarSwitcher();
+    tippy('[data-tippy-placement]', {
+		delay: 100,
+		arrow: true,
+		arrowType: 'sharp',
+		size: 'regular',
+		duration: 200,
+
+		// 'shift-toward', 'fade', 'scale', 'perspective'
+		animation: 'shift-away',
+
+		animateFill: true,
+		theme: 'dark',
+
+		// How far the tooltip is from its reference element in pixels 
+		distance: 10,
+
     });
- }
+    
+   
+    updateAccount();
+
+    $('select').selectpicker();
+    boostrapSelect();
+    submitSelect(user);
+}
+
+/**
+ * Effectue la soumission des inputs select (Mise a jour d'un job, d'une ville)
+ */
+const submitSelect = (user) => {
+    $('select').on('change', function (e) {
+        var select = e.currentTarget,
+            value = select.options[select.selectedIndex].value;
+        if (value != "") {
+            //Pour l'input select dedie a la specification d'un metier 
+            if (select.id == "inputJob") {
+                
+                $.ajax({
+                    type: 'POST',
+                    url: "/api/users/setJob",
+                    dataType: "json",
+                    data: {
+                        id_job : value,
+                        id_user : user.user_id
+                    },
+                    beforeSend : function () {
+                        $('#jobLoader').html(`<center><div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></center>`);
+                    },
+                    success: function (data) {
+                        $('#jobLoader').html(``);
+                        
+                        if (data.getEtat) {
+                            Snackbar.show({
+                                text: "Votre metier a ete mis a jour avec success",
+                                pos: 'bottom-center',
+                                showAction: true,
+                                actionText: "Fermer",
+                                duration: 5000,
+                                textColor: '#fff',
+                                backgroundColor: '#3696f5'
+                            });
+                        } else {
+                            Snackbar.show({
+                                text: data.getMessage,
+                                pos: 'bottom-center',
+                                showAction: true,
+                                actionText: "Fermer",
+                                duration: 5000,
+                                textColor: '#fff',
+                                backgroundColor: '#ad344b'
+                            });
+                        }           
+                        console.log(data);
+                    },
+                    error : function (err) {
+                        callback(err)
+                    }
+                });
+            }
+            
+        }
+    });
+};
+/**
+ * Pre remplit les inputs bootstrapp select
+ */
+const boostrapSelect = () => {
+    var btn = $(".dropdown-toggle"),
+        select,
+        dropdown,
+        btnId,
+        verrou = false,
+        ulDrop;
+    btn.on('click', function (e) {
+        e.preventDefault();
+        
+        if (!verrou) {
+            btn = btn[0];
+            btnId = btn.getAttribute("data-id");
+            select = btn.nextSibling.nextSibling;
+            dropdown = btn.nextSibling;
+            ulDrop = dropdown.getElementsByTagName("ul")[0];
+            
+            //Si on clique sur le button 
+            if (btnId == "inputJob") {
+                $.ajax({
+                    type: 'GET',
+                    url: `/api/jobs/gets/`+ null,
+                    dataType: "json",
+                    success: function (data) {
+                        var option,
+                            li,
+                            sortieJob = 0;
+                        if (data.getEtat) {
+                            data.getObjet.map(job => {
+                                sortieJob++;
+    
+                                //Remplissage des options
+                                option = document.createElement('option');
+                                option.value = job._id;
+                                option.innerHTML = job.name;
+                                select.appendChild(option);
+    
+                                //Remplissage du dropdown
+                                li = document.createElement('li');
+                                li.setAttribute("data-original-index", sortieJob + 1);
+                                li.innerHTML = `<a tabindex="0" class data-tokens="null" role="option" aria-disabled="false" aria-selected="false">
+                                    <span class="text">${job.name}</span>
+                                    <span class="glyphicon glyphicon-ok check-mark"></span>
+                                </a>`;
+    
+                                ulDrop.appendChild(li);
+    
+                                if (sortieJob == data.getObjet.length) {
+                                    verrou = true;
+                                    $(".dropdown-toggle").next().next().selectpicker();
+                                }
+                            });
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }
+        }
+        
+    })
+};
+/**
+ * Met a jour les informations du user
+ */
+const updateAccount = () => {
+    $("#updateInfosForm").on('submit', function (e) {
+        e.preventDefault();
+        var inputs = e.target.elements,
+        objData = {};
+
+        for (let index = 0; index < inputs.length; index++) {
+            if (/input/i.test(e.target.elements[index].localName)) {
+                if (inputs[index].type != "email") {
+                    objData[inputs[index].name] = inputs[index].value;
+                }
+            }
+        }
+
+        if (NoEmpty(objData)) {
+            $.ajax({
+                type: 'POST',
+                url: "/api/users/setIdentity",
+                dataType: "json",
+                data: objData,
+                beforeSend : function () {
+                    $("#registerInfosBtn").html(`<center><div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></center>`);
+                },
+                success: function (data) {            
+                    $("#registerInfosBtn").html(`<center>
+                        <button type="submit" form="updateInfosForm" class="button ripple-effect big margin-top-30 float-right"><i class="icon-line-awesome-save"></i> Enregistrer</ button>
+                    </center>`);
+                    if (data.getEtat) {
+                        Snackbar.show({
+                            text: "Votre compte a ete mis a jour avec success",
+                            pos: 'bottom-right',
+                            showAction: true,
+                            actionText: "Fermer",
+                            duration: 5000,
+                            textColor: '#fff',
+                            backgroundColor: '#3696f5'
+                        });
+                    } else {
+                        Snackbar.show({
+                            text: data.getMessage,
+                            pos: 'bottom-right',
+                            showAction: true,
+                            actionText: "Fermer",
+                            duration: 5000,
+                            textColor: '#fff',
+                            backgroundColor: '#ad344b'
+                        });
+                    }
+                },
+                error : function (err) {
+                    console.log(err)
+                }
+            });
+        } else {
+            Snackbar.show({
+                text: "Veuillez renseigner tous les champs important",
+                pos: 'bottom-right',
+                showAction: true,
+                actionText: "Fermer",
+                duration: 5000,
+                textColor: '#fff',
+                backgroundColor: '#ad344b'
+            });
+        }
+    });
+};
+
+/**
+ * Met a jour l'avatar d'un user
+ */
+const avatarSwitcher = () => {
+    var fileInput = $(".file-upload"),
+        file,
+        formData = new FormData(),
+        sortie = false,
+        type,
+        avalaibleTypes = [
+            "image/jpeg",
+            "image/png",
+            "image/bmp",
+            "image/tiff",
+            "image/gif",
+            "image/x-icon"
+        ];
+    fileInput.on('change', function(){
+        type = fileInput[0].files[0].type;
+        if (fileInput[0].files.length > 0) {
+            if (avalaibleTypes.indexOf(type) != -1) {
+                file = fileInput[0].files[0];
+                sortie = true;
+            } else {
+                sortie = false;
+                Snackbar.show({
+                    text: "L'extension du fichier n'est pas valide",
+                    pos: 'bottom-center',
+                    showAction: true,
+                    actionText: "Fermer",
+                    duration: 5000,
+                    textColor: '#fff',
+                    backgroundColor: '#ad344b'
+                });
+            }
+            
+        }
+
+        if (sortie) {
+            console.log(file);
+            formData.append('file-s3', file, file.name);
+            formData.append('for', 'avatar');
+            $.ajax({
+                url: getHostApi() + "file-upload",
+                type: 'POST',
+                data: formData,
+                processData: false, // tell jQuery not to process the data
+                contentType: false, // tell jQuery not to set contentType
+                beforeSend: function () {
+                    
+                },
+                complete: function () {
+                },
+                success: function (data) {
+                    console.log(data);
+                },
+                err : function (err) {
+                    console.log(err)
+                }
+            });
+        }
+    });
+    
+    $(".upload-button").on('click', function() {
+       $(".file-upload").click();
+    });
+};
+
 /**
  * Module permettant d'activer un compte utilisateur
  */
@@ -483,12 +1017,32 @@ const getNav = () => {
  /**
  * Module permettant de dynamiser la sidebar du profile
  */
-const sidebar = () => {
-    getUserId(function (state, user) {
-        if (state) {
-            
-        }
-    })
+const sidebar = (user) => {
+    var content,
+        active = (url) => {
+
+            if (url == window.location.pathname) {
+                return 'active';
+            } else {
+                return '';
+            }
+        };
+    content = `<ul data-submenu-title="COMMENCEZ">
+                    <li class="${active("/profile/dashboard")}"><a href="/profile/dashboard"><i class="icon-material-outline-dashboard"></i> Dashboard</a></li>
+                    <li class="${active("/profile/messages")}"><a href="/profile/messages"><i class="icon-material-outline-question-answer"></i> Messages <span class="nav-tag">2</span></a></li>`;
+    if (user.isEmployer) {
+        content += `<li class="${active("/profile/favoris")}"><a href="/profile/favoris"><i class="icon-material-outline-favorite"></i> Favoris</a></li>
+        <li class="${active("/profile/contacts")}"><a href="/profile/contacts"><i class="icon-feather-users"></i> Contacts</a></li>
+        `;
+    } else {
+        content += `<li class="${active("/profile/contacts")}"><a href="/profile/feedback"><i class="icon-material-outline-feedback"></i> Feedback (normal) <span class="nav-tag">12</span></a></li>`;
+    }
+
+    content += `</ul><ul data-submenu-title="COMPTE">
+                    <li class="${active("/profile/parametres")}"><a href="/profile/parametres"><i class="icon-material-outline-settings"></i> Parametres</a></li>
+                    <li><a href="/logout"><i class="icon-material-outline-power-settings-new"></i> Deconnexion</a></li>
+                </ul>`;
+    $("#sidebarContent").html(content);
 }
 
 /**
@@ -559,4 +1113,4 @@ const statsInDashboard = () => {
     
 }
 
-export { login, register, getStatsUsers, getNav, activeAccount, sidebar, statsInDashboard }
+export { login, register, getStatsUsers, getNav, activeAccount, statsInDashboard }
