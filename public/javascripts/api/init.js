@@ -96,6 +96,25 @@ const getAllTypesUser = (callback) => {
     });
 }
 
+//Recupere toutes les villes
+const getAllTowns = (callback) => {
+    $.ajax({
+        type: 'GET',
+        url: "/api/getAllTowns",
+        dataType: "json",
+        success: function (data) {            
+            if (data.getEtat) {
+                callback(data);
+            }else{
+                callback(data);
+            }
+        },
+        error : function (err) {
+            callback(err);
+        }
+    });
+};
+
 //Permet de recuperer l'id du user en session
 const getUserId = (callback) => {
     $.ajax({
@@ -131,4 +150,4 @@ const NoEmpty = object => {
     return flag;
 }
 
-export { getHostApi, customDate, getAllTypesUser, getUserId, getHostWeb, NoEmpty }
+export { getHostApi, customDate, getAllTypesUser, getUserId, getHostWeb, NoEmpty, getAllTowns }

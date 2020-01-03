@@ -253,7 +253,50 @@ router.post('/users/setJob', (req, res) => {
         } else {
             res.send({ getEtat: false, getMessage: "Certaines informations sont maquantes" })
         }
-    });
+});
+
+
+//Route pour specification ou la mise a jour d'une ville
+router.post('/users/setTown', (req, res) => {
+    
+    var data = {
+        id_user: req.body.id_user,
+        id_town: req.body.id_town
+    };
+
+    if (Empty(data)) {
+
+        axios.post(`${API}/users/setTown`, data)
+            .then(town => {
+                if (town.data.getEtat) {
+                    res.status(200);
+                    res.send(town.data);
+
+                } else {
+
+                    res.status(200);
+                    res.send(town.data)
+                }
+            })
+            .catch(error => {
+                res.send(error)
+            })
+    } else {
+        res.send({ getEtat: false, getMessage: "Certaines informations sont maquantes" })
+    }
+});
+
+//Route pour l'ajout des skills
+router.post('/setSkills', (req, res) => {
+    
+    var data = {
+        id_user: req.body.id_user,
+        skills: req.body.skills
+    };
+
+    res.status(200);
+    res.send(data);
+});
 //Route pour la récupération des stats
 router.get('/users/stats', (req, res) => {
     axios.get(`${API}/users/stats/${req.session.id_user_beni}`)
@@ -297,6 +340,17 @@ router.get('/view/getGraphForSixMonth', (req, res) => {
                 res.status(202).send({getEtat: false})
             }
 
+        })
+        .catch(err => {
+            res.status(500).send(err)
+        })
+})
+
+//Recuperation des villes
+router.get('/getAllTowns', (req, res) => {
+    axios.get(`${API}/town/gets`)
+        .then(response => {
+            res.status(200).send(response.data)
         })
         .catch(err => {
             res.status(500).send(err)

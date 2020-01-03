@@ -1,4 +1,4 @@
-import { getAllTypesUser, getUserId, NoEmpty, getHostApi } from './init.js';
+import { getAllTypesUser, getUserId, NoEmpty, getHostApi, getAllTowns } from './init.js';
 //Permet de connecter un utilisateur
 const login = () => {
     $("#login-form").on('submit', function(e) {
@@ -545,15 +545,15 @@ const userParameters = (user, details) => {
                     
                     <div class="keywords-container">
                       <div class="keyword-input-container">
-                        <input type="text" class="keyword-input with-border" placeholder="Ajouter une specialite" value =""/>
-                        <button class="keyword-input-button ripple-effect"><i class="icon-material-outline-add"></i></button>
+                        <input id="setSkillsInput" type="text" class="keyword-input with-border" placeholder="Ajouter une specialite"/>
+                        <button id="setSkillsBtn" class="keyword-input-button ripple-effect"><i class="icon-material-outline-add"></i></button>
                       </div>
-                      <div class="keywords-list">
-                        <span class="keyword"><span class="keyword-remove"></span><span class="keyword-text">Angular</span></span>
-                        <span class="keyword"><span class="keyword-remove"></span><span class="keyword-text">Vue JS</span></span>
-                        <span class="keyword"><span class="keyword-remove"></span><span class="keyword-text">iOS</span></span>
-                        <span class="keyword"><span class="keyword-remove"></span><span class="keyword-text">Android</span></span>
-                        <span class="keyword"><span class="keyword-remove"></span><span class="keyword-text">Laravel</span></span>
+                      <div class="keywords-list" id="listSkills">
+                        <span class="keyword"><span class="keyword-text">Angular</span></span>
+                        <span class="keyword"><span class="keyword-text">Vue JS</span></span>
+                        <span class="keyword"><span class="keyword-text">iOS</span></span>
+                        <span class="keyword"><span class="keyword-text">Android</span></span>
+                        <span class="keyword"><span class="keyword-text">Laravel</span></span>
                       </div>
                       <div class="clearfix"></div>
                     </div>
@@ -568,39 +568,24 @@ const userParameters = (user, details) => {
                 <div class="col-md-6">
                   <div class="submit-field">
                     <h5>Ville de residence</h5>
-                    <select class="selectpicker with-border" data-size="7" title="Select Job Type" data-live-search="true">
-                      <option value="" selected>Selectionnez une votre ville actuelle</option>
-                      <option value="US">United States</option>
-                      <option value="UY">Kinshasa</option>
-                      <option value="UZ">Kolwezi</option>
-                      <option value="YE">Lubumbashi</option>
+                    <select id="inputTown" class="selectpicker with-border" data-size="7" title="Select Job Type" data-live-search="true">
+                      <option value="" selected>${details.getObjet.town ? details.getObjet.town : "Selectionnez une votre ville actuelle"}</option>
                     </select>
+                    <div id="townLoader"></div>
                   </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="submit-field">
-                        <h5>Ajouter vos fichiers </h5>
+                        <h5>Ajouter une piece jointe </h5>
                         
-                        <!-- Attachments -->
-                        <div class="attachments-container margin-top-0 margin-bottom-0">
-                        <div class="attachment-box ripple-effect">
-                            <span>Cover Letter</span>
-                            <i>PDF</i>
-                            <button class="remove-attachment" data-tippy-placement="top" title="Remove"></button>
-                        </div>
-                        <div class="attachment-box ripple-effect">
-                            <span>Contract</span>
-                            <i>DOCX</i>
-                            <button class="remove-attachment" data-tippy-placement="top" title="Remove"></button>
-                        </div>
-                        </div>
+                       
                         <div class="clearfix"></div>
                         
                         <!-- Upload Button -->
                         <div class="uploadButton margin-top-0">
                         <input class="uploadButton-input" type="file" accept="image/*, application/pdf" id="upload" multiple/>
-                        <label class="uploadButton-button ripple-effect" for="upload">Selectionnez</label>
+                        <label class="uploadButton-button ripple-effect" for="upload">Selectionnez un fichier</label>
                         <span class="uploadButton-file-name">Taille maximum: 10 MB</span>
                         </div>
 
@@ -683,8 +668,60 @@ const userParameters = (user, details) => {
     $('select').selectpicker();
     boostrapSelect();
     submitSelect(user);
+    submitSkills(user, details.getObjet.jobs.id_job);
 }
 
+/**
+ * Effectue la soumission des skills
+ */
+const submitSkills = (user, id_job) => {
+    var btn = $("#setSkillsBtn"),
+        input = $("#setSkillsInput"),
+        listSkills = $("#listSkills"),
+        skills = [];
+    
+    btn.on('click', function (e) {
+        e.preventDefault();
+        if (input.val().trim("") != "") {
+
+            //AJoute l'item dans le tab skills
+            skills.push({
+                name : input.val()
+            });
+            
+            //Ajoute le skills dans le HTML
+            listSkills.append(`<span class="keyword"><span class="keyword-remove"></span><span class="keyword-text">${input.val()}</span></span>`);
+
+            console.log(skills);
+
+            $.ajax({
+                type: 'POST',
+                url: `${getHostApi()}users/setSkills`,
+                dataType: "json",
+                data: {
+                    id_user : user.user_id,
+                    skills : ["Mbuyu", "Kasongo"]
+                },
+                success: function (data) {
+                    console.log(data);
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }else{
+            Snackbar.show({
+                text: "Veuillez renseigner votre specialite, SVP!",
+                pos: 'bottom-right',
+                showAction: true,
+                actionText: "Fermer",
+                duration: 5000,
+                textColor: '#fff',
+                backgroundColor: '#ad344b'
+            });
+        }
+    })
+};
 /**
  * Effectue la soumission des inputs select (Mise a jour d'un job, d'une ville)
  */
@@ -692,6 +729,7 @@ const submitSelect = (user) => {
     $('select').on('change', function (e) {
         var select = e.currentTarget,
             value = select.options[select.selectedIndex].value;
+        console.log(value)
         if (value != "") {
             //Pour l'input select dedie a la specification d'un metier 
             if (select.id == "inputJob") {
@@ -737,6 +775,48 @@ const submitSelect = (user) => {
                         callback(err)
                     }
                 });
+            }else if (select.id == "inputTown") {
+                $.ajax({
+                    type: 'POST',
+                    url: "/api/users/setTown",
+                    dataType: "json",
+                    data: {
+                        id_town : value,
+                        id_user : user.user_id
+                    },
+                    beforeSend : function () {
+                        $('#townLoader').html(`<center><div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></center>`);
+                    },
+                    success: function (data) {
+                        $('#townLoader').html(``);
+                        
+                        if (data.getEtat) {
+                            Snackbar.show({
+                                text: "Votre ville actuelle a ete mis a jour avec success",
+                                pos: 'bottom-center',
+                                showAction: true,
+                                actionText: "Fermer",
+                                duration: 5000,
+                                textColor: '#fff',
+                                backgroundColor: '#3696f5'
+                            });
+                        } else {
+                            Snackbar.show({
+                                text: data.getMessage,
+                                pos: 'bottom-center',
+                                showAction: true,
+                                actionText: "Fermer",
+                                duration: 5000,
+                                textColor: '#fff',
+                                backgroundColor: '#ad344b'
+                            });
+                        }           
+                        console.log(data);
+                    },
+                    error : function (err) {
+                        callback(err)
+                    }
+                });
             }
             
         }
@@ -750,20 +830,20 @@ const boostrapSelect = () => {
         select,
         dropdown,
         btnId,
-        verrou = false,
+        verrouJob = false,
+        verrouTown = false,
         ulDrop;
     btn.on('click', function (e) {
         e.preventDefault();
-        
-        if (!verrou) {
-            btn = btn[0];
-            btnId = btn.getAttribute("data-id");
-            select = btn.nextSibling.nextSibling;
-            dropdown = btn.nextSibling;
-            ulDrop = dropdown.getElementsByTagName("ul")[0];
-            
-            //Si on clique sur le button 
-            if (btnId == "inputJob") {
+        btn = e.currentTarget;
+        btnId = btn.getAttribute("data-id");
+        select = btn.nextSibling.nextSibling;
+        dropdown = btn.nextSibling;
+        ulDrop = dropdown.getElementsByTagName("ul")[0];
+
+        //Si on clique sur le button 
+        if (btnId == "inputJob") {
+            if (!verrouJob) {
                 $.ajax({
                     type: 'GET',
                     url: `/api/jobs/gets/`+ null,
@@ -773,6 +853,7 @@ const boostrapSelect = () => {
                             li,
                             sortieJob = 0;
                         if (data.getEtat) {
+                            console.log(data);
                             data.getObjet.map(job => {
                                 sortieJob++;
     
@@ -793,7 +874,7 @@ const boostrapSelect = () => {
                                 ulDrop.appendChild(li);
     
                                 if (sortieJob == data.getObjet.length) {
-                                    verrou = true;
+                                    verrouJob = true;
                                     $(".dropdown-toggle").next().next().selectpicker();
                                 }
                             });
@@ -803,6 +884,40 @@ const boostrapSelect = () => {
                         console.log(err);
                     }
                 });
+            }
+            
+        }else if (btnId == "inputTown") {
+            if (!verrouTown) {
+                getAllTowns(function (data) {
+                    var option,
+                            li,
+                            sortieTown = 0;
+                        if (data.getEtat) {
+                            data.getObjet.map(town => {
+                                sortieTown++;
+    
+                                //Remplissage des options
+                                option = document.createElement('option');
+                                option.value = town._id;
+                                option.innerHTML = town.name;
+                                select.appendChild(option);
+    
+                                //Remplissage du dropdown
+                                li = document.createElement('li');
+                                li.setAttribute("data-original-index", sortieTown + 1);
+                                li.innerHTML = `<a tabindex="0" class data-tokens="null" role="option" aria-disabled="false" aria-selected="false">
+                                    <span class="text">${town.name}</span>
+                                    <span class="glyphicon glyphicon-ok check-mark"></span>
+                                </a>`;
+    
+                                ulDrop.appendChild(li);
+    
+                                if (sortieTown == data.getObjet.length) {
+                                    verrouTown = true;
+                                }
+                            });
+                        }
+                })
             }
         }
         
@@ -824,7 +939,7 @@ const updateAccount = () => {
                 }
             }
         }
-
+        console.log(objData)
         if (NoEmpty(objData)) {
             $.ajax({
                 type: 'POST',
