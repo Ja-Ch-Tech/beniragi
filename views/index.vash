@@ -61,6 +61,21 @@
 			<div class="container">
 				<div class="row" id="listJobs">
 					<!-- Dynamic content -->
+					<div class="col-md-12">
+						<center>
+						  <div style="margin:13% 0%;" class="lds-spinner">
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+						  </div>
+						</center>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -311,7 +326,6 @@
 
 						</div>
 					</div>
-
 				</div>
 			</div>
 		</div>

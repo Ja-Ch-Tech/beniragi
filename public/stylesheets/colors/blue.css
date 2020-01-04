@@ -1,31 +1,31 @@
 /* ------------------------------------------------------------------- */
-/* #3696f5 (42,65,232)
+/* #ad344b (42,65,232)
 ---------------------------------------------------------------------- */
 .numbered.color ol > li::before {
-     border:1px solid #3696f5;
-     color:#3696f5;
+     border:1px solid #ad344b;
+     color:#ad344b;
 }
  .numbered.color.filled ol > li::before {
-     border:1px solid #3696f5;
-     background-color:#3696f5;
+     border:1px solid #ad344b;
+     background-color:#ad344b;
 }
  .radio input[type="radio"]:checked + label .radio-label {
-     background-color:#3696f5;
-     border-color:#3696f5;
+     background-color:#ad344b;
+     border-color:#ad344b;
 }
  .checkbox input:checked + label span.checkbox-icon {
-     background-color:#3696f5;
-     border-color:#3696f5;
+     background-color:#ad344b;
+     border-color:#ad344b;
 }
  .slider-handle {
-     border:2px solid #3696f5;
+     border:2px solid #ad344b;
 }
  .infoBox-close:hover {
      color:#fff;
-     background-color:#3696f5;
+     background-color:#ad344b;
 }
  .message-bubble.me .message-text:before {
-     border-left:6px solid #3696f5;
+     border-left:6px solid #ad344b;
 }
  a,
  .header-widget .log-in-button:hover i,
@@ -148,7 +148,7 @@
  .messages-inbox ul li:before,
  .message-by h5 i,
  .message-bubble.me .message-text {
-     background-color:#3696f5;
+     background-color:#ad344b;
 }
  .transparent-header #navigation > ul li:hover ul li:hover a:after,
  .transparent-header #navigation > ul li:hover a:after,
@@ -165,18 +165,18 @@
  .slick-prev:hover,
  .slick-next:hover,
  .bootstrap-select.btn-group .bs-actionsbox div button:hover {
-     background:#3696f5;
+     background:#ad344b;
 }
  .uploadButton .uploadButton-button,
  .pricing-plan .button {
-     color:#3696f5;
-     border:1px solid #3696f5;
+     color:#ad344b;
+     border:1px solid #ad344b;
 }
  .payment-tab-trigger > input:checked ~ label::before,
  .dashboard-nav ul li.active-submenu,
  .dashboard-nav ul li.active,
  .dashboard-nav ul li:hover {
-     border-color:#3696f5;
+     border-color:#ad344b;
 }
 
  #navigation ul ul.dropdown-nav ul.dropdown-nav li:hover a:after,
@@ -356,5 +356,5 @@
 
  #navigation ul ul.dropdown-nav ul.dropdown-nav li:hover a:after,
  #navigation ul ul.dropdown-nav li:hover a:after {
-     background-color:#3696f5;
+     background-color:#ad344b;
  }

@@ -103,6 +103,38 @@ router.post('/login', (req, res) => {
     }
 })
 
+//Met a jour les informations d'un user
+router.post('/users/setIdentity', (req, res) => {
+    
+        var data = {
+            nom: req.body.nom,
+            postnom: req.body.postnom,
+            prenom: req.body.prenom,
+            numero: req.body.numero,
+            id_user: req.session.id_user_beni
+        };
+    
+        if (Empty(data)) {
+    
+            axios.post(`${API}/users/setIdentity`, data)
+                .then(user => {
+                    if (user.data.getEtat) {
+                        res.status(200);
+                        res.send(user.data);
+    
+                    } else {
+                        res.status(200);
+                        res.send(user.data)
+                    }
+                })
+                .catch(error => {
+                    res.send(error)
+                })
+        } else {
+            res.send({ getEtat: false, getMessage: "Veuillez renseignez tous les champs importants" })
+        }
+    })
+
 //Recupere les types des utilisateurs
 router.get('/users/getAllTypes', (req, res) => {
     axios.get(`${API}/type_users/getAll`)
@@ -193,6 +225,78 @@ router.post('/profile/activation', (req, res) => {
     }
 });
 
+//Route pour specification du metier d'un user
+router.post('/users/setJob', (req, res) => {
+    
+        var data = {
+            id_user: req.body.id_user,
+            id_job: req.body.id_job
+        };
+    
+        if (Empty(data)) {
+    
+            axios.post(`${API}/users/setJob`, data)
+                .then(job => {
+                    if (job.data.getEtat) {
+                        res.status(200);
+                        res.send(job.data);
+    
+                    } else {
+    
+                        res.status(200);
+                        res.send(job.data)
+                    }
+                })
+                .catch(error => {
+                    res.send(error)
+                })
+        } else {
+            res.send({ getEtat: false, getMessage: "Certaines informations sont maquantes" })
+        }
+});
+
+
+//Route pour specification ou la mise a jour d'une ville
+router.post('/users/setTown', (req, res) => {
+    
+    var data = {
+        id_user: req.body.id_user,
+        id_town: req.body.id_town
+    };
+
+    if (Empty(data)) {
+
+        axios.post(`${API}/users/setTown`, data)
+            .then(town => {
+                if (town.data.getEtat) {
+                    res.status(200);
+                    res.send(town.data);
+
+                } else {
+
+                    res.status(200);
+                    res.send(town.data)
+                }
+            })
+            .catch(error => {
+                res.send(error)
+            })
+    } else {
+        res.send({ getEtat: false, getMessage: "Certaines informations sont maquantes" })
+    }
+});
+
+//Route pour l'ajout des skills
+router.post('/setSkills', (req, res) => {
+    
+    var data = {
+        id_user: req.body.id_user,
+        skills: req.body.skills
+    };
+
+    res.status(200);
+    res.send(data);
+});
 //Route pour la récupération des stats
 router.get('/users/stats', (req, res) => {
     axios.get(`${API}/users/stats/${req.session.id_user_beni}`)
@@ -262,6 +366,17 @@ router.get('/users/top/:limit', (req, res) => {
          .catch(err => {
             res.status(500).send(err)
          })
+})
+
+//Recuperation des villes
+router.get('/getAllTowns', (req, res) => {
+    axios.get(`${API}/town/gets`)
+        .then(response => {
+            res.status(200).send(response.data);
+        })
+        .catch(err => {
+            res.status(500).send(err);
+        })
 })
 
 module.exports = router;

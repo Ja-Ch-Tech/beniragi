@@ -47,18 +47,11 @@
 							<a href="/">ACCUEIL</a>
 						</li>
 						<li><a href="#">PARCOURIR PAR METIER</a>
-							<ul class="dropdown-nav">
-								<li><a href="/candidats/liste">Chauffeurs (10)</a></li>
-								<li><a href="/candidats/liste">Cuisiniers (20)</a></li>
-								<li><a href="/candidats/liste">Ingénieur systeme (40)</a></li>
+							<ul id="dropJob" class="dropdown-nav">
 							</ul>
 						</li>
 						<li><a href="#">PARCOURIR PAR VILLES</a>
-							<ul class="dropdown-nav">
-								<li><a href="/candidats/liste">Kinshasa (10)</a></li>
-								<li><a href="/candidats/liste">Lubumbashi (20)</a></li>
-								<li><a href="/candidats/liste">Goma (30)</a></li>
-								<li><a href="/candidats/liste">Kigali (40)</a></li>
+							<ul id="dropTown" class="dropdown-nav">
 							</ul>
 						</li>
 
@@ -77,16 +70,8 @@
 
 			<!-- Right Side Content / End -->
 			<div id="navMenu" class="right-side">
-				
+				<div class="lds-ripple"><div></div><div></div></div>
 				<!-- Mobile Navigation Button -->
-				<span class="mmenu-trigger">
-					<button class="hamburger hamburger--collapse" type="button">
-						<span class="hamburger-box">
-							<span class="hamburger-inner"></span>
-						</span>
-					</button>
-				</span>
-
 			</div>
 			<!-- Right Side Content / End -->
 
@@ -180,10 +165,7 @@
 						<div class="col-xl-3 col-lg-3 col-md-4">
 							<div class="footer-links">
 								<h3>Par Metiers</h3>
-								<ul>
-									<li><a href="/candidats/liste"><span>Chaffeurs (10)</span></a></li>
-									<li><a href="/candidats/liste"><span>Avocats (15)</span></a></li>
-									<li><a href="/candidats/liste"><span>Cuisiniers (15)</span></a></li>
+								<ul id="footerJobs">
 								</ul>
 							</div>
 						</div>
@@ -192,11 +174,7 @@
 						<div class="col-xl-3 col-lg-3 col-md-4">
 							<div class="footer-links">
 								<h3>Par villes</h3>
-								<ul>
-									<li><a href="/candidats/liste"><span>Kinshasa (15)</span></a></li>
-									<li><a href="/candidats/liste"><span>Lubumbashi (7)</span></a></li>
-									<li><a href="/candidats/liste"><span>kikwit (8)</span></a></li>
-									<li><a href="/candidats/liste"><span>Mbandaka (9)</span></a></li>
+								<ul id="footerTown">
 								</ul>
 							</div>
 						</div>
@@ -236,7 +214,7 @@
 					<div class="row">
 						<div class="col-xl-12">
 							<p>
-		                          Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Designed by <a href="#" style="color: #fff" target="_blank">Ja'Ch Tech</a>
+		                          Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Designed by <a href="#" style="color: #fff" target="_blank">Ja'Ch Technologies</a>
 		                     </p>
 						</div>
 					</div>

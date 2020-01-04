@@ -1,5 +1,5 @@
 import { getHostApi, getUserId } from './init.js';
-import { login, register, getStatsUsers as statsUsers, getNav, activeAccount, sidebar, statsInDashboard as miniStats, topFreelancer } from './users_api.js';
+import { login, register, getStatsUsers as statsUsers, getNav, activeAccount, sidebar, statsInDashboard as miniStats, topFreelancer, getDropAnfooterJobs, getDropAnfooterTown } from './users_api.js';
 import { getJobs } from './jobs.js';
 import { graph } from './view.js';
 
@@ -8,7 +8,8 @@ import { graph } from './view.js';
     login();
     register();
     getNav();
-    
+    getDropAnfooterJobs(null);
+    getDropAnfooterTown();
     var pathName = window.location.pathname;
     //#region /
         if (pathName == "/") {
@@ -20,7 +21,6 @@ import { graph } from './view.js';
 
     //#region Profile
         if (pathName.split("/")[1] == "profile") {
-            sidebar()
             if (pathName.split("/")[2] == "activation") {
                 getUserId(function (state, user_id) {
                     if (state) {

@@ -21,23 +21,7 @@
               
               <!-- Navigation -->
               <div class="dashboard-nav">
-                <div class="dashboard-nav-inner">
-
-                  <ul data-submenu-title="Start">
-                    <li class="active"><a href="/profile/123/dashboard"><i class="icon-material-outline-dashboard"></i> Dashboard</a></li>
-                    <li><a href="/profile/123/messages"><i class="icon-material-outline-question-answer"></i> Messages <span class="nav-tag">2</span></a></li>
-                    <li><a href="/profile/123/feedback"><i class="icon-material-outline-feedback"></i> Feedback (normal) <span class="nav-tag">12</span></a></li>
-
-                    <li><a href="/profile/123/favoris"><i class="icon-material-outline-favorite"></i> Favoris (employeur)</a></li>
-                    <li><a href="/profile/123/contacts"><i class="icon-feather-users"></i> Contacts (employeur)</a></li>
-                    
-                  </ul>
-
-                  <ul data-submenu-title="COMPTE">
-                    <li><a href="/profile/123/parametres"><i class="icon-material-outline-settings"></i> Parametres</a></li>
-                    <li><a href="index-logged-out.html"><i class="icon-material-outline-power-settings-new"></i> Deconnexion</a></li>
-                  </ul>
-                  
+                <div id="sidebarContent" class="dashboard-nav-inner">
                 </div>
               </div>
               <!-- Navigation / End -->

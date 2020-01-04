@@ -96,6 +96,39 @@ const getAllTypesUser = (callback) => {
     });
 }
 
+//Recupere toutes les villes
+const getAllTowns = (callback) => {
+    $.ajax({
+        type: 'GET',
+        url: "/api/getAllTowns",
+        dataType: "json",
+        success: function (data) {            
+            if (data.getEtat) {
+                callback(data);
+            }else{
+                callback(data);
+            }
+        },
+        error : function (err) {
+            callback(err);
+        }
+    });
+};
+
+//Recupere les metiers
+const getAllJob = (limit, callback) => {
+    $.ajax({
+        type: 'GET',
+        url: `/api/jobs/gets/${limit}`,
+        dataType: "json",
+        success: function (data) {
+            callback(data);
+        },
+        error: function (err) {
+            callback(err);
+        }
+    });
+};
 //Permet de recuperer l'id du user en session
 const getUserId = (callback) => {
     $.ajax({
@@ -115,4 +148,78 @@ const getUserId = (callback) => {
     });
 }
 
-export { getHostApi, customDate, getAllTypesUser, getUserId, getHostWeb }
+//Verifie si les champs sont vides
+const NoEmpty = object => {
+    let flag = false;
+    
+    for (const value in object) {
+        if (object[value] != "" && object.hasOwnProperty(value)) {
+            flag = true;
+        } else {
+            flag = false;
+            break;
+        }
+    }
+    
+    return flag;
+}
+
+/*--------------------------------------------------*/
+/*  Star Rating
+/*--------------------------------------------------*/
+function starRating(ratingElem) {
+
+    $(ratingElem).each(function() {
+
+        var dataRating = $(this).attr('data-rating');
+
+        // Rating Stars Output
+        function starsOutput(firstStar, secondStar, thirdStar, fourthStar, fifthStar) {
+            return(''+
+                '<span class="'+firstStar+'"></span>'+
+                '<span class="'+secondStar+'"></span>'+
+                '<span class="'+thirdStar+'"></span>'+
+                '<span class="'+fourthStar+'"></span>'+
+                '<span class="'+fifthStar+'"></span>');
+        }
+
+        var fiveStars = starsOutput('star','star','star','star','star');
+
+        var fourHalfStars = starsOutput('star','star','star','star','star half');
+        var fourStars = starsOutput('star','star','star','star','star empty');
+
+        var threeHalfStars = starsOutput('star','star','star','star half','star empty');
+        var threeStars = starsOutput('star','star','star','star empty','star empty');
+
+        var twoHalfStars = starsOutput('star','star','star half','star empty','star empty');
+        var twoStars = starsOutput('star','star','star empty','star empty','star empty');
+
+        var oneHalfStar = starsOutput('star','star half','star empty','star empty','star empty');
+        var oneStar = starsOutput('star','star empty','star empty','star empty','star empty');
+
+        // Rules
+        if (dataRating >= 4.75) {
+            $(this).append(fiveStars);
+        } else if (dataRating >= 4.25) {
+            $(this).append(fourHalfStars);
+        } else if (dataRating >= 3.75) {
+            $(this).append(fourStars);
+        } else if (dataRating >= 3.25) {
+            $(this).append(threeHalfStars);
+        } else if (dataRating >= 2.75) {
+            $(this).append(threeStars);
+        } else if (dataRating >= 2.25) {
+            $(this).append(twoHalfStars);
+        } else if (dataRating >= 1.75) {
+            $(this).append(twoStars);
+        } else if (dataRating >= 1.25) {
+            $(this).append(oneHalfStar);
+        } else if (dataRating < 1.25) {
+            $(this).append(oneStar);
+        }
+
+    });
+
+} 
+
+export { getHostApi, customDate, getAllTypesUser, getUserId, getHostWeb, NoEmpty, getAllTowns,starRating, getAllJob }
