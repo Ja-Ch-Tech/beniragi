@@ -1233,6 +1233,7 @@ const statsInDashboard = () => {
  */
 const getTopUsers = (limit) => {
     getUserId(function (state, userId) {
+        console.log(state)
         $.ajax({
             type: 'GET',
             url: `/api/users/getTops/${limit}`,
@@ -1263,7 +1264,7 @@ const getTopUsers = (limit) => {
                                             <div class="freelancer-overview-inner">
                                                 
                                                 <!-- Bookmark Icon -->
-                                                ${userId.isEmployer ? `<span class="bookmark-icon"></span>` : `` }
+                                                <span class="bookmark-icon"></span>
                                                 
                                                 <!-- Avatar -->
                                                 <div class="freelancer-avatar">
