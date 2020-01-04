@@ -1,4 +1,4 @@
-import { getAllTypesUser, getUserId, NoEmpty, getHostApi, getAllTowns } from './init.js';
+import { getAllTypesUser, getUserId, NoEmpty, getHostApi, getAllTowns, starRating, getAllJob } from './init.js';
 //Permet de connecter un utilisateur
 const login = () => {
     $("#login-form").on('submit', function(e) {
@@ -200,12 +200,12 @@ function toggleVisibility() {
 const getNav = () => {
 
 	getUserId(function (state, user) {
-        
         var navContent,
         pathName = window.location.pathname;
 		if (state) {
 			//Recuperation des informations du user
 			getUserInfos(user.user_id, function (infos) {
+                console.log(infos)
                 if (infos.getObjet.flag) {
                     navContent = `<!--  User Notifications -->
                                 <div class="header-widget hide-on-mobile">
@@ -451,20 +451,20 @@ const userParameters = (user, details) => {
                             <div class="col-xl-4">
                                 <div class="submit-field">
                                     <h5>Nom <span class="color_red">(*)</span></h5>
-                                    <input onkeyup="$(this).val().length > 3 ? $('#registerInfosBtn').slideDown() : ''" name="nom" onkeyup="" type="text" class="with-border" placeholder="Inserez votre nom" value="${details.getObjet.identity.name ? details.getObjet.identity.name : ""}">
+                                    <input onkeyup="$(this).val().length > 3 ? $('#registerInfosBtn').slideDown() : ''" name="nom" onkeyup="" type="text" class="with-border" placeholder="Inserez votre nom" value="${details.getObjet.identity ? details.getObjet.identity.name : ""}">
                                 </div>
                             </div>
 
                             <div class="col-xl-4">
                                 <div class="submit-field">
                                     <h5>Postnom <span class="color_red">(*)</span></h5>
-                                    <input onkeyup="$(this).val().length > 3 ? $('#registerInfosBtn').slideDown() : ''" name="postnom" type="text" class="with-border" placeholder="Inserez votre postnom" value="${details.getObjet.identity.postName ? details.getObjet.identity.postName : ""}">
+                                    <input onkeyup="$(this).val().length > 3 ? $('#registerInfosBtn').slideDown() : ''" name="postnom" type="text" class="with-border" placeholder="Inserez votre postnom" value="${details.getObjet.identity ? details.getObjet.identity.postName : ""}">
                                 </div>
                             </div>
                             <div class="col-xl-4">
                                 <div class="submit-field">
                                     <h5>Prénom <span class="color_red">(*)</span></h5>
-                                    <input onkeyup="$(this).val().length > 3 ? $('#registerInfosBtn').slideDown() : ''" name="prenom" type="text" class="with-border" placeholder="Inserez votre prenom" value="${details.getObjet.identity.lastName ? details.getObjet.identity.lastName : ""}">
+                                    <input onkeyup="$(this).val().length > 3 ? $('#registerInfosBtn').slideDown() : ''" name="prenom" type="text" class="with-border" placeholder="Inserez votre prenom" value="${details.getObjet.identity ? details.getObjet.identity.lastName : ""}">
                                 </div>
                             </div>
 
@@ -490,7 +490,7 @@ const userParameters = (user, details) => {
                             <div class="col-xl-4">
                                 <div class="submit-field">
                                     <h5>Numéro de téléphone <span class="color_red">(*)</span></h5>
-                                    <input onkeyup="$(this).val().length > 3 ? $('#registerInfosBtn').slideDown() : ''" name="numero" type="text" class="with-border" placeholder="Inserez votre numéro de téléphone" value="${details.getObjet.identity.phoneNumber ? details.getObjet.identity.phoneNumber : ""}">
+                                    <input onkeyup="$(this).val().length > 3 ? $('#registerInfosBtn').slideDown() : ''" name="numero" type="text" class="with-border" placeholder="Inserez votre numéro de téléphone" value="${details.getObjet.identity ? details.getObjet.identity.phoneNumber : ""}">
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -1108,7 +1108,7 @@ const avatarSwitcher = () => {
                             textColor: '#fff',
                             backgroundColor: '#3696f5'
                         }); 
-                        window.location.href = "/";
+                        window.location.href = "/profile/parametres";
                     } else {
                         Snackbar.show({
                             text: "Code d'activation incorrect, réessayez !",
@@ -1228,4 +1228,182 @@ const statsInDashboard = () => {
     
 }
 
-export { login, register, getStatsUsers, getNav, activeAccount, statsInDashboard }
+/**
+ * Module permettant de recuperer les tops users
+ */
+const getTopUsers = (limit) => {
+    getUserId(function (state, userId) {
+        $.ajax({
+            type: 'GET',
+            url: `/api/users/getTops/${limit}`,
+            dataType: "json",
+            success: function (data) {            
+                if (data.getEtat) {
+                    var header = `<div class="col-xl-12">
+                                    <!-- Section Headline -->
+                                    <div class="section-headline margin-top-0 margin-bottom-25">
+                                        <h3>Notre top 12</h3>
+                                        <a href="/candidats/liste" class="headline-link color_blue">Voir tous nos candidats</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div id="userCarousel" class="default-slick-carousel freelancers-container freelancers-grid-layout">
+                                    </div>
+                                </div>`,
+                        sortieCarousel = 0,
+                        carousel;
+                    $("#listTopUsers").html(header);
+                    data.getObjet.map(user => {
+                        sortieCarousel++;
+                        carousel = `<!--Freelancer -->
+                                    <div style="background-color: #2c2b2b" class="freelancer">
+                            
+                                        <!-- Overview -->
+                                        <div class="freelancer-overview">
+                                            <div class="freelancer-overview-inner">
+                                                
+                                                <!-- Bookmark Icon -->
+                                                ${userId.isEmployer ? `<span class="bookmark-icon"></span>` : `` }
+                                                
+                                                <!-- Avatar -->
+                                                <div class="freelancer-avatar">
+                                                    <div class="verified-badge"></div>
+                                                    <a href="/candidats/12/profile"><img src="images/user-avatar-big-01.jpg" alt=""></a>
+                                                </div>
+                            
+                                                <!-- Name -->
+                                                <div class="freelancer-name">
+                                                    <h4><a style="color: #fff;" href="/candidats/12/profile">${user.identity ? user.identity.lastName + user.identity.name : user.email.split("@")[0]}</a></h4>
+                                                    <span>Pas encore disponible</span>
+                                                </div>
+                            
+                                                <!-- Rating -->
+                                                <div class="freelancer-rating">
+                                                    <div class="star-rating" data-rating="1.0"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Details -->
+                                        <div style="background-color: #2c2b2b;" class="freelancer-details">
+                                            <div class="freelancer-details-list">
+                                                <ul>
+                                                    <li>Localisation <strong style="color: #fff;"><i class="icon-material-outline-location-on"></i> ${user.town ? user.town : "Aucune"}</strong></li>
+                                                    <li>Taux <strong style="color: #fff;">${user.taux ? user.taux : "-"}</strong></li>
+                                                    <li>A temps <strong style="color: #fff;">
+                                                    ${user.time ? user.time : "-"}
+                                                    </strong></li>
+                                                </ul>
+                                            </div>
+                                            <a href="/candidats/12/profile" class="button button-sliding-icon ripple-effect">Voir le profile <i class="icon-material-outline-arrow-right-alt"></i></a>
+                                        </div>
+                                    </div>
+                                    <!-- Freelancer / End -->`;
+    
+                        $("#userCarousel").append(carousel);
+                        if (sortieCarousel == data.getObjet.length) {
+                            starRating('.star-rating');
+    
+                            /*--------------------------------------------------*/
+                            /*  Sliding Button Icon
+                            /*--------------------------------------------------*/
+                            $('.bookmark-icon').on('click', function(e){
+                                e.preventDefault();
+                                $(this).toggleClass('bookmarked');
+                            });
+    
+                            $('.bookmark-button').on('click', function(e){
+                                e.preventDefault();
+                                $(this).toggleClass('bookmarked');
+                            });
+                            /*----------------------------------------------------*/
+                            /*  Slick Carousel
+                            /*----------------------------------------------------*/
+                            $('.default-slick-carousel').slick({
+                                infinite: false,
+                                slidesToShow: 3,
+                                slidesToScroll: 1,
+                                dots: false,
+                                arrows: true,
+                                adaptiveHeight: true,
+                                responsive: [
+                                    {
+                                    breakpoint: 1292,
+                                    settings: {
+                                        dots: true,
+                                        arrows: false
+                                    }
+                                    },
+                                    {
+                                    breakpoint: 993,
+                                    settings: {
+                                        slidesToShow: 2,
+                                        slidesToScroll: 2,
+                                        dots: true,
+                                        arrows: false
+                                    }
+                                    },
+                                    {
+                                    breakpoint: 769,
+                                    settings: {
+                                        slidesToShow: 1,
+                                        slidesToScroll: 1,
+                                        dots: true,
+                                        arrows: false
+                                    }
+                                    }
+                            ]
+                            });
+                        }
+                    });
+                    
+                }else{
+                    var content = `<div class="col-xl-12">
+                                        <div class="section-headline centered margin-bottom-15">
+                                            <h3>Aucun resultat n'est disponible pour le moment</h3>
+                                        </div>
+                                    </div>`;
+    
+                    $("#listTopUsers").html(content);
+                }
+            },
+            error : function (err) {
+                console.log(err);
+            }
+        });
+    })
+    
+}
+
+/**
+ * Dynamisation des metiers dans le dropdown et footer
+ */
+const getDropAnfooterJobs = (limit) => {
+    getAllJob(limit, function (data) {
+        if (data.getEtat) {
+            data.getObjet.map(element => {
+                var contentDrop = `<li><a href="/candidats/liste">${element.name}</a></li>`,
+                    contentFooter = `<li><a href="/candidats/liste"><span>${element.name}</span></a></li>`;
+                $("#dropJob").append(contentDrop);
+                $("#footerJobs").append(contentFooter);
+            });
+        }
+    });
+}
+
+/**
+ * Dynamisation des villes dans le dropdown et footer
+ */
+const getDropAnfooterTown = () => {
+    getAllTowns(function (data) {
+        if (data.getEtat) {
+            data.getObjet.map(element => {
+                var contentDrop = `<li><a href="/candidats/liste">${element.name}</a></li>`,
+                    contentFooter = `<li><a href="/candidats/liste"><span>${element.name}</span></a></li>`;
+                $("#dropTown").append(contentDrop);
+                $("#footerTown").append(contentFooter);
+            });
+        }
+    })
+}
+export { login, register, getStatsUsers, getNav, activeAccount, statsInDashboard, getTopUsers,getDropAnfooterJobs, getDropAnfooterTown }

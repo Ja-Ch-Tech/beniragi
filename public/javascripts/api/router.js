@@ -1,5 +1,5 @@
 import { getHostApi, getUserId } from './init.js';
-import { login, register, getStatsUsers as statsUsers, getNav, activeAccount, statsInDashboard as miniStats } from './users_api.js';
+import { login, register, getStatsUsers as statsUsers, getNav, activeAccount, statsInDashboard as miniStats, getTopUsers,getDropAnfooterJobs, getDropAnfooterTown } from './users_api.js';
 import { getJobs } from './jobs.js';
 import { graph } from './view.js';
 
@@ -8,12 +8,14 @@ import { graph } from './view.js';
     login();
     register();
     getNav();
-    
+    getDropAnfooterJobs(null);
+    getDropAnfooterTown();
     var pathName = window.location.pathname;
     //#region /
         if (pathName == "/") {
             statsUsers();
             getJobs(8);
+            getTopUsers(12);
         }
     //#endregion
 
@@ -30,10 +32,6 @@ import { graph } from './view.js';
             if (/dashboard/i.test(pathName.split("/")[pathName.split("/").length - 1])) {
                 miniStats();
                 graph();
-            }
-
-            if (/parametres/i.test(pathName.split("/")[pathName.split("/").length - 1])) {
-                //inputsJob(null);
             }
             
         }

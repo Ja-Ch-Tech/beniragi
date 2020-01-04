@@ -357,4 +357,15 @@ router.get('/getAllTowns', (req, res) => {
         })
 })
 
+//Recuperation top users
+router.get('/users/getTops/:limit', (req, res) => {
+    axios.get(`${API}/users/topFreelance/${req.params.limit}`)
+        .then(response => {
+            res.status(200).send(response.data)
+        })
+        .catch(err => {
+            res.status(500).send(err)
+        })
+})
+
 module.exports = router;
