@@ -242,4 +242,26 @@ router.get('/view/getGraphForSixMonth', (req, res) => {
         })
 })
 
+//Récupération des détails d'un users
+router.get('/users/details/:id', (req, res) => {
+    axios.get(`${API}/users/details/${req.params.id}/${req.session.id_user_beni}`)
+         .then(response => {
+            res.status(200).send(response.data)
+         })
+         .catch(err => {
+             res.status(500).send(err)
+         })
+})
+
+//Récupération des tops  freelancers
+router.get('/users/top/:limit', (req, res) => {
+    axios.get(`${API}/users/topFreelance/${req.session.id_user_beni ? req.session.id_user_beni : null}/${req.params.limit}`)
+         .then(response => {
+            res.status(200).send(response.data)
+         })
+         .catch(err => {
+            res.status(500).send(err)
+         })
+})
+
 module.exports = router;

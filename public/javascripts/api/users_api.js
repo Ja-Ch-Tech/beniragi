@@ -558,4 +558,225 @@ const statsInDashboard = () => {
     
 }
 
-export { login, register, getStatsUsers, getNav, activeAccount, sidebar, statsInDashboard }
+const topFreelancer = (limit) => {
+    $.ajax({
+        type: 'GET',
+        url: `/api/users/top/${limit}`,
+        dataType: "json",
+        success: function (data) {
+            if (data.getEtat) {
+                const contentHead = `<div class="col-xl-12">
+                                        <div class="section-headline margin-top-0 margin-bottom-25">
+                                            <h3>Top Freelancer</h3>
+                                            <a href="/candidats/liste" class="headline-link color_blue">Voir tous nos candidats</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12">
+                                        <div class="default-slick-carousel freelancers-container freelancers-grid-layout" id="freelancerInTop">
+                                        </div>
+                                    </di>`;
+                $("#topFreelancer").html(contentHead);
+
+                if (data.getObjet.length > 0) {
+                    
+                    var outFreelancer = 0;
+                    
+                    data.getObjet.map((freelancer, item, tab) => {
+                        console.log(freelancer);
+                        
+                        var name = () => {
+                                if (freelancer.identity) {
+                                    return `${freelancer.identity.lastName} ${freelancer.identity.name.toUpperCase()}`
+                                } else {
+                                    return freelancer.email;
+                                }
+                            },
+                            favorite = () => {
+                                if (freelancer.isThisInFavorite) {
+                                    return `<span class="bookmark-icon" style="color: gold"></span>`;
+                                }else{
+                                    return `<span class="bookmark-icon"></span>`
+                                }
+                            },
+                            skills = () => {
+                                if (freelancer.skills && freelancer.skills.length > 0) {
+                                    return `<span>${freelancer.skills.join(" + ")}</span>`;
+                                } else {
+                                    return `<span>---</span>`;
+                                }
+                            },
+                            content = `<!--Freelancer -->
+							<div style="background-color: #2c2b2b" class="freelancer">
+
+								<!-- Overview -->
+								<div class="freelancer-overview">
+									<div class="freelancer-overview-inner">
+										
+										<!-- Bookmark Icon -->
+										${favorite()}
+										
+										<!-- Avatar -->
+										<div class="freelancer-avatar">
+											<div class="verified-badge"></div>
+											<a href="/candidats/${freelancer._id}/profile"><img src="images/user-avatar-big-01.jpg" alt=""></a>
+										</div>
+
+										<!-- Name -->
+										<div class="freelancer-name">
+											<h4><a style="color: #fff;" href="/candidats/${freelancer._id}/profile">${name()}<br/><img class="flag" src="images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top"></a></h4>
+											${skills()}
+										</div>
+
+										<!-- Rating -->
+										<div class="freelancer-rating">
+											<div class="star-rating" data-rating="${freelancer.average}"></div>
+										</div>
+									</div>
+								</div>
+								
+								<!-- Details -->
+								<div style="background-color: #2c2b2b;" class="freelancer-details">
+									<div class="freelancer-details-list">
+										<ul>
+											<li>Localisation <strong style="color: #fff;"><i class="icon-material-outline-location-on"></i> London</strong></li>
+											<li>Taux <strong style="color: #fff;">$60 / hr</strong></li>
+											<li>A temps <strong style="color: #fff;">95%</strong></li>
+										</ul>
+									</div>
+									<a href="/candidats/${freelancer._id}/profile" class="button button-sliding-icon ripple-effect">Voir le profile <i class="icon-material-outline-arrow-right-alt"></i></a>
+								</div>
+							</div>
+                            <!-- Freelancer / End -->`;
+                            
+                        outFreelancer++;
+
+                        $("#freelancerInTop").append(content);
+
+                        if (outFreelancer == tab.length) {
+
+                            //Système étoile
+                            starRating('.star-rating');
+
+                            //Tooltip
+                            tippy('[data-tippy-placement]', {
+                                delay: 100,
+                                arrow: true,
+                                arrowType: 'sharp',
+                                size: 'regular',
+                                duration: 200,
+
+                                // 'shift-toward', 'fade', 'scale', 'perspective'
+                                animation: 'scale',
+
+                                animateFill: true,
+                                theme: 'dark',
+
+                                // How far the tooltip is from its reference element in pixels 
+                                distance: 10,
+
+                            });
+
+                            //Caroussel
+                            $('.default-slick-carousel').slick({
+                                infinite: false,
+                                slidesToShow: 3,
+                                slidesToScroll: 1,
+                                dots: false,
+                                arrows: true,
+                                adaptiveHeight: true,
+                                responsive: [
+                                    {
+                                        breakpoint: 1292,
+                                        settings: {
+                                            dots: true,
+                                            arrows: false
+                                        }
+                                    },
+                                    {
+                                        breakpoint: 993,
+                                        settings: {
+                                            slidesToShow: 2,
+                                            slidesToScroll: 2,
+                                            dots: true,
+                                            arrows: false
+                                        }
+                                    },
+                                    {
+                                        breakpoint: 769,
+                                        settings: {
+                                            slidesToShow: 1,
+                                            slidesToScroll: 1,
+                                            dots: true,
+                                            arrows: false
+                                        }
+                                    }
+                                ]
+                            });
+                        }
+                            
+                    })
+                }
+            }
+        },
+        error: function (err) {
+            console.log(err);
+        }
+    });
+}
+
+function starRating(ratingElem) {
+
+    $(ratingElem).each(function () {
+
+        var dataRating = $(this).attr('data-rating');
+
+        // Rating Stars Output
+        function starsOutput(firstStar, secondStar, thirdStar, fourthStar, fifthStar) {
+            return ('' +
+                '<span class="' + firstStar + '"></span>' +
+                '<span class="' + secondStar + '"></span>' +
+                '<span class="' + thirdStar + '"></span>' +
+                '<span class="' + fourthStar + '"></span>' +
+                '<span class="' + fifthStar + '"></span>');
+        }
+
+        var fiveStars = starsOutput('star', 'star', 'star', 'star', 'star');
+
+        var fourHalfStars = starsOutput('star', 'star', 'star', 'star', 'star half');
+        var fourStars = starsOutput('star', 'star', 'star', 'star', 'star empty');
+
+        var threeHalfStars = starsOutput('star', 'star', 'star', 'star half', 'star empty');
+        var threeStars = starsOutput('star', 'star', 'star', 'star empty', 'star empty');
+
+        var twoHalfStars = starsOutput('star', 'star', 'star half', 'star empty', 'star empty');
+        var twoStars = starsOutput('star', 'star', 'star empty', 'star empty', 'star empty');
+
+        var oneHalfStar = starsOutput('star', 'star half', 'star empty', 'star empty', 'star empty');
+        var oneStar = starsOutput('star', 'star empty', 'star empty', 'star empty', 'star empty');
+
+        // Rules
+        if (dataRating >= 4.75) {
+            $(this).append(fiveStars);
+        } else if (dataRating >= 4.25) {
+            $(this).append(fourHalfStars);
+        } else if (dataRating >= 3.75) {
+            $(this).append(fourStars);
+        } else if (dataRating >= 3.25) {
+            $(this).append(threeHalfStars);
+        } else if (dataRating >= 2.75) {
+            $(this).append(threeStars);
+        } else if (dataRating >= 2.25) {
+            $(this).append(twoHalfStars);
+        } else if (dataRating >= 1.75) {
+            $(this).append(twoStars);
+        } else if (dataRating >= 1.25) {
+            $(this).append(oneHalfStar);
+        } else if (dataRating < 1.25) {
+            $(this).append(oneStar);
+        }
+
+    });
+
+}
+
+export { login, register, getStatsUsers, getNav, activeAccount, sidebar, statsInDashboard, topFreelancer }
