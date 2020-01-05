@@ -1476,6 +1476,19 @@ const detailsUser = (id) => {
                                 return ""
                             }
                         },
+                        favorite = () => {
+                            if (freelancer.isThisInFavorite) {
+                                
+                                return `<span class="bookmark-icon" style="color: gold;"></span>
+                                        <span class="bookmark-text">Retirer des favoris</span>
+								        <span class="bookmarked-text">Ajouter aux favoris</span>`;
+                            } else {
+                                return `<span class="bookmark-icon"></span>
+                                        <span class="bookmark-text">Ajouter aux favoris</span>
+                                        <span class="bookmarked-text">Retirer des favoris</span>
+                                        `;
+                            }
+                        },
                         firstSection = `<div class="container">
                                         <div class="row">
                                             <div class="col-md-12">
@@ -1545,10 +1558,13 @@ const detailsUser = (id) => {
                         })
                     }
 
+                    var favoris = `${favorite()}`;
+
                     $("#detailsHeader").html(firstSection);
                     $("#bioDetails").html(biographie);
                     $("#hourlyDetails").html(hourly);
                     $("#makeOffer").html(offer);
+                    $("#favoriteDetails").html(favoris);
                     starRating(".star-rating");
 
                     //Tooltip

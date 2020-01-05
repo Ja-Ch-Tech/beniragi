@@ -3,11 +3,17 @@ var router = express.Router();
 
 /* Affiche les details d'un candidat. */
 router.get('/:id/profile', function(req, res, next) {
-  res.render('candidatDetails', { 
-  	title: 'Profile details',
-  	classWrapper: '',
-  	classHeader: '' 
-  });
+	
+	if (req.params.id == req.session.id_user_beni) {
+		res.redirect('/profile/dashboard');
+	} else {
+		res.render('candidatDetails', { 
+			title: 'Profile details',
+			classWrapper: '',
+			classHeader: '' 
+		});
+	}
+  
 });
 
 

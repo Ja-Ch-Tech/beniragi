@@ -85,7 +85,7 @@ router.post('/login', (req, res) => {
                     req.session.id_user_beni = user.data.getObjet.id_user;
                     req.session.id_type_user_beni = user.data.getObjet.id_type;
                     req.session.isEmployer = user.data.getObjet.isEmployer;
-
+                    
                     res.status(200);
                     res.send(user.data);
 
