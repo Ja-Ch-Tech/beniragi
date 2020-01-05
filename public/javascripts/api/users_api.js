@@ -1,4 +1,4 @@
-import { getAllTypesUser, getUserId, NoEmpty, getHostApi, getAllTowns, starRating, getAllJob } from './init.js';
+import { getAllTypesUser, getUserId, NoEmpty, getHostApi, getAllTowns, starRating, getAllJob, dateFeedBack } from './init.js';
 //Permet de connecter un utilisateur
 const login = () => {
     $("#login-form").on('submit', function(e) {
@@ -1227,6 +1227,10 @@ const statsInDashboard = () => {
     
 }
 
+/**
+ * Récupération des tops freelancers
+ * @param {Number} limit Nombre de freelancer qu'on veut get
+ */
 const topFreelancer = (limit) => {
     $.ajax({
         type: 'GET',
@@ -1251,6 +1255,7 @@ const topFreelancer = (limit) => {
                     var outFreelancer = 0;
                     
                     data.getObjet.map((freelancer, item, tab) => {
+                        console.log(freelancer);
                         
                         var name = () => {
                                 if (freelancer.identity) {
@@ -1268,7 +1273,7 @@ const topFreelancer = (limit) => {
                             },
                             skills = () => {
                                 if (freelancer.skills && freelancer.skills.length > 0) {
-                                    return `<span>${freelancer.skills.join(" + ")}</span>`;
+                                    return `<span>${freelancer.skills[0]} ${freelancer.skills.length > 1 ? ` + ${freelancer.skills[1]}` : ""}</span>`;
                                 } else {
                                     return `<span>---</span>`;
                                 }
@@ -1291,7 +1296,7 @@ const topFreelancer = (limit) => {
 
 										<!-- Name -->
 										<div class="freelancer-name">
-											<h4><a style="color: #fff;" href="/candidats/${freelancer._id}/profile">${name()}<br/><img class="flag" src="images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top"></a></h4>
+											<h4><a style="color: #fff;" href="/candidats/${freelancer._id}/profile">${name()}<br/><img class="flag" src="/images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top"></a></h4>
 											${skills()}
 										</div>
 
@@ -1306,8 +1311,8 @@ const topFreelancer = (limit) => {
 								<div style="background-color: #2c2b2b;" class="freelancer-details">
 									<div class="freelancer-details-list">
 										<ul>
-											<li>Localisation <strong style="color: #fff;"><i class="icon-material-outline-location-on"></i> London</strong></li>
-											<li>Taux <strong style="color: #fff;">$60 / hr</strong></li>
+											<li>Localisation <strong style="color: #fff;"> ${freelancer.town ? `<i class="icon-material-outline-location-on"></i> ${freelancer.town}` : `---`}</strong></li>
+											<li>Taux <strong style="color: #fff;">$${freelancer.hourly ? freelancer.hourly.rate : "0"} / hr</strong></li>
 											<li>A temps <strong style="color: #fff;">95%</strong></li>
 										</ul>
 									</div>
@@ -1423,4 +1428,155 @@ const getDropAnfooterTown = () => {
         }
     })
 }
-export { login, register, getStatsUsers, getNav, activeAccount, statsInDashboard, topFreelancer, getDropAnfooterJobs, getDropAnfooterTown, sidebar }
+
+/**
+ * Dynamisation des détails des utilisateurs
+ * @param {String} id L'identifinat de l'utilisateur qu'on veut voir les détails
+ */
+const detailsUser = (id) => {
+    getUserId((isGet, user) => {
+        $.ajax({
+            type: 'GET',
+            url: `/api/users/details/${id}`,
+            dataType: "json",
+            success: function (data) {
+                if (data.getEtat) {
+
+                    console.log(data.getObjet);
+
+                    var freelancer = data.getObjet,
+                        name = () => {
+                            if (freelancer.identity) {
+                                return `${freelancer.identity.lastName} ${freelancer.identity.name.toUpperCase()}`
+                            } else {
+                                return freelancer.email;
+                            }
+                        },
+                        skills = () => {
+                            if (freelancer.skills && freelancer.skills.length > 0) {
+                                return `<span>${freelancer.skills[0]} ${freelancer.skills.length > 1 ? ` + ${freelancer.skills[1]}` : ""}</span>`;
+                            } else {
+                                return `<span>---</span>`;
+                            }
+                        },
+                        bio = () => {
+                            if (freelancer.bio) {
+                                return `<h3 class="margin-bottom-25">A propos de moi</h3>
+                                    <p>${freelancer.bio.bio}</p>`
+                            } else {
+                                return `<h3 class="margin-bottom-25">A propos de moi</h3>
+                                    <p style="color: #ccc">Je n'ai encore rien écrit sur moi, j'y travail dessus...</p>`
+                            }
+                        },
+                        toggleBtnOffer = () => {
+                            if (isGet && user.isEmployer) {
+                                return `<a href="#small-dialog" class="apply-now-button popup-with-zoom-anim margin-bottom-50"> <i
+									class="icon-feather-message-square"></i> Faire une offre</a>`;
+                            } else {
+                                return ""
+                            }
+                        },
+                        firstSection = `<div class="container">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="single-page-header-inner">
+                                                    <div class="left-side">
+                                                        <div class="header-image freelancer-avatar"><img src="/images/user-avatar-big-02.jpg" alt="">
+                                                        </div>
+                                                        <div class="header-details">
+                                                            <h3>${name()} <span>${skills()}</span></h3>
+                                                            <ul>
+                                                                <li>
+                                                                    <div class="star-rating" data-rating="${freelancer.average}"></div>
+                                                                </li>
+                                                                <li><div class="verified-badge-with-title">Verified</div></li>
+                                                                <li>
+                                                                    ${freelancer.town ? `${freelancer.town}&nbsp;&nbsp;<img class="flag" src="/images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top">` : ""}
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>`,
+                        biographie = `${bio()}`;
+
+                    if (freelancer.feedBacks && freelancer.feedBacks.length > 0) {
+                        freelancer.feedBacks.map((feedBack, item, tab) => {
+                            var content = `<li>
+								<div class="boxed-list-item">
+									<!-- Content -->
+									<div class="item-content">
+										<!--<h4>Web, Database and API Developer</h4>-->
+										<div class="item-details margin-top-10">
+											<div class="star-rating" data-rating="${feedBack.evaluation.note}"></div>
+											<div class="detail-item"><i class="icon-material-outline-date-range"></i> ${dateFeedBack(feedBack.evaluation.created_at)}</div>
+										</div>
+										<div class="item-description">
+											<p>${feedBack.evaluation.message}</p>
+										</div>
+										<a class="button gray pull-right ripple-effect margin-top-5 margin-bottom-10"><i
+												class="icon-feather-user"></i>
+											${feedBack.identity_employeur.email}
+										</a>
+									</div>
+								</div>
+                            </li>`;
+
+                            $("#feedbackDetails").append(content);
+                        })
+                    }
+
+                    var hourly = `${freelancer.hourly ? `<div class="overview-item"><strong>$${freelancer.hourly.rate}</strong><span>Taux horaire</span></div>` : ""}`,
+                        offer = `${toggleBtnOffer()}`;
+
+                    if (freelancer.skills && freelancer.skills.length > 0) {
+                        var head = `<h3>Competences</h3>
+                                    <div class="task-tags" id="skillDetails">
+                                    </div>`;
+
+                        $("#skillsDetails").html(head);
+
+                        freelancer.skills.map((skill, item, tab) => {
+                            var content = `<a href="https://www.google.com/search?q=talent+${skill}" target="_blank" style="margin-left: 4px"><span>${skill}</span></a>`;
+
+                            $("#skillDetails").append(content);
+                        })
+                    }
+
+                    $("#detailsHeader").html(firstSection);
+                    $("#bioDetails").html(biographie);
+                    $("#hourlyDetails").html(hourly);
+                    $("#makeOffer").html(offer);
+                    starRating(".star-rating");
+
+                    //Tooltip
+                    tippy('[data-tippy-placement]', {
+                        delay: 100,
+                        arrow: true,
+                        arrowType: 'sharp',
+                        size: 'regular',
+                        duration: 200,
+
+                        // 'shift-toward', 'fade', 'scale', 'perspective'
+                        animation: 'scale',
+
+                        animateFill: true,
+                        theme: 'dark',
+
+                        // How far the tooltip is from its reference element in pixels 
+                        distance: 10,
+
+                    });
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    })
+    
+}
+
+export { login, register, getStatsUsers, getNav, activeAccount, statsInDashboard, topFreelancer, getDropAnfooterJobs, getDropAnfooterTown, sidebar, detailsUser }

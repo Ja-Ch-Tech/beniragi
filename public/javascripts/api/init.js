@@ -129,6 +129,7 @@ const getAllJob = (limit, callback) => {
         }
     });
 };
+
 //Permet de recuperer l'id du user en session
 const getUserId = (callback) => {
     $.ajax({
@@ -164,10 +165,8 @@ const NoEmpty = object => {
     return flag;
 }
 
-/*--------------------------------------------------*/
-/*  Star Rating
-/*--------------------------------------------------*/
-function starRating(ratingElem) {
+//Start evaluation
+const starRating = (ratingElem) => {
 
     $(ratingElem).each(function() {
 
@@ -220,6 +219,21 @@ function starRating(ratingElem) {
 
     });
 
-} 
+}
 
-export { getHostApi, customDate, getAllTypesUser, getUserId, getHostWeb, NoEmpty, getAllTowns,starRating, getAllJob }
+const customDateForFeedBack = (date) => {
+    var formatDate = new Date(date);
+    return getMonth(formatDate.getMonth()) + " " + formatDate.getFullYear();
+}
+
+/**
+ * Récupération du mois en question
+ * @param {Number} month Le mois en question
+ */
+function getMonth(month) {
+    var monthLetters = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+
+    return monthLetters[parseInt(month) - 1];
+}
+
+export { getHostApi, customDate, getAllTypesUser, getUserId, getHostWeb, NoEmpty, getAllTowns, starRating, getAllJob, customDateForFeedBack as dateFeedBack }
