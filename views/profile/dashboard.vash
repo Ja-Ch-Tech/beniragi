@@ -29,9 +29,9 @@
 				<h3><i class="icon-feather-bar-chart-2"></i> Visite de votre profile</h3>
 				<div class="sort-by">
 					<select class="selectpicker hide-tick">
-						<option>6 Mois passé</option>
-						<option>Cette année</option>
-						<option>Cet mois</option>
+						<option>6 mois passé</option>
+						<option>Cet année</option>
+						<option>Ce mois</option>
 					</select>
 				</div>
 			</div>

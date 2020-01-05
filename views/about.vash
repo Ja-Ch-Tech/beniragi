@@ -27,11 +27,20 @@
 					Pour chaque situation, trouvez le prestataire de service dont les compétences répondent à vos attentes et à votre niveau d’exigence.
 					Bénéficiez des services qui vous faciliteront la vie ! Moins de stress, plus de temps libre. Bienvenue sur Beniragi Services !
 				</p>
-
+				<div class="row">
+					<div class="col-md-6 margin-bottom-20">
+						<img class="img-thumbnail" src="/images/benjamin-child-GWe0dlVD9e0-unsplash.jpg" alt="" srcset="">
+					</div>
+					<div class="col-md-6 margin-bottom-20">
+						<img class="img-thumbnail" src="/images/edgar-chaparro-m8UvH75I2lI-unsplash.jpg" alt="" srcset="">
+					</div>
+				</div>
 
 			</div>
 			<div class="col-xl-8">
+				<br><br>
 				<h2 class="color_white">NOTRE ENTREPRISE</h2><br>
+				<img class="img-thumbnail" src="/images/christina-wocintechchat-com-rg1y72eKw6o-unsplash.jpg" alt="" srcset="">
 				<p class="color_text_black_2">
 					Beniragi est la plateforme de réservation de tous vos services ! elle est une plateforme qui vous donne accès à tous les types de services dont vous souhaiterez être bénéficiaire.
 
@@ -46,7 +55,9 @@
 				</p>
 			</div>
 			<div class="col-xl-4">
-				<h2 class="color_white">NOS OBJECTIFS</h2>
+				<br><br>
+				<h2 class="color_white">NOS OBJECTIFS</h2><br>
+				<img class="img-thumbnail" src="/images/new-data-services-Ar-iTL4QKl4-unsplash.jpg" alt="" srcset="">
 				<p class="color_text_black_2">
 					Grâce à sa plateforme numérique, Beniragi Services a pour mission de développer une communauté d’échange de services fiable et efficace ! 
 				</p>

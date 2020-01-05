@@ -205,7 +205,6 @@ const getNav = () => {
 		if (state) {
 			//Recuperation des informations du user
 			getUserInfos(user.user_id, function (infos) {
-                console.log(infos)
                 if (infos.getObjet.flag) {
                     navContent = `<!--  User Notifications -->
                                 <div class="header-widget hide-on-mobile">
@@ -1228,98 +1227,124 @@ const statsInDashboard = () => {
     
 }
 
-/**
- * Module permettant de recuperer les tops users
- */
-const getTopUsers = (limit) => {
-    getUserId(function (state, userId) {
-        console.log(state)
-        $.ajax({
-            type: 'GET',
-            url: `/api/users/getTops/${limit}`,
-            dataType: "json",
-            success: function (data) {            
-                if (data.getEtat) {
-                    var header = `<div class="col-xl-12">
-                                    <!-- Section Headline -->
-                                    <div class="section-headline margin-top-0 margin-bottom-25">
-                                        <h3>Notre top 12</h3>
-                                        <a href="/candidats/liste" class="headline-link color_blue">Voir tous nos candidats</a>
-                                    </div>
-                                </div>
-                                <div class="col-xl-12">
-                                    <div id="userCarousel" class="default-slick-carousel freelancers-container freelancers-grid-layout">
-                                    </div>
-                                </div>`,
-                        sortieCarousel = 0,
-                        carousel;
-                    $("#listTopUsers").html(header);
-                    data.getObjet.map(user => {
-                        sortieCarousel++;
-                        carousel = `<!--Freelancer -->
-                                    <div style="background-color: #2c2b2b" class="freelancer">
-                            
-                                        <!-- Overview -->
-                                        <div class="freelancer-overview">
-                                            <div class="freelancer-overview-inner">
-                                                
-                                                <!-- Bookmark Icon -->
-                                                <span class="bookmark-icon"></span>
-                                                
-                                                <!-- Avatar -->
-                                                <div class="freelancer-avatar">
-                                                    <div class="verified-badge"></div>
-                                                    <a href="/candidats/12/profile"><img src="images/user-avatar-big-01.jpg" alt=""></a>
-                                                </div>
-                            
-                                                <!-- Name -->
-                                                <div class="freelancer-name">
-                                                    <h4><a style="color: #fff;" href="/candidats/12/profile">${user.identity ? user.identity.lastName + user.identity.name : user.email.split("@")[0]}</a></h4>
-                                                    <span>Pas encore disponible</span>
-                                                </div>
-                            
-                                                <!-- Rating -->
-                                                <div class="freelancer-rating">
-                                                    <div class="star-rating" data-rating="1.0"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Details -->
-                                        <div style="background-color: #2c2b2b;" class="freelancer-details">
-                                            <div class="freelancer-details-list">
-                                                <ul>
-                                                    <li>Localisation <strong style="color: #fff;"><i class="icon-material-outline-location-on"></i> ${user.town ? user.town : "Aucune"}</strong></li>
-                                                    <li>Taux <strong style="color: #fff;">${user.taux ? user.taux : "-"}</strong></li>
-                                                    <li>A temps <strong style="color: #fff;">
-                                                    ${user.time ? user.time : "-"}
-                                                    </strong></li>
-                                                </ul>
-                                            </div>
-                                            <a href="/candidats/12/profile" class="button button-sliding-icon ripple-effect">Voir le profile <i class="icon-material-outline-arrow-right-alt"></i></a>
+const topFreelancer = (limit) => {
+    $.ajax({
+        type: 'GET',
+        url: `/api/users/top/${limit}`,
+        dataType: "json",
+        success: function (data) {
+            if (data.getEtat) {
+                const contentHead = `<div class="col-xl-12">
+                                        <div class="section-headline margin-top-0 margin-bottom-25">
+                                            <h3>Top Freelancer</h3>
+                                            <a href="/candidats/liste" class="headline-link color_blue">Voir tous nos candidats</a>
                                         </div>
                                     </div>
-                                    <!-- Freelancer / End -->`;
-    
-                        $("#userCarousel").append(carousel);
-                        if (sortieCarousel == data.getObjet.length) {
+                                    <div class="col-xl-12">
+                                        <div class="default-slick-carousel freelancers-container freelancers-grid-layout" id="freelancerInTop">
+                                        </div>
+                                    </di>`;
+                $("#topFreelancer").html(contentHead);
+
+                if (data.getObjet.length > 0) {
+                    
+                    var outFreelancer = 0;
+                    
+                    data.getObjet.map((freelancer, item, tab) => {
+                        
+                        var name = () => {
+                                if (freelancer.identity) {
+                                    return `${freelancer.identity.lastName} ${freelancer.identity.name.toUpperCase()}`
+                                } else {
+                                    return freelancer.email;
+                                }
+                            },
+                            favorite = () => {
+                                if (freelancer.isThisInFavorite) {
+                                    return `<span class="bookmark-icon" style="color: gold"></span>`;
+                                }else{
+                                    return `<span class="bookmark-icon"></span>`
+                                }
+                            },
+                            skills = () => {
+                                if (freelancer.skills && freelancer.skills.length > 0) {
+                                    return `<span>${freelancer.skills.join(" + ")}</span>`;
+                                } else {
+                                    return `<span>---</span>`;
+                                }
+                            },
+                            content = `<!--Freelancer -->
+							<div style="background-color: #2c2b2b" class="freelancer">
+
+								<!-- Overview -->
+								<div class="freelancer-overview">
+									<div class="freelancer-overview-inner">
+										
+										<!-- Bookmark Icon -->
+										${favorite()}
+										
+										<!-- Avatar -->
+										<div class="freelancer-avatar">
+											<div class="verified-badge"></div>
+											<a href="/candidats/${freelancer._id}/profile"><img src="images/user-avatar-big-01.jpg" alt=""></a>
+										</div>
+
+										<!-- Name -->
+										<div class="freelancer-name">
+											<h4><a style="color: #fff;" href="/candidats/${freelancer._id}/profile">${name()}<br/><img class="flag" src="images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top"></a></h4>
+											${skills()}
+										</div>
+
+										<!-- Rating -->
+										<div class="freelancer-rating">
+											<div class="star-rating" data-rating="${freelancer.average}"></div>
+										</div>
+									</div>
+								</div>
+								
+								<!-- Details -->
+								<div style="background-color: #2c2b2b;" class="freelancer-details">
+									<div class="freelancer-details-list">
+										<ul>
+											<li>Localisation <strong style="color: #fff;"><i class="icon-material-outline-location-on"></i> London</strong></li>
+											<li>Taux <strong style="color: #fff;">$60 / hr</strong></li>
+											<li>A temps <strong style="color: #fff;">95%</strong></li>
+										</ul>
+									</div>
+									<a href="/candidats/${freelancer._id}/profile" class="button button-sliding-icon ripple-effect">Voir le profile <i class="icon-material-outline-arrow-right-alt"></i></a>
+								</div>
+							</div>
+                            <!-- Freelancer / End -->`;
+                            
+                        outFreelancer++;
+
+                        $("#freelancerInTop").append(content);
+
+                        if (outFreelancer == tab.length) {
+
+                            //Système étoile
                             starRating('.star-rating');
-    
-                            /*--------------------------------------------------*/
-                            /*  Sliding Button Icon
-                            /*--------------------------------------------------*/
-                            $('.bookmark-icon').on('click', function(e){
-                                e.preventDefault();
-                                $(this).toggleClass('bookmarked');
+
+                            //Tooltip
+                            tippy('[data-tippy-placement]', {
+                                delay: 100,
+                                arrow: true,
+                                arrowType: 'sharp',
+                                size: 'regular',
+                                duration: 200,
+
+                                // 'shift-toward', 'fade', 'scale', 'perspective'
+                                animation: 'scale',
+
+                                animateFill: true,
+                                theme: 'dark',
+
+                                // How far the tooltip is from its reference element in pixels 
+                                distance: 10,
+
                             });
-    
-                            $('.bookmark-button').on('click', function(e){
-                                e.preventDefault();
-                                $(this).toggleClass('bookmarked');
-                            });
-                            /*----------------------------------------------------*/
-                            /*  Slick Carousel
-                            /*----------------------------------------------------*/
+
+                            //Caroussel
                             $('.default-slick-carousel').slick({
                                 infinite: false,
                                 slidesToShow: 3,
@@ -1329,51 +1354,42 @@ const getTopUsers = (limit) => {
                                 adaptiveHeight: true,
                                 responsive: [
                                     {
-                                    breakpoint: 1292,
-                                    settings: {
-                                        dots: true,
-                                        arrows: false
-                                    }
+                                        breakpoint: 1292,
+                                        settings: {
+                                            dots: true,
+                                            arrows: false
+                                        }
                                     },
                                     {
-                                    breakpoint: 993,
-                                    settings: {
-                                        slidesToShow: 2,
-                                        slidesToScroll: 2,
-                                        dots: true,
-                                        arrows: false
-                                    }
+                                        breakpoint: 993,
+                                        settings: {
+                                            slidesToShow: 2,
+                                            slidesToScroll: 2,
+                                            dots: true,
+                                            arrows: false
+                                        }
                                     },
                                     {
-                                    breakpoint: 769,
-                                    settings: {
-                                        slidesToShow: 1,
-                                        slidesToScroll: 1,
-                                        dots: true,
-                                        arrows: false
+                                        breakpoint: 769,
+                                        settings: {
+                                            slidesToShow: 1,
+                                            slidesToScroll: 1,
+                                            dots: true,
+                                            arrows: false
+                                        }
                                     }
-                                    }
-                            ]
+                                ]
                             });
                         }
-                    });
-                    
-                }else{
-                    var content = `<div class="col-xl-12">
-                                        <div class="section-headline centered margin-bottom-15">
-                                            <h3>Aucun resultat n'est disponible pour le moment</h3>
-                                        </div>
-                                    </div>`;
-    
-                    $("#listTopUsers").html(content);
+                            
+                    })
                 }
-            },
-            error : function (err) {
-                console.log(err);
             }
-        });
-    })
-    
+        },
+        error: function (err) {
+            console.log(err);
+        }
+    });
 }
 
 /**
@@ -1407,4 +1423,4 @@ const getDropAnfooterTown = () => {
         }
     })
 }
-export { login, register, getStatsUsers, getNav, activeAccount, statsInDashboard, getTopUsers,getDropAnfooterJobs, getDropAnfooterTown }
+export { login, register, getStatsUsers, getNav, activeAccount, statsInDashboard, topFreelancer, getDropAnfooterJobs, getDropAnfooterTown, sidebar }

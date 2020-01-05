@@ -1,5 +1,5 @@
 import { getHostApi, getUserId } from './init.js';
-import { login, register, getStatsUsers as statsUsers, getNav, activeAccount, statsInDashboard as miniStats, getTopUsers,getDropAnfooterJobs, getDropAnfooterTown } from './users_api.js';
+import { login, register, getStatsUsers as statsUsers, getNav, activeAccount, sidebar, statsInDashboard as miniStats, topFreelancer, getDropAnfooterJobs, getDropAnfooterTown } from './users_api.js';
 import { getJobs } from './jobs.js';
 import { graph } from './view.js';
 
@@ -15,7 +15,7 @@ import { graph } from './view.js';
         if (pathName == "/") {
             statsUsers();
             getJobs(8);
-            getTopUsers(12);
+            topFreelancer(15);
         }
     //#endregion
 
