@@ -166,17 +166,10 @@ const getUserInfos = (user_id, callback) => {
         type: 'GET',
         url: "/api/getUserInfos/" + user_id,
         dataType: "json",
-<<<<<<< HEAD
-        success: function (data) {
-            callback(data);
-        },
-        error: function (err) {
-=======
         success: function(data) {
             callback(data);
         },
         error: function(err) {
->>>>>>> aead9a518476dfdbdfab43d25476211570358c95
             callback(err);
         }
     });
@@ -206,16 +199,6 @@ function toggleVisibility() {
  */
 const getNav = () => {
 
-<<<<<<< HEAD
-    getUserId(function (state, user) {
-        var navContent,
-            pathName = window.location.pathname;
-        if (state) {
-            //Recuperation des informations du user
-            getUserInfos(user.user_id, function (infos) {
-                if (infos.getObjet.flag) {
-                    navContent = `<!--  User Notifications -->
-=======
         getUserId(function(state, user) {
                     var navContent,
                         pathName = window.location.pathname;
@@ -224,7 +207,6 @@ const getNav = () => {
                         getUserInfos(user.user_id, function(infos) {
                                     if (infos.getObjet.flag) {
                                         navContent = `<!--  User Notifications -->
->>>>>>> aead9a518476dfdbdfab43d25476211570358c95
                                 <div class="header-widget hide-on-mobile">
                                    
                                     <!-- Messages -->
@@ -699,35 +681,6 @@ const submitSkills = (user, id_job) => {
 
     btn.on('click', function (e) {
         e.preventDefault();
-<<<<<<< HEAD
-        if (input.val().trim("") != "") {
-
-            //AJoute l'item dans le tab skills
-            skills.push({
-                name: input.val()
-            });
-
-            //Ajoute le skills dans le HTML
-            listSkills.append(`<span class="keyword"><span class="keyword-remove"></span><span class="keyword-text">${input.val()}</span></span>`);
-
-            console.log(skills);
-
-            $.ajax({
-                type: 'POST',
-                url: `${getHostApi()}users/setSkills`,
-                dataType: "json",
-                data: {
-                    id_user: user.user_id,
-                    skills: ["Mbuyu", "Kasongo"]
-                },
-                success: function (data) {
-                    console.log(data);
-                },
-                error: function (err) {
-                    console.log(err);
-                }
-            });
-=======
         if (id_job != null) {
             if (input.val().trim("") != "") {
 
@@ -767,7 +720,6 @@ const submitSkills = (user, id_job) => {
                     backgroundColor: '#ad344b'
                 });
             }
->>>>>>> aead9a518476dfdbdfab43d25476211570358c95
         } else {
             Snackbar.show({
                 text: "Veuillez d'abord speficié un metier avant d'ajouter une specialité",
