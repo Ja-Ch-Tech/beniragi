@@ -379,4 +379,26 @@ router.get('/getAllTowns', (req, res) => {
         })
 })
 
+//Passation de l'offre
+router.post('/offer/make', (req, res) => {
+    var setData = {
+        "id_employer": req.session.id_user_beni && req.session.id_type_user_beni ? req.session.id_user_beni : "",
+        "id_freelancer": req.body.id_freelancer ? req.body.id_freelancer : "",
+        "message": req.body.message ? req.body.message : ""
+    };
+
+    if (Empty(setData)) {
+        axios.post(`${API}/offer/make`, setData)
+             .then(response => {
+                 res.status(200).send(response.data);
+             })
+             .catch(err => {
+                 res.status(500).send(err)
+             })
+    } else {
+        res.status(202).send({getEtat: false, getMessage: "Données maquantes..."})
+    }
+    
+})
+
 module.exports = router;

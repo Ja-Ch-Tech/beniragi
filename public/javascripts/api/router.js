@@ -38,12 +38,11 @@ import { graph } from './view.js';
     //#endregion
 
     //#region Candidats
-    if (/candidats|candidat/i.test(pathName.split("/")[1])) {
-        if (/profile/i.test(pathName.split("/")[pathName.split("/").length - 1])) {
-            detailsUser(pathName.split("/")[pathName.split("/").length - 2]);
+        if (/candidats|candidat/i.test(pathName.split("/")[1])) {
+            if (/profile/i.test(pathName.split("/")[pathName.split("/").length - 1])) {
+                detailsUser(pathName.split("/")[pathName.split("/").length - 2]);          
+            }
         }
-    }
     //#endregion
-
     
 })();

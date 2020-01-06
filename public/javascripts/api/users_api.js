@@ -1558,15 +1558,65 @@ const detailsUser = (id) => {
                         })
                     }
 
-                    var favoris = `${favorite()}`;
+                    var favoris = `${favorite()}`,
+                        inputIdentity = () => {
+                            if (freelancer.identity) {
+                                return `<div class="input-with-icon-left">
+                                            <i class="icon-material-outline-account-circle"></i>
+                                            <input style="background-color:#fff;border-color:#ccc;" disabled="disabled" type="text"
+                                                class="input-text with-border text-capitalize" name="name" id="name" placeholder="Votre nom"
+                                                value="${freelancer.identity.lastName + " " + freelancer.identity.name}" />
+                                        </div>`;
+                            } else {
+                                return "";
+                            }
+                        },
+                        contentPopup = `<!-- Tab -->
+					<div class="popup-tab-content" id="tab">
+		
+						<!-- Welcome Text -->
+						<div class="welcome-text">
+							<h3>Discuter sur votre projet avec ${freelancer.identity ? freelancer.identity.lastName : freelancer.email}</h3>
+						</div>
+		
+						<!-- Form -->
+						<form method="post" id="submitOffer">
+		
+							${inputIdentity()}
+		
+							<div class="input-with-icon-left">
+								<i class="icon-material-baseline-mail-outline"></i>
+								<input style="background-color:#fff;border-color:#ccc;" disabled="disabled" type="text"
+									class="input-text with-border" name="emailaddress" id="emailaddress"
+									value="${freelancer.email}" placeholder="Votre adresse email" />
+							</div>
+		
+							<textarea style="background-color:#fff;border-color:#ccc;" name="textarea" cols="10"
+								placeholder="Votre message" class="with-border" id="messageOffer"></textarea>
+		
+							<div class="uploadButton margin-top-25">
+								<input class="uploadButton-input" type="file" accept="image/*, application/pdf" id="upload"
+									multiple />
+								<label class="uploadButton-button ripple-effect" for="upload">Attacher un fichier</label>
+								<span class="uploadButton-file-name">Extensions valide: zip, pdf, png, jpg <br> Max. taille
+									fichier: 5 MB.</span>
+                            </div>
+                            
+						<button class="button margin-top-35 full-width button-sliding-icon ripple-effect" type="submit" form="submitOffer">Envoyer le message <i class="icon-material-outline-arrow-right-alt" ></i></button>
+                        </form>
+                        
+					</div>
+		
+					</div>`;
 
+                    $("#popupOffer").html(contentPopup);
                     $("#detailsHeader").html(firstSection);
                     $("#bioDetails").html(biographie);
                     $("#hourlyDetails").html(hourly);
                     $("#makeOffer").html(offer);
                     $("#favoriteDetails").html(favoris);
                     starRating(".star-rating");
-
+                    submitOffer(id, freelancer.identity ? freelancer.identity.lastName.toUpperCase() : freelancer.email);
                     //Tooltip
                     tippy('[data-tippy-placement]', {
                         delay: 100,
@@ -1585,6 +1635,23 @@ const detailsUser = (id) => {
                         distance: 10,
 
                     });
+
+                    //chargement du popup de connexion et inscription
+                    $('.popup-with-zoom-anim').magnificPopup({
+                        type: 'inline',
+
+                        fixedContentPos: false,
+                        fixedBgPos: true,
+
+                        overflowY: 'auto',
+
+                        closeBtnInside: true,
+                        preloader: false,
+
+                        midClick: true,
+                        removalDelay: 300,
+                        mainClass: 'my-mfp-zoom-in'
+                    });
                 }
             },
             error: function (err) {
@@ -1593,6 +1660,68 @@ const detailsUser = (id) => {
         });
     })
     
+}
+
+/**
+ * Pour la soumission de l'offre
+ * @param {String} id_freelancer l'id du freelancer
+ */
+const submitOffer = (id_freelancer, screenUser) => {
+    $("#submitOffer").on("submit", (e) => {
+        e.preventDefault();
+        
+        var txt = e.target.elements["textarea"].value;
+
+        if (txt && txt.trim(" ")) {
+            $.ajax({
+                type: 'POST',
+                url: "/api/offer/make",
+                data: {
+                    id_freelancer: id_freelancer,
+                    message: txt
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data.getEtat) {
+                        Snackbar.show({
+                            text: `L'offre a été soumis à ${screenUser}...`,
+                            pos: 'top-center',
+                            showAction: false,
+                            duration: 3000,
+                            textColor: '#fff',
+                            backgroundColor: '#3696f5'
+                        });
+                        
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 3003);
+                    } else {
+                        Snackbar.show({
+                            text: data.getMessage,
+                            pos: 'top-center',
+                            showAction: false,
+                            duration: 3000,
+                            textColor: '#fff',
+                            backgroundColor: '#ad344b'
+                        });
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        } else {
+            Snackbar.show({
+                text: "L'offre necessite un message !",
+                pos: 'top-center',
+                showAction: false,
+                duration: 3000,
+                textColor: '#fff',
+                backgroundColor: '#ad344b'
+            });
+        }
+        
+    })
 }
 
 export { login, register, getStatsUsers, getNav, activeAccount, statsInDashboard, topFreelancer, getDropAnfooterJobs, getDropAnfooterTown, sidebar, detailsUser }
