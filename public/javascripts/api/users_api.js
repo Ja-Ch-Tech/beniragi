@@ -1,7 +1,7 @@
 import { getAllTypesUser, getUserId, NoEmpty, getHostApi, getAllTowns, starRating, getAllJob, dateFeedBack } from './init.js';
 //Permet de connecter un utilisateur
 const login = () => {
-    $("#login-form").on('submit', function(e) {
+    $("#login-form").on('submit', function (e) {
         e.preventDefault();
         var inputs = e.target.elements,
             objData = {};
@@ -16,16 +16,16 @@ const login = () => {
             type: 'POST',
             dataType: "json",
             data: objData,
-            beforeSend: function() {
+            beforeSend: function () {
                 $("#login-button").text("Verification ...");
             },
-            success: function(infos) {
+            success: function (infos) {
                 console.log(infos);
                 $("#login-button").html(`Se connecter <i class="icon-material-outline-arrow-right-alt"></i>`);
                 if (infos.getEtat) {
-                    
+
                     if (infos.getObjet.flag) {
-                         window.location.reload();
+                        window.location.reload();
                     } else {
                         Snackbar.show({
                             text: "Ce compte n'est pas activé !",
@@ -34,7 +34,7 @@ const login = () => {
                             actionText: "Fermer",
                             duration: 3000,
                             textColor: '#fff',
-                            backgroundColor: '#f00'
+                            backgroundColor: '#ad344b'
                         });
 
                         //Redirection dans la page d'activation
@@ -49,7 +49,7 @@ const login = () => {
                     $("#errorLogin p")[0].innerHTML = infos.getMessage;
                 }
             },
-            error: function(err) {
+            error: function (err) {
                 console.log(err);
             }
         })
@@ -60,18 +60,18 @@ const login = () => {
 //Permet d'enregistrer un utilisateur
 const register = () => {
     //Dynamisation des types users
-    getAllTypesUser(function(types) {
+    getAllTypesUser(function (types) {
         if (types) {
             var sortieType = 0;
             types.map(type => {
                 sortieType++;
-                var typeChecked = function() {
-                        if (sortieType == 1) {
-                            return 'checked = "checked"';
-                        } else {
-                            return '';
-                        }
-                    },
+                var typeChecked = function () {
+                    if (sortieType == 1) {
+                        return 'checked = "checked"';
+                    } else {
+                        return '';
+                    }
+                },
                     type = `<div>
 						<input type="radio" name="id_type" id="${type.intitule}-radio" class="account-type-radio" ${typeChecked()} value="${type._id}" />
 						<label for="${type.intitule}-radio" class="ripple-effect-dark">${type.intitule}</label>
@@ -110,10 +110,10 @@ const register = () => {
             type: 'POST',
             dataType: "json",
             data: objData,
-            beforeSend: function() {
+            beforeSend: function () {
                 $("#register-button").html("Veuillez patienter ...");
             },
-            success: function(data) {
+            success: function (data) {
                 console.log(data)
                 $("#register-button").html(`Terminer <i class="icon-material-outline-arrow-right-alt"></i>`);
                 if (data.getEtat) {
@@ -124,7 +124,7 @@ const register = () => {
                     $("#errorRegister p")[0].innerHTML = data.getMessage;
                 }
             },
-            error: function(err) {
+            error: function (err) {
                 console.log(err);
             }
         })
@@ -140,7 +140,7 @@ const getStatsUsers = () => {
         type: 'GET',
         url: "/api/users/numberUserByType",
         dataType: "json",
-        success: function(data) {
+        success: function (data) {
             if (data.getEtat) {
                 data.getObjet.map(value => {
                     var content = `<li>
@@ -152,7 +152,7 @@ const getStatsUsers = () => {
                 })
             }
         },
-        error: function(err) {
+        error: function (err) {
             console.log(err)
         }
     });
@@ -162,14 +162,14 @@ const getStatsUsers = () => {
  * Module permettant de recuperer les details d'un user
  */
 const getUserInfos = (user_id, callback) => {
-	$.ajax({
+    $.ajax({
         type: 'GET',
         url: "/api/getUserInfos/" + user_id,
         dataType: "json",
-        success: function (data) {  
+        success: function (data) {
             callback(data);
         },
-        error : function (err) {
+        error: function (err) {
             callback(err);
         }
     });
@@ -199,12 +199,12 @@ function toggleVisibility() {
  */
 const getNav = () => {
 
-	getUserId(function (state, user) {
+    getUserId(function (state, user) {
         var navContent,
-        pathName = window.location.pathname;
-		if (state) {
-			//Recuperation des informations du user
-			getUserInfos(user.user_id, function (infos) {
+            pathName = window.location.pathname;
+        if (state) {
+            //Recuperation des informations du user
+            getUserInfos(user.user_id, function (infos) {
                 if (infos.getObjet.flag) {
                     navContent = `<!--  User Notifications -->
                                 <div class="header-widget hide-on-mobile">
@@ -299,8 +299,8 @@ const getNav = () => {
                                                 
                                                 <!-- User Status Switcher -->
                                                 <div class="status-switch" id="snackbar-user-status">
-                                                    <label class="user-online ${infos.getObjet.visibility ? `current-status`: `` }">Disponible</label>
-                                                    <label class="user-invisible ${!infos.getObjet.visibility ? `current-status` : `` }">Non-disponible</label>
+                                                    <label class="user-online ${infos.getObjet.visibility ? `current-status` : ``}">Disponible</label>
+                                                    <label class="user-invisible ${!infos.getObjet.visibility ? `current-status` : ``}">Non-disponible</label>
                                                     <span class="status-indicator" aria-hidden="true"></span>
                                                 </div>  
                                         </div>
@@ -328,14 +328,14 @@ const getNav = () => {
                     /*--------------------------------------------------*/
                     /*  Notification Dropdowns
                     /*--------------------------------------------------*/
-                    $(".header-notifications").each(function() {
+                    $(".header-notifications").each(function () {
                         var userMenu = $(this);
                         var userMenuTrigger = $(this).find('.header-notifications-trigger a');
 
-                        $(userMenuTrigger).on('click', function(event) {
+                        $(userMenuTrigger).on('click', function (event) {
                             event.preventDefault();
 
-                            if ( $(this).closest(".header-notifications").is(".active") ) {
+                            if ($(this).closest(".header-notifications").is(".active")) {
                                 close_user_dropdown();
                             } else {
                                 close_user_dropdown();
@@ -352,19 +352,19 @@ const getNav = () => {
                     // Closes notification dropdown on click outside the conatainer
                     var mouse_is_inside = false;
 
-                    $( ".header-notifications" ).on( "mouseenter", function() {
-                    mouse_is_inside=true;
+                    $(".header-notifications").on("mouseenter", function () {
+                        mouse_is_inside = true;
                     });
-                    $( ".header-notifications" ).on( "mouseleave", function() {
-                    mouse_is_inside=false;
+                    $(".header-notifications").on("mouseleave", function () {
+                        mouse_is_inside = false;
                     });
 
-                    $("body").mouseup(function(){
-                        if(! mouse_is_inside) close_user_dropdown();
+                    $("body").mouseup(function () {
+                        if (!mouse_is_inside) close_user_dropdown();
                     });
 
                     // Close with ESC
-                    $(document).keyup(function(e) { 
+                    $(document).keyup(function (e) {
                         if (e.keyCode == 27) {
                             close_user_dropdown();
                         }
@@ -374,7 +374,7 @@ const getNav = () => {
                     if (/profile/i.test(pathName.split("/")[1]) && /parametres/i.test(pathName.split("/")[2])) {
                         userParameters(user, infos);
                     }
-                }else{
+                } else {
                     navContent = `<!-- Lien vers l'activation d'un compte -->
                     <div class="header-widget hide-on-mobile">
                         <a href="/profile/activation" class="log-in-button"><i class="icon-line-awesome-unlock-alt"></i> <span>Activer votre compte</span></a>
@@ -382,38 +382,38 @@ const getNav = () => {
                     $("#navMenu").html(navContent);
                 }
             });
-            
+
 
             //Dynamisation de la sidebar
             if (/profile/i.test(pathName.split("/")[1])) {
                 sidebar(user);
             }
-		}else{
+        } else {
 
-			navContent = `<!-- USER NON CONNECTER -->
+            navContent = `<!-- USER NON CONNECTER -->
                 <div class="header-widget">
                     <a href="#sign-in-dialog" class="popup-with-zoom-anim log-in-button"><i class="icon-feather-log-in"></i> <span>Connexion / Inscription</span></a>
                 </div>`;
-			$("#navMenu").html(navContent);
+            $("#navMenu").html(navContent);
 
-			//chargement du popup de connexion et inscription
-			$('.popup-with-zoom-anim').magnificPopup({
-				type: 'inline',
-	   
-				fixedContentPos: false,
-				fixedBgPos: true,
-	   
-				overflowY: 'auto',
-	   
-				closeBtnInside: true,
-				preloader: false,
-	   
-				midClick: true,
-				removalDelay: 300,
-				mainClass: 'my-mfp-zoom-in'
-		   });
-		}
-	});
+            //chargement du popup de connexion et inscription
+            $('.popup-with-zoom-anim').magnificPopup({
+                type: 'inline',
+
+                fixedContentPos: false,
+                fixedBgPos: true,
+
+                overflowY: 'auto',
+
+                closeBtnInside: true,
+                preloader: false,
+
+                midClick: true,
+                removalDelay: 300,
+                mainClass: 'my-mfp-zoom-in'
+            });
+        }
+    });
 }
 
 
@@ -641,27 +641,27 @@ const userParameters = (user, details) => {
       </div>
     </div>`;
     $("#parametersContent").html(content);
-    
+
     avatarSwitcher();
     tippy('[data-tippy-placement]', {
-		delay: 100,
-		arrow: true,
-		arrowType: 'sharp',
-		size: 'regular',
-		duration: 200,
+        delay: 100,
+        arrow: true,
+        arrowType: 'sharp',
+        size: 'regular',
+        duration: 200,
 
-		// 'shift-toward', 'fade', 'scale', 'perspective'
-		animation: 'shift-away',
+        // 'shift-toward', 'fade', 'scale', 'perspective'
+        animation: 'shift-away',
 
-		animateFill: true,
-		theme: 'dark',
+        animateFill: true,
+        theme: 'dark',
 
-		// How far the tooltip is from its reference element in pixels 
-		distance: 10,
+        // How far the tooltip is from its reference element in pixels 
+        distance: 10,
 
     });
-    
-   
+
+
     updateAccount();
 
     $('select').selectpicker();
@@ -678,16 +678,16 @@ const submitSkills = (user, id_job) => {
         input = $("#setSkillsInput"),
         listSkills = $("#listSkills"),
         skills = [];
-    
+
     btn.on('click', function (e) {
         e.preventDefault();
         if (input.val().trim("") != "") {
 
             //AJoute l'item dans le tab skills
             skills.push({
-                name : input.val()
+                name: input.val()
             });
-            
+
             //Ajoute le skills dans le HTML
             listSkills.append(`<span class="keyword"><span class="keyword-remove"></span><span class="keyword-text">${input.val()}</span></span>`);
 
@@ -698,8 +698,8 @@ const submitSkills = (user, id_job) => {
                 url: `${getHostApi()}users/setSkills`,
                 dataType: "json",
                 data: {
-                    id_user : user.user_id,
-                    skills : ["Mbuyu", "Kasongo"]
+                    id_user: user.user_id,
+                    skills: ["Mbuyu", "Kasongo"]
                 },
                 success: function (data) {
                     console.log(data);
@@ -708,7 +708,7 @@ const submitSkills = (user, id_job) => {
                     console.log(err);
                 }
             });
-        }else{
+        } else {
             Snackbar.show({
                 text: "Veuillez renseigner votre specialite, SVP!",
                 pos: 'bottom-right',
@@ -732,21 +732,21 @@ const submitSelect = (user) => {
         if (value != "") {
             //Pour l'input select dedie a la specification d'un metier 
             if (select.id == "inputJob") {
-                
+
                 $.ajax({
                     type: 'POST',
                     url: "/api/users/setJob",
                     dataType: "json",
                     data: {
-                        id_job : value,
-                        id_user : user.user_id
+                        id_job: value,
+                        id_user: user.user_id
                     },
-                    beforeSend : function () {
+                    beforeSend: function () {
                         $('#jobLoader').html(`<center><div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></center>`);
                     },
                     success: function (data) {
                         $('#jobLoader').html(``);
-                        
+
                         if (data.getEtat) {
                             Snackbar.show({
                                 text: "Votre metier a ete mis a jour avec success",
@@ -767,28 +767,28 @@ const submitSelect = (user) => {
                                 textColor: '#fff',
                                 backgroundColor: '#ad344b'
                             });
-                        }           
+                        }
                         console.log(data);
                     },
-                    error : function (err) {
+                    error: function (err) {
                         callback(err)
                     }
                 });
-            }else if (select.id == "inputTown") {
+            } else if (select.id == "inputTown") {
                 $.ajax({
                     type: 'POST',
                     url: "/api/users/setTown",
                     dataType: "json",
                     data: {
-                        id_town : value,
-                        id_user : user.user_id
+                        id_town: value,
+                        id_user: user.user_id
                     },
-                    beforeSend : function () {
+                    beforeSend: function () {
                         $('#townLoader').html(`<center><div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></center>`);
                     },
                     success: function (data) {
                         $('#townLoader').html(``);
-                        
+
                         if (data.getEtat) {
                             Snackbar.show({
                                 text: "Votre ville actuelle a ete mis a jour avec success",
@@ -809,15 +809,15 @@ const submitSelect = (user) => {
                                 textColor: '#fff',
                                 backgroundColor: '#ad344b'
                             });
-                        }           
+                        }
                         console.log(data);
                     },
-                    error : function (err) {
+                    error: function (err) {
                         callback(err)
                     }
                 });
             }
-            
+
         }
     });
 };
@@ -845,7 +845,7 @@ const boostrapSelect = () => {
             if (!verrouJob) {
                 $.ajax({
                     type: 'GET',
-                    url: `/api/jobs/gets/`+ null,
+                    url: `/api/jobs/gets/` + null,
                     dataType: "json",
                     success: function (data) {
                         var option,
@@ -855,13 +855,13 @@ const boostrapSelect = () => {
                             console.log(data);
                             data.getObjet.map(job => {
                                 sortieJob++;
-    
+
                                 //Remplissage des options
                                 option = document.createElement('option');
                                 option.value = job._id;
                                 option.innerHTML = job.name;
                                 select.appendChild(option);
-    
+
                                 //Remplissage du dropdown
                                 li = document.createElement('li');
                                 li.setAttribute("data-original-index", sortieJob + 1);
@@ -869,9 +869,9 @@ const boostrapSelect = () => {
                                     <span class="text">${job.name}</span>
                                     <span class="glyphicon glyphicon-ok check-mark"></span>
                                 </a>`;
-    
+
                                 ulDrop.appendChild(li);
-    
+
                                 if (sortieJob == data.getObjet.length) {
                                     verrouJob = true;
                                     $(".dropdown-toggle").next().next().selectpicker();
@@ -884,42 +884,42 @@ const boostrapSelect = () => {
                     }
                 });
             }
-            
-        }else if (btnId == "inputTown") {
+
+        } else if (btnId == "inputTown") {
             if (!verrouTown) {
                 getAllTowns(function (data) {
                     var option,
-                            li,
-                            sortieTown = 0;
-                        if (data.getEtat) {
-                            data.getObjet.map(town => {
-                                sortieTown++;
-    
-                                //Remplissage des options
-                                option = document.createElement('option');
-                                option.value = town._id;
-                                option.innerHTML = town.name;
-                                select.appendChild(option);
-    
-                                //Remplissage du dropdown
-                                li = document.createElement('li');
-                                li.setAttribute("data-original-index", sortieTown + 1);
-                                li.innerHTML = `<a tabindex="0" class data-tokens="null" role="option" aria-disabled="false" aria-selected="false">
+                        li,
+                        sortieTown = 0;
+                    if (data.getEtat) {
+                        data.getObjet.map(town => {
+                            sortieTown++;
+
+                            //Remplissage des options
+                            option = document.createElement('option');
+                            option.value = town._id;
+                            option.innerHTML = town.name;
+                            select.appendChild(option);
+
+                            //Remplissage du dropdown
+                            li = document.createElement('li');
+                            li.setAttribute("data-original-index", sortieTown + 1);
+                            li.innerHTML = `<a tabindex="0" class data-tokens="null" role="option" aria-disabled="false" aria-selected="false">
                                     <span class="text">${town.name}</span>
                                     <span class="glyphicon glyphicon-ok check-mark"></span>
                                 </a>`;
-    
-                                ulDrop.appendChild(li);
-    
-                                if (sortieTown == data.getObjet.length) {
-                                    verrouTown = true;
-                                }
-                            });
-                        }
+
+                            ulDrop.appendChild(li);
+
+                            if (sortieTown == data.getObjet.length) {
+                                verrouTown = true;
+                            }
+                        });
+                    }
                 })
             }
         }
-        
+
     })
 };
 /**
@@ -929,7 +929,7 @@ const updateAccount = () => {
     $("#updateInfosForm").on('submit', function (e) {
         e.preventDefault();
         var inputs = e.target.elements,
-        objData = {};
+            objData = {};
 
         for (let index = 0; index < inputs.length; index++) {
             if (/input/i.test(e.target.elements[index].localName)) {
@@ -945,10 +945,10 @@ const updateAccount = () => {
                 url: "/api/users/setIdentity",
                 dataType: "json",
                 data: objData,
-                beforeSend : function () {
+                beforeSend: function () {
                     $("#registerInfosBtn").html(`<center><div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></center>`);
                 },
-                success: function (data) {            
+                success: function (data) {
                     $("#registerInfosBtn").html(`<center>
                         <button type="submit" form="updateInfosForm" class="button ripple-effect big margin-top-30 float-right"><i class="icon-line-awesome-save"></i> Enregistrer</ button>
                     </center>`);
@@ -974,7 +974,7 @@ const updateAccount = () => {
                         });
                     }
                 },
-                error : function (err) {
+                error: function (err) {
                     console.log(err)
                 }
             });
@@ -1009,7 +1009,7 @@ const avatarSwitcher = () => {
             "image/gif",
             "image/x-icon"
         ];
-    fileInput.on('change', function(){
+    fileInput.on('change', function () {
         type = fileInput[0].files[0].type;
         if (fileInput[0].files.length > 0) {
             if (avalaibleTypes.indexOf(type) != -1) {
@@ -1027,7 +1027,7 @@ const avatarSwitcher = () => {
                     backgroundColor: '#ad344b'
                 });
             }
-            
+
         }
 
         if (sortie) {
@@ -1041,34 +1041,34 @@ const avatarSwitcher = () => {
                 processData: false, // tell jQuery not to process the data
                 contentType: false, // tell jQuery not to set contentType
                 beforeSend: function () {
-                    
+
                 },
                 complete: function () {
                 },
                 success: function (data) {
                     console.log(data);
                 },
-                err : function (err) {
+                err: function (err) {
                     console.log(err)
                 }
             });
         }
     });
-    
-    $(".upload-button").on('click', function() {
-       $(".file-upload").click();
+
+    $(".upload-button").on('click', function () {
+        $(".file-upload").click();
     });
 };
 
 /**
  * Module permettant d'activer un compte utilisateur
  */
- const activeAccount = (user_id) => {
+const activeAccount = (user_id) => {
     $("#activate-form").on('submit', e => {
         e.preventDefault();
         var input = e.target.elements[0],
             code;
-        
+
         if (input.value.trim(" ") == "") {
             Snackbar.show({
                 text: "Inserez un code d'activation !",
@@ -1078,8 +1078,8 @@ const avatarSwitcher = () => {
                 duration: 10000,
                 textColor: '#fff',
                 backgroundColor: '#ad344b'
-            }); 
-        }else{
+            });
+        } else {
             code = parseInt(input.value);
 
             $.ajax({
@@ -1087,10 +1087,10 @@ const avatarSwitcher = () => {
                 url: "/api/profile/activation",
                 dataType: "json",
                 data: {
-                    user_id : user_id,
-                    code : code
+                    user_id: user_id,
+                    code: code
                 },
-                beforeSend : function () {
+                beforeSend: function () {
                     $("#loadercode").html(`<center>
 					<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
 					</center>`);
@@ -1106,7 +1106,7 @@ const avatarSwitcher = () => {
                             duration: 10000,
                             textColor: '#fff',
                             backgroundColor: '#3696f5'
-                        }); 
+                        });
                         window.location.href = "/profile/parametres";
                     } else {
                         Snackbar.show({
@@ -1117,20 +1117,20 @@ const avatarSwitcher = () => {
                             duration: 10000,
                             textColor: '#fff',
                             backgroundColor: '#ad344b'
-                        }); 
+                        });
                     }
                 },
-                error : function (err) {
+                error: function (err) {
                     console.log(err);
                 }
             });
         }
     });
- }
+}
 
- /**
- * Module permettant de dynamiser la sidebar du profile
- */
+/**
+* Module permettant de dynamiser la sidebar du profile
+*/
 const sidebar = (user) => {
     var content,
         active = (url) => {
@@ -1217,14 +1217,14 @@ const statsInDashboard = () => {
                                     </div>`;
                     $("#miniStats").html(content)
                 }
-                
+
             },
             error: function (err) {
                 console.log(err)
             }
         });
     })
-    
+
 }
 
 /**
@@ -1251,23 +1251,23 @@ const topFreelancer = (limit) => {
                 $("#topFreelancer").html(contentHead);
 
                 if (data.getObjet.length > 0) {
-                    
+
                     var outFreelancer = 0;
-                    
+
                     data.getObjet.map((freelancer, item, tab) => {
                         console.log(freelancer);
-                        
+
                         var name = () => {
-                                if (freelancer.identity) {
-                                    return `${freelancer.identity.lastName} ${freelancer.identity.name.toUpperCase()}`
-                                } else {
-                                    return freelancer.email;
-                                }
-                            },
+                            if (freelancer.identity) {
+                                return `${freelancer.identity.lastName} ${freelancer.identity.name.toUpperCase()}`
+                            } else {
+                                return freelancer.email;
+                            }
+                        },
                             favorite = () => {
                                 if (freelancer.isThisInFavorite) {
                                     return `<span class="bookmark-icon" style="color: gold"></span>`;
-                                }else{
+                                } else {
                                     return `<span class="bookmark-icon"></span>`
                                 }
                             },
@@ -1320,7 +1320,7 @@ const topFreelancer = (limit) => {
 								</div>
 							</div>
                             <!-- Freelancer / End -->`;
-                            
+
                         outFreelancer++;
 
                         $("#freelancerInTop").append(content);
@@ -1386,7 +1386,7 @@ const topFreelancer = (limit) => {
                                 ]
                             });
                         }
-                            
+
                     })
                 }
             }
@@ -1478,7 +1478,7 @@ const detailsUser = (id) => {
                         },
                         favorite = () => {
                             if (freelancer.isThisInFavorite) {
-                                
+
                                 return `<span class="bookmark-icon" style="color: gold;"></span>
                                         <span class="bookmark-text">Retirer des favoris</span>
 								        <span class="bookmarked-text">Ajouter aux favoris</span>`;
@@ -1595,9 +1595,8 @@ const detailsUser = (id) => {
 								placeholder="Votre message" class="with-border" id="messageOffer"></textarea>
 		
 							<div class="uploadButton margin-top-25">
-								<input class="uploadButton-input" type="file" accept="image/*, application/pdf" id="upload"
-									multiple />
-								<label class="uploadButton-button ripple-effect" for="upload">Attacher un fichier</label>
+								<input class="uploadButton-input" type="file" accept="image/*, application/pdf" id="uploadAttachmentOffer"/>
+								<label class="uploadButton-button ripple-effect" for="uploadAttachmentOffer" id="attachOffer">Attacher un fichier</label>
 								<span class="uploadButton-file-name">Extensions valide: zip, pdf, png, jpg <br> Max. taille
 									fichier: 5 MB.</span>
                             </div>
@@ -1617,6 +1616,7 @@ const detailsUser = (id) => {
                     $("#favoriteDetails").html(favoris);
                     starRating(".star-rating");
                     submitOffer(id, freelancer.identity ? freelancer.identity.lastName.toUpperCase() : freelancer.email);
+                    setAttachment();
                     //Tooltip
                     tippy('[data-tippy-placement]', {
                         delay: 100,
@@ -1659,7 +1659,7 @@ const detailsUser = (id) => {
             }
         });
     })
-    
+
 }
 
 /**
@@ -1669,16 +1669,18 @@ const detailsUser = (id) => {
 const submitOffer = (id_freelancer, screenUser) => {
     $("#submitOffer").on("submit", (e) => {
         e.preventDefault();
-        
+
         var txt = e.target.elements["textarea"].value;
 
         if (txt && txt.trim(" ")) {
+            var attach = window.localStorage.getItem("images") ? window.localStorage.getItem("images") : null;
             $.ajax({
                 type: 'POST',
                 url: "/api/offer/make",
                 data: {
                     id_freelancer: id_freelancer,
-                    message: txt
+                    message: txt,
+                    attach: attach
                 },
                 dataType: "json",
                 success: function (data) {
@@ -1691,7 +1693,7 @@ const submitOffer = (id_freelancer, screenUser) => {
                             textColor: '#fff',
                             backgroundColor: '#3696f5'
                         });
-                        
+
                         setTimeout(() => {
                             window.location.reload();
                         }, 3003);
@@ -1720,8 +1722,121 @@ const submitOffer = (id_freelancer, screenUser) => {
                 backgroundColor: '#ad344b'
             });
         }
-        
+
     })
+}
+
+/**
+ * Upload des images
+ */
+const setAttachment = () => {
+
+    //On recupère cette balise
+    var input = document.getElementById("uploadAttachmentOffer");
+
+    //On lui attache un listen à son événement "onchange"
+    //Afin d'écouter un eventuel changement de valeur qui interviendrai
+    //si l'utilisateur valider la selection du fichier
+    input.addEventListener('change', function () {
+
+        //LES VARIABLES
+        var formData = new FormData(), //L'objet formDATA qui sera soumit comme data dans AJAX
+            file, //Le fichier
+            reader, //Le lecteur de fichier qui servira à donner l'apperçu du fichier uploadé
+            sortie = false; //L'objet de sortie
+
+
+        //On vérifie si l'input file contient au moins un fichier
+        if (input.files.length > 0) {
+
+            file = input.files[0]; //On recupère le fichier contenu dans l'objet 'files' de l'input
+            sortie = true; //On passe à true la condition de vérification
+        }
+
+        //Puis on ajoute le fichier à l'objet formData
+        //Ce dernier aura comme key "files" et comme value "le fichier"
+        formData.append('file-s3', file, file.name);
+
+        //On vérifie la sortie
+        if (true) {
+
+            $.ajax({
+                url: `${getHostApi()}file-upload`,
+                type: 'POST',
+                data: formData,
+                processData: false, // tell jQuery not to process the data
+                contentType: false, // tell jQuery not to set contentType
+                beforeSend: function () {
+                    //$("#progressImage").fadeIn();
+                },
+                complete: function () {
+                },
+                success: function (data) {
+
+                    if (data.getEtat) {
+
+                        var images = data.getObjet._id;
+
+                        localStorage.setItem("id_images", images);
+                        $("#attachOffer").html("1 Fichier attaché");
+
+                    } else {
+                        Snackbar.show({
+                            text: "Upload was not finished !",
+                            pos: 'top-center',
+                            showAction: true,
+                            actionText: "Reéssayer",
+                            duration: 3000,
+                            textColor: '#fff',
+                            backgroundColor: '#ad344b'
+                        });
+                    }
+
+
+                },
+                /*xhr: function () {
+
+                    //$(".progress").show();
+                    var progressBar = document.getElementById("progressImage");
+                    // create an XMLHttpRequest
+                    var xhr = new XMLHttpRequest();
+
+                    // listen to the 'progress' event
+                    xhr.upload.addEventListener('progress', function (evt) {
+
+                        if (evt.lengthComputable) {
+                            // calculate the percentage of upload completed
+                            var percentComplete = evt.loaded / evt.total;
+                            percentComplete = parseInt(percentComplete * 100);
+
+                            console.log(percentComplete);
+
+                            progressBar.getElementsByClassName('progress-bar')[0].style.width = percentComplete + '%';
+                            progressBar.getElementsByClassName('progress-bar')[0].innerHTML = percentComplete + '%';
+
+                        }
+
+                    }, false);
+
+                    xhr.upload.addEventListener("loadend", (evt) => {
+                        setTimeout(() => {
+                            progressBar.setAttribute("style", `width: 0%`)
+                            progressBar.style.display = 'none';
+                        }, 500);
+                    })
+
+                    return xhr;
+                }*/
+            });
+
+
+        }
+
+        input.value = "";
+    })
+
+
+
 }
 
 export { login, register, getStatsUsers, getNav, activeAccount, statsInDashboard, topFreelancer, getDropAnfooterJobs, getDropAnfooterTown, sidebar, detailsUser }

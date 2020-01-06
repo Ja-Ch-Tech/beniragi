@@ -390,7 +390,20 @@ router.post('/offer/make', (req, res) => {
     if (Empty(setData)) {
         axios.post(`${API}/offer/make`, setData)
              .then(response => {
-                 res.status(200).send(response.data);
+                 if (req.body.attach) {
+                     var attach = {
+                         id_docs: req.body.attach
+                     }
+                     axios.post(`${API}/offer/attachment/${response.data.getObjet._id}`, attach)
+                          .then(responseAttach => {
+                              res.status(200).send(responseAttach.data)
+                          })
+                          .catch(err => {
+                              res.status(202).send(response.data)
+                          })
+                 } else {
+                    res.status(200).send(response.data);
+                 }
              })
              .catch(err => {
                  res.status(500).send(err)
