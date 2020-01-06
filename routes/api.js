@@ -50,6 +50,7 @@ router.post('/register', (req, res) => {
 
                     req.session.id_user_beni = inscription.data.getObjet._id;
                     req.session.id_type_user_beni = inscription.data.getObjet.id_type;
+                    req.session.isEmployer = inscription.data.getObjet.isEmployer;
 
                     res.status(200).send(inscription.data);
 
