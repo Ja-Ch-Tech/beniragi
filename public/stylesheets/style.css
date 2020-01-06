@@ -2621,7 +2621,7 @@ body #backtotop a {
 }
 
 #backtotop a:after {
-  content: "юд▒";
+  content: "юд";
   font-family: "Feather-Icons";
   position: relative;
   display: block;
@@ -2929,7 +2929,11 @@ body #backtotop a {
     top: 0;
     left: 0;
     z-index: 15;
+<<<<<<< HEAD
+    background: #2c2b2b;
+=======
     background:#2c2b2b;
+>>>>>>> b3259e03609d972606bfdc48fd4f7b3e7a88143c
 }
 
 .single-page-header:after {
@@ -3035,7 +3039,7 @@ body #backtotop a {
 }
 
 .single-page-header .header-details h3 span {
-	color: #808080;
+	color: #fff;
 	display: block;
 	font-size: 20px;
 	font-weight: 300;
@@ -12528,7 +12532,11 @@ body .pac-container {
 	padding: 20px 35px;
 }
 
+<<<<<<< HEAD
+.boxed-list-headline h3 { font-size: 18px;color: #fff }
+=======
 .boxed-list-headline h3 { font-size: 18px;color: #fff; }
+>>>>>>> b3259e03609d972606bfdc48fd4f7b3e7a88143c
 .boxed-list-headline h3 span { color: #fff; }
 
 .boxed-list-headline h3 i {

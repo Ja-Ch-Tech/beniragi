@@ -166,10 +166,17 @@ const getUserInfos = (user_id, callback) => {
         type: 'GET',
         url: "/api/getUserInfos/" + user_id,
         dataType: "json",
+<<<<<<< HEAD
         success: function (data) {
             callback(data);
         },
         error: function (err) {
+=======
+        success: function(data) {
+            callback(data);
+        },
+        error: function(err) {
+>>>>>>> aead9a518476dfdbdfab43d25476211570358c95
             callback(err);
         }
     });
@@ -181,13 +188,13 @@ function toggleVisibility() {
         $('.status-indicator').addClass('right');
     }
 
-    $('.status-switch label.user-invisible').on('click', function () {
+    $('.status-switch label.user-invisible').on('click', function() {
         $('.status-indicator').addClass('right');
         $('.status-switch label').removeClass('current-status');
         $('.user-invisible').addClass('current-status');
     });
 
-    $('.status-switch label.user-online').on('click', function () {
+    $('.status-switch label.user-online').on('click', function() {
         $('.status-indicator').removeClass('right');
         $('.status-switch label').removeClass('current-status');
         $('.user-online').addClass('current-status');
@@ -199,6 +206,7 @@ function toggleVisibility() {
  */
 const getNav = () => {
 
+<<<<<<< HEAD
     getUserId(function (state, user) {
         var navContent,
             pathName = window.location.pathname;
@@ -207,6 +215,16 @@ const getNav = () => {
             getUserInfos(user.user_id, function (infos) {
                 if (infos.getObjet.flag) {
                     navContent = `<!--  User Notifications -->
+=======
+        getUserId(function(state, user) {
+                    var navContent,
+                        pathName = window.location.pathname;
+                    if (state) {
+                        //Recuperation des informations du user
+                        getUserInfos(user.user_id, function(infos) {
+                                    if (infos.getObjet.flag) {
+                                        navContent = `<!--  User Notifications -->
+>>>>>>> aead9a518476dfdbdfab43d25476211570358c95
                                 <div class="header-widget hide-on-mobile">
                                    
                                     <!-- Messages -->
@@ -667,7 +685,7 @@ const userParameters = (user, details) => {
     $('select').selectpicker();
     boostrapSelect();
     submitSelect(user);
-    submitSkills(user, details.getObjet.jobs.id_job);
+    submitSkills(user, details.getObjet.jobs ? details.getObjet.jobs.id_job : null);
 }
 
 /**
@@ -681,6 +699,7 @@ const submitSkills = (user, id_job) => {
 
     btn.on('click', function (e) {
         e.preventDefault();
+<<<<<<< HEAD
         if (input.val().trim("") != "") {
 
             //AJoute l'item dans le tab skills
@@ -708,9 +727,50 @@ const submitSkills = (user, id_job) => {
                     console.log(err);
                 }
             });
+=======
+        if (id_job != null) {
+            if (input.val().trim("") != "") {
+
+                //AJoute l'item dans le tab skills
+                skills.push({
+                    name : input.val()
+                });
+                
+                //Ajoute le skills dans le HTML
+                listSkills.append(`<span class="keyword"><span class="keyword-remove"></span><span class="keyword-text">${input.val()}</span></span>`);
+    
+                console.log(skills);
+    
+                $.ajax({
+                    type: 'POST',
+                    url: `api/setSkills`,
+                    dataType: "json",
+                    data: {
+                        id_user : user.user_id,
+                        skills : ["Mbuyu", "Kasongo"]
+                    },
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }else{
+                Snackbar.show({
+                    text: "Veuillez renseigner votre specialite, SVP!",
+                    pos: 'bottom-right',
+                    showAction: true,
+                    actionText: "Fermer",
+                    duration: 5000,
+                    textColor: '#fff',
+                    backgroundColor: '#ad344b'
+                });
+            }
+>>>>>>> aead9a518476dfdbdfab43d25476211570358c95
         } else {
             Snackbar.show({
-                text: "Veuillez renseigner votre specialite, SVP!",
+                text: "Veuillez d'abord speficié un metier avant d'ajouter une specialité",
                 pos: 'bottom-right',
                 showAction: true,
                 actionText: "Fermer",
@@ -719,6 +779,7 @@ const submitSkills = (user, id_job) => {
                 backgroundColor: '#ad344b'
             });
         }
+        
     })
 };
 /**
@@ -1143,13 +1204,13 @@ const sidebar = (user) => {
         };
     content = `<ul data-submenu-title="COMMENCEZ">
                     <li class="${active("/profile/dashboard")}"><a href="/profile/dashboard"><i class="icon-material-outline-dashboard"></i> Dashboard</a></li>
-                    <li class="${active("/profile/messages")}"><a href="/profile/messages"><i class="icon-material-outline-question-answer"></i> Messages <span class="nav-tag">2</span></a></li>`;
+                    <li class="${active("/profile/messages")}"><a href="/profile/messages"><i class="icon-material-outline-question-answer"></i> Messages</a></li>`;
     if (user.isEmployer) {
         content += `<li class="${active("/profile/favoris")}"><a href="/profile/favoris"><i class="icon-material-outline-favorite"></i> Favoris</a></li>
         <li class="${active("/profile/contacts")}"><a href="/profile/contacts"><i class="icon-feather-users"></i> Contacts</a></li>
         `;
     } else {
-        content += `<li class="${active("/profile/contacts")}"><a href="/profile/feedback"><i class="icon-material-outline-feedback"></i> Feedback (normal) <span class="nav-tag">12</span></a></li>`;
+        content += `<li class="${active("/profile/feedback")}"><a href="/profile/feedback"><i class="icon-material-outline-feedback"></i> Feedback</a></li>`;
     }
 
     content += `</ul><ul data-submenu-title="COMPTE">
