@@ -1,7 +1,6 @@
-
 const getHostApi = () => {
-    //return "http://localhost:3456/";
-    return "https://api-beniragi-service.herokuapp.com/";
+    return "http://localhost:3456/";
+    return //"https://api-beniragi-service.herokuapp.com/";
 }
 
 const getHostWeb = () => {
@@ -11,11 +10,11 @@ const getHostWeb = () => {
 //fonction de modélisation de la date
 const customDate = (date) => {
     var myDate = new Date(date),
-        jour = function () {
+        jour = function() {
 
             return parseInt(myDate.getDate()) < 10 ? '0' + myDate.getDate() : myDate.getDate()
         },
-        mois = function () {
+        mois = function() {
 
             //return myDate.getMonth() + 1 < 10 ? '0' + (myDate.getMonth() + 1) : myDate.getMonth() + 1
             var month = myDate.getMonth() + 1;
@@ -63,12 +62,12 @@ const customDate = (date) => {
                     break;
             }
         },
-        heure = function () {
+        heure = function() {
 
             return myDate.getHours() < 10 ? '0' + myDate.getHours() : myDate.getHours()
 
         },
-        minute = function () {
+        minute = function() {
 
             return myDate.getMinutes() < 10 ? '0' + myDate.getMinutes() : myDate.getMinutes()
 
@@ -83,36 +82,157 @@ const getAllTypesUser = (callback) => {
         type: 'GET',
         url: "/api/users/getAllTypes",
         dataType: "json",
-        success: function (data) {            
+        success: function(data) {
             if (data.getEtat) {
                 callback(data.getObjet);
-            }else{
+            } else {
                 callback(null);
             }
         },
-        error : function (err) {
+        error: function(err) {
             callback(err)
         }
     });
 }
 
+//Recupere toutes les villes
+const getAllTowns = (callback) => {
+    $.ajax({
+        type: 'GET',
+        url: "/api/getAllTowns",
+        dataType: "json",
+        success: function(data) {
+            if (data.getEtat) {
+                callback(data);
+            } else {
+                callback(data);
+            }
+        },
+        error: function(err) {
+            callback(err);
+        }
+    });
+};
+
+//Recupere les metiers
+const getAllJob = (limit, callback) => {
+    $.ajax({
+        type: 'GET',
+        url: `/api/jobs/gets/${limit}`,
+        dataType: "json",
+        success: function(data) {
+            callback(data);
+        },
+        error: function(err) {
+            callback(err);
+        }
+    });
+};
+
 //Permet de recuperer l'id du user en session
 const getUserId = (callback) => {
     $.ajax({
         type: 'GET',
-        url: getHostWeb() + "api/getSessionUser",
+        url: "/api/getSessionUser",
         dataType: "json",
-        success: function (data) {            
+        success: function(data) {
             if (data.user_id) {
                 callback(true, data);
-            }else{
+            } else {
                 callback(false, null);
             }
         },
-        error : function (err) {
+        error: function(err) {
             callback(err);
         }
     });
 }
 
-export { getHostApi, customDate, getAllTypesUser,getUserId, getHostWeb }
+//Verifie si les champs sont vides
+const NoEmpty = object => {
+    let flag = false;
+
+    for (const value in object) {
+        if (object[value] != "" && object.hasOwnProperty(value)) {
+            flag = true;
+        } else {
+            flag = false;
+            break;
+        }
+    }
+
+    return flag;
+}
+
+//Start evaluation
+const starRating = (ratingElem) => {
+
+    $(ratingElem).each(function() {
+
+        var dataRating = $(this).attr('data-rating');
+
+        // Rating Stars Output
+        function starsOutput(firstStar, secondStar, thirdStar, fourthStar, fifthStar) {
+            return ('' +
+                '<span class="' + firstStar + '"></span>' +
+                '<span class="' + secondStar + '"></span>' +
+                '<span class="' + thirdStar + '"></span>' +
+                '<span class="' + fourthStar + '"></span>' +
+                '<span class="' + fifthStar + '"></span>');
+        }
+
+        var fiveStars = starsOutput('star', 'star', 'star', 'star', 'star');
+
+        var fourHalfStars = starsOutput('star', 'star', 'star', 'star', 'star half');
+        var fourStars = starsOutput('star', 'star', 'star', 'star', 'star empty');
+
+        var threeHalfStars = starsOutput('star', 'star', 'star', 'star half', 'star empty');
+        var threeStars = starsOutput('star', 'star', 'star', 'star empty', 'star empty');
+
+        var twoHalfStars = starsOutput('star', 'star', 'star half', 'star empty', 'star empty');
+        var twoStars = starsOutput('star', 'star', 'star empty', 'star empty', 'star empty');
+
+        var oneHalfStar = starsOutput('star', 'star half', 'star empty', 'star empty', 'star empty');
+        var oneStar = starsOutput('star', 'star empty', 'star empty', 'star empty', 'star empty');
+
+        // Rules
+        if (dataRating >= 4.75) {
+            $(this).append(fiveStars);
+        } else if (dataRating >= 4.25) {
+            $(this).append(fourHalfStars);
+        } else if (dataRating >= 3.75) {
+            $(this).append(fourStars);
+        } else if (dataRating >= 3.25) {
+            $(this).append(threeHalfStars);
+        } else if (dataRating >= 2.75) {
+            $(this).append(threeStars);
+        } else if (dataRating >= 2.25) {
+            $(this).append(twoHalfStars);
+        } else if (dataRating >= 1.75) {
+            $(this).append(twoStars);
+        } else if (dataRating >= 1.25) {
+            $(this).append(oneHalfStar);
+        } else if (dataRating < 1.25) {
+            $(this).append(oneStar);
+        }
+
+    });
+
+}
+
+const customDateForFeedBack = (date) => {
+    var formatDate = new Date(date);
+    return getMonth(formatDate.getMonth()) + " " + formatDate.getFullYear();
+}
+
+/**
+ * Récupération du mois en question
+ * @param {Number} month Le mois en question
+ */
+function getMonth(month) {
+    var monthLetters = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+
+    return monthLetters[parseInt(month) - 1];
+}
+
+export { getHostApi, customDate, getAllTypesUser, getUserId, getHostWeb, NoEmpty, getAllTowns, starRating, getAllJob, customDateForFeedBack as dateFeedBack }

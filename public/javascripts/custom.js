@@ -180,18 +180,7 @@ $(document).ready(function(){
 	});
 
 
-	/*--------------------------------------------------*/
-	/*  Sliding Button Icon
-	/*--------------------------------------------------*/
-    $('.bookmark-icon').on('click', function(e){
-    	e.preventDefault();
-		$(this).toggleClass('bookmarked');
-	});
-
-    $('.bookmark-button').on('click', function(e){
-    	e.preventDefault();
-		$(this).toggleClass('bookmarked');
-	});
+	
 
 
 	/*----------------------------------------------------*/
@@ -281,28 +270,7 @@ $(document).ready(function(){
 		.addClass('tooltip-visible');
 	});
 
-	// Avatar Switcher
-	function avatarSwitcher() {
-	    var readURL = function(input) {
-	        if (input.files && input.files[0]) {
-	            var reader = new FileReader();
-
-	            reader.onload = function (e) {
-	                $('.profile-pic').attr('src', e.target.result);
-	            };
-	    
-	            reader.readAsDataURL(input.files[0]);
-	        }
-	    };
-	   
-	    $(".file-upload").on('change', function(){
-	        readURL(this);
-	    });
-	    
-	    $(".upload-button").on('click', function() {
-	       $(".file-upload").click();
-	    });
-	} avatarSwitcher();
+	
 
 
 	/*----------------------------------------------------*/
@@ -425,63 +393,7 @@ $(document).ready(function(){
 	});
 
 
-	/*--------------------------------------------------*/
-	/*  Star Rating
-	/*--------------------------------------------------*/
-	function starRating(ratingElem) {
-
-		$(ratingElem).each(function() {
-
-			var dataRating = $(this).attr('data-rating');
-
-			// Rating Stars Output
-			function starsOutput(firstStar, secondStar, thirdStar, fourthStar, fifthStar) {
-				return(''+
-					'<span class="'+firstStar+'"></span>'+
-					'<span class="'+secondStar+'"></span>'+
-					'<span class="'+thirdStar+'"></span>'+
-					'<span class="'+fourthStar+'"></span>'+
-					'<span class="'+fifthStar+'"></span>');
-			}
-
-			var fiveStars = starsOutput('star','star','star','star','star');
-
-			var fourHalfStars = starsOutput('star','star','star','star','star half');
-			var fourStars = starsOutput('star','star','star','star','star empty');
-
-			var threeHalfStars = starsOutput('star','star','star','star half','star empty');
-			var threeStars = starsOutput('star','star','star','star empty','star empty');
-
-			var twoHalfStars = starsOutput('star','star','star half','star empty','star empty');
-			var twoStars = starsOutput('star','star','star empty','star empty','star empty');
-
-			var oneHalfStar = starsOutput('star','star half','star empty','star empty','star empty');
-			var oneStar = starsOutput('star','star empty','star empty','star empty','star empty');
-
-			// Rules
-	        if (dataRating >= 4.75) {
-	            $(this).append(fiveStars);
-	        } else if (dataRating >= 4.25) {
-	            $(this).append(fourHalfStars);
-	        } else if (dataRating >= 3.75) {
-	            $(this).append(fourStars);
-	        } else if (dataRating >= 3.25) {
-	            $(this).append(threeHalfStars);
-	        } else if (dataRating >= 2.75) {
-	            $(this).append(threeStars);
-	        } else if (dataRating >= 2.25) {
-	            $(this).append(twoHalfStars);
-	        } else if (dataRating >= 1.75) {
-	            $(this).append(twoStars);
-	        } else if (dataRating >= 1.25) {
-	            $(this).append(oneHalfStar);
-	        } else if (dataRating < 1.25) {
-	            $(this).append(oneStar);
-	        }
-
-		});
-
-	} starRating('.star-rating');
+	
 
 
 	/*--------------------------------------------------*/
@@ -1051,44 +963,7 @@ $(document).ready(function(){
 	}
 
 
-  	/*----------------------------------------------------*/
-    /*  Slick Carousel
-    /*----------------------------------------------------*/
-	$('.default-slick-carousel').slick({
-		infinite: false,
-		slidesToShow: 3,
-		slidesToScroll: 1,
-		dots: false,
-		arrows: true,
-		adaptiveHeight: true,
-		responsive: [
-		    {
-		      breakpoint: 1292,
-		      settings: {
-		        dots: true,
-		    	arrows: false
-		      }
-		    },
-		    {
-		      breakpoint: 993,
-		      settings: {
-		        slidesToShow: 2,
-		        slidesToScroll: 2,
-		        dots: true,
-		    	arrows: false
-		      }
-		    },
-		    {
-		      breakpoint: 769,
-		      settings: {
-		        slidesToShow: 1,
-		        slidesToScroll: 1,
-		        dots: true,
-		   		arrows: false
-		      }
-		    }
-	  ]
-	});
+  	
 
 
 	$('.testimonial-carousel').slick({
