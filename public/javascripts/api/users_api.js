@@ -1217,7 +1217,7 @@ const statsInDashboard = () => {
                                     <div class="fun-fact" data-fun-fact-color="#b81b7f">
                                         <div class="fun-fact-text">
                                         <span>Favoris</span>
-                                        <h4>4</h4>
+                                        <h4>${data.getObjet.nbreFavoris}</h4>
                                         </div>
                                         <div class="fun-fact-icon"><i class="icon-material-outline-favorite"></i></div>
                                     </div>
@@ -1467,9 +1467,9 @@ const detailsUser = (id) => {
                         },
                         skills = () => {
                             if (freelancer.skills && freelancer.skills.length > 0) {
-                                return `<span>${freelancer.skills[0]} ${freelancer.skills.length > 1 ? ` + ${freelancer.skills[1]}` : ""}</span>`;
+                                return `<span style="color: #333;">${freelancer.skills[0]} ${freelancer.skills.length > 1 ? ` + ${freelancer.skills[1]}` : ""}</span>`;
                             } else {
-                                return `<span>---</span>`;
+                                return `<span style="color: #333;">---</span>`;
                             }
                         },
                         bio = () => {
@@ -1510,13 +1510,13 @@ const detailsUser = (id) => {
                                                         <div class="header-image freelancer-avatar"><img src="/images/user-avatar-big-02.jpg" alt="">
                                                         </div>
                                                         <div class="header-details">
-                                                            <h3>${name()} <span>${skills()}</span></h3>
+                                                            <h3 style="color: #333;">${name()} <span style="color: #333;">${skills()}</span></h3>
                                                             <ul>
                                                                 <li>
                                                                     <div class="star-rating" data-rating="${freelancer.average}"></div>
                                                                 </li>
                                                                 <li><div class="verified-badge-with-title">Verified</div></li>
-                                                                <li>
+                                                                <li style="text-transform: capitalize">
                                                                     ${freelancer.town ? `${freelancer.town}&nbsp;&nbsp;<img class="flag" src="/images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top">` : ""}
                                                                 </li>
                                                             </ul>

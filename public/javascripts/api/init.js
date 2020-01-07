@@ -172,8 +172,9 @@ const starRating = (ratingElem) => {
         var dataRating = $(this).attr('data-rating');
 
         // Rating Stars Output
-        function starsOutput(firstStar, secondStar, thirdStar, fourthStar, fifthStar) {
+        function starsOutput(nothingStar, firstStar, secondStar, thirdStar, fourthStar, fifthStar) {
             return ('' +
+                '<span class="' + nothingStar + '"></span>' +
                 '<span class="' + firstStar + '"></span>' +
                 '<span class="' + secondStar + '"></span>' +
                 '<span class="' + thirdStar + '"></span>' +
@@ -195,6 +196,9 @@ const starRating = (ratingElem) => {
         var oneHalfStar = starsOutput('star', 'star half', 'star empty', 'star empty', 'star empty');
         var oneStar = starsOutput('star', 'star empty', 'star empty', 'star empty', 'star empty');
 
+        var zeroHalfStar = starsOutput('star half', 'star empty', 'star empty', 'star empty', 'star empty');
+        var zeroStar = starsOutput('star empty', 'star empty', 'star empty', 'star empty', 'star empty');
+
         // Rules
         if (dataRating >= 4.75) {
             $(this).append(fiveStars);
@@ -212,8 +216,12 @@ const starRating = (ratingElem) => {
             $(this).append(twoStars);
         } else if (dataRating >= 1.25) {
             $(this).append(oneHalfStar);
-        } else if (dataRating < 1.25) {
+        } else if (dataRating >= 1) {
             $(this).append(oneStar);
+        } else if (dataRating >= 0.5) {
+            $(this).append(zeroHalfStar);
+        } else if (dataRating < 0.5) {
+            $(this).append(zeroStar);
         }
 
     });
