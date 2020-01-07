@@ -86,7 +86,7 @@ router.post('/login', (req, res) => {
                     req.session.id_user_beni = user.data.getObjet.id_user;
                     req.session.id_type_user_beni = user.data.getObjet.id_type;
                     req.session.isEmployer = user.data.getObjet.isEmployer;
-                    
+
                     res.status(200);
                     res.send(user.data);
 
@@ -292,7 +292,7 @@ router.post('/setSkills', (req, res) => {
 
     var data = {
         id_user: req.body.id_user,
-        skills: JSON.stringify(req.body.skills)
+        skills: req.body.skills
     };
 
     axios.post(`${API}/users/setSkills`, data)
@@ -303,6 +303,24 @@ router.post('/setSkills', (req, res) => {
             res.status(500).send(err)
         })
 });
+
+//Route faisant l'autocompletion des skills
+router.post('/searchSkills', (req, res) => {
+
+    var data = {
+        id_freelancer: req.body.id_freelancer,
+        name: req.body.name
+    };
+
+    axios.post(`${API}/skills/autoComplete`, data)
+        .then(response => {
+            res.status(200).send(response.data)
+        })
+        .catch(err => {
+            res.status(500).send(err)
+        })
+});
+
 //Route pour la récupération des stats
 router.get('/users/stats', (req, res) => {
     axios.get(`${API}/users/stats/${req.session.id_user_beni}`)
@@ -395,29 +413,29 @@ router.post('/offer/make', (req, res) => {
 
     if (Empty(setData)) {
         axios.post(`${API}/offer/make`, setData)
-             .then(response => {
-                 if (req.body.attach) {
-                     var attach = {
-                         id_docs: req.body.attach
-                     }
-                     axios.post(`${API}/offer/attachment/${response.data.getObjet._id}`, attach)
-                          .then(responseAttach => {
-                              res.status(200).send(responseAttach.data)
-                          })
-                          .catch(err => {
-                              res.status(202).send(response.data)
-                          })
-                 } else {
+            .then(response => {
+                if (req.body.attach) {
+                    var attach = {
+                        id_docs: req.body.attach
+                    }
+                    axios.post(`${API}/offer/attachment/${response.data.getObjet._id}`, attach)
+                        .then(responseAttach => {
+                            res.status(200).send(responseAttach.data)
+                        })
+                        .catch(err => {
+                            res.status(202).send(response.data)
+                        })
+                } else {
                     res.status(200).send(response.data);
-                 }
-             })
-             .catch(err => {
-                 res.status(500).send(err)
-             })
+                }
+            })
+            .catch(err => {
+                res.status(500).send(err)
+            })
     } else {
-        res.status(202).send({getEtat: false, getMessage: "Données maquantes..."})
+        res.status(202).send({ getEtat: false, getMessage: "Données maquantes..." })
     }
-    
+
 })
 
 module.exports = router;

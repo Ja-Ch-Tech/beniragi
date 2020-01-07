@@ -1,7 +1,7 @@
 import { getAllTypesUser, getUserId, NoEmpty, getHostApi, getAllTowns, starRating, getAllJob, dateFeedBack } from './init.js';
 //Permet de connecter un utilisateur
 const login = () => {
-    $("#login-form").on('submit', function (e) {
+    $("#login-form").on('submit', function(e) {
         e.preventDefault();
         var inputs = e.target.elements,
             objData = {};
@@ -16,10 +16,10 @@ const login = () => {
             type: 'POST',
             dataType: "json",
             data: objData,
-            beforeSend: function () {
+            beforeSend: function() {
                 $("#login-button").text("Verification ...");
             },
-            success: function (infos) {
+            success: function(infos) {
                 console.log(infos);
                 $("#login-button").html(`Se connecter <i class="icon-material-outline-arrow-right-alt"></i>`);
                 if (infos.getEtat) {
@@ -49,7 +49,7 @@ const login = () => {
                     $("#errorLogin p")[0].innerHTML = infos.getMessage;
                 }
             },
-            error: function (err) {
+            error: function(err) {
                 console.log(err);
             }
         })
@@ -60,18 +60,18 @@ const login = () => {
 //Permet d'enregistrer un utilisateur
 const register = () => {
     //Dynamisation des types users
-    getAllTypesUser(function (types) {
+    getAllTypesUser(function(types) {
         if (types) {
             var sortieType = 0;
             types.map(type => {
                 sortieType++;
-                var typeChecked = function () {
-                    if (sortieType == 1) {
-                        return 'checked = "checked"';
-                    } else {
-                        return '';
-                    }
-                },
+                var typeChecked = function() {
+                        if (sortieType == 1) {
+                            return 'checked = "checked"';
+                        } else {
+                            return '';
+                        }
+                    },
                     type = `<div>
 						<input type="radio" name="id_type" id="${type.intitule}-radio" class="account-type-radio" ${typeChecked()} value="${type._id}" />
 						<label for="${type.intitule}-radio" class="ripple-effect-dark">${type.intitule}</label>
@@ -110,10 +110,10 @@ const register = () => {
             type: 'POST',
             dataType: "json",
             data: objData,
-            beforeSend: function () {
+            beforeSend: function() {
                 $("#register-button").html("Veuillez patienter ...");
             },
-            success: function (data) {
+            success: function(data) {
                 console.log(data)
                 $("#register-button").html(`Terminer <i class="icon-material-outline-arrow-right-alt"></i>`);
                 if (data.getEtat) {
@@ -124,7 +124,7 @@ const register = () => {
                     $("#errorRegister p")[0].innerHTML = data.getMessage;
                 }
             },
-            error: function (err) {
+            error: function(err) {
                 console.log(err);
             }
         })
@@ -140,7 +140,7 @@ const getStatsUsers = () => {
         type: 'GET',
         url: "/api/users/numberUserByType",
         dataType: "json",
-        success: function (data) {
+        success: function(data) {
             if (data.getEtat) {
                 data.getObjet.map(value => {
                     var content = `<li>
@@ -152,7 +152,7 @@ const getStatsUsers = () => {
                 })
             }
         },
-        error: function (err) {
+        error: function(err) {
             console.log(err)
         }
     });
@@ -420,9 +420,64 @@ const getNav = () => {
 /**
  * Module permettant pre remplire les informations du user dans la page parametres
  */
+
 const userParameters = (user, details) => {
     console.log(details)
-    var content = `<!-- Dashboard Box -->
+    var jobAndSkillsInput = () => {
+        if (user.isEmployer) {
+            return ``;
+        }else{
+            return `<li>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="submit-field">
+                    <h5>Metier</h5>
+                    <select id="inputJob" class="selectpicker with-border" data-size="7" title="Selectionnez un metier" data-live-search="true">
+                        <option  value="">Selectionnez un metier</option>
+                    </select>
+                    <div id="jobLoader"></div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="submit-field">
+                    <h5>Vos specialites <i class="help-icon" data-tippy-placement="right" title="Ajouter au maximum 10 compétences"></i></h5>
+        
+                    
+                    <div class="keywords-container">
+                        <div class="keyword-input-container">
+                            <input id="setSkillsInput" type="text" class="keyword-input with-border" placeholder="Ajouter une specialite"/>
+                            <button id="btnAddSkills" style="display:none" data-tippy-placement="top" title="Valider la mise a jour de vos specialités" id="setSkillsBtn" class="keyword-input-button ripple-effect"><i class="icon-material-outline-check-circle"></i></button>
+                            
+                            <div id="autocomplete-container" class="autocomplete-container">
+                                
+                            </div>
+                        </div>
+                        <div class="keywords-list" id="listSkills">
+                            
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </li>`;
+        }
+    },
+    skills = () => {
+        if (details.getObjet.skills) {
+            if (details.getObjet.skills.length > 0) {
+
+                details.getObjet.skills.map(response => {
+                    var skill = `<span class="keyword"><span class="keyword-text">${response}</span></span>`;
+                    $("#listSkills").append(skill);
+                })
+                
+            }
+        }else{
+            return ``;
+        }
+    },
+    content = `<!-- Dashboard Box -->
     <div class="col-xl-12">
       <div class="dashboard-box margin-top-0">
 
@@ -495,7 +550,7 @@ const userParameters = (user, details) => {
                             <div class="col-md-12">
                                 <div class="submit-field">
                                     <h5>Votre biographie</h5>
-                                    <textarea cols="30" placeholder="Une petite presentation de ce vous etes" rows="5" class="with-border"></textarea>
+                                    <textarea name onkeyup="$(this).val().length > 3 ? $('#registerInfosBtn').slideDown() : ''" cols="30" placeholder="Une petite presentation de ce vous etes" rows="5" class="with-border"></textarea>
                                 </div>
                           </div>
                         </div>
@@ -526,44 +581,9 @@ const userParameters = (user, details) => {
 
         <div class="content">
           <ul class="fields-ul">
+            ${jobAndSkillsInput()}
             <li>
               <div class="row">
-                <div class="col-md-4">
-                  <div class="submit-field">
-                    <h5>Metier</h5>
-                    <select id="inputJob" class="selectpicker with-border" data-size="7" title="Selectionnez un metier" data-live-search="true">
-                      <option  value="">Selectionnez un metier</option>
-                    </select>
-                    <div id="jobLoader"></div>
-                  </div>
-                </div>
-                <div class="col-md-8">
-                  <div class="submit-field">
-                    <h5>Vos specialites <i class="help-icon" data-tippy-placement="right" title="Ajouter au maximum 10 compétences"></i></h5>
-
-                    
-                    <div class="keywords-container">
-                      <div class="keyword-input-container">
-                        <input id="setSkillsInput" type="text" class="keyword-input with-border" placeholder="Ajouter une specialite"/>
-                        <button id="setSkillsBtn" class="keyword-input-button ripple-effect"><i class="icon-material-outline-add"></i></button>
-                      </div>
-                      <div class="keywords-list" id="listSkills">
-                        <span class="keyword"><span class="keyword-text">Angular</span></span>
-                        <span class="keyword"><span class="keyword-text">Vue JS</span></span>
-                        <span class="keyword"><span class="keyword-text">iOS</span></span>
-                        <span class="keyword"><span class="keyword-text">Android</span></span>
-                        <span class="keyword"><span class="keyword-text">Laravel</span></span>
-                      </div>
-                      <div class="clearfix"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="row">
-                
-
                 <div class="col-md-6">
                   <div class="submit-field">
                     <h5>Ville de residence</h5>
@@ -661,7 +681,7 @@ const userParameters = (user, details) => {
 
     });
 
-
+    skills();
     updateAccount();
 
     $('select').selectpicker();
@@ -677,52 +697,125 @@ const submitSkills = (user, id_job) => {
     var btn = $("#setSkillsBtn"),
         input = $("#setSkillsInput"),
         listSkills = $("#listSkills"),
-        skills = [];
+        autocomplete = $("#autocomplete-container"),
+        skills = new Array();
 
-    btn.on('click', function (e) {
+    input.on('keyup', function (e) {
         e.preventDefault();
-        if (id_job != null) {
-            if (input.val().trim("") != "") {
-
-                //AJoute l'item dans le tab skills
-                skills.push({
+        if (input.val().trim().length > 1 && input.val().trim() != "") {
+            $.ajax({
+                type: 'POST',
+                url: `/api/searchSkills`,
+                dataType: "json",
+                data: {
+                    id_freelancer : user.user_id,
                     name : input.val()
-                });
-                
-                //Ajoute le skills dans le HTML
-                listSkills.append(`<span class="keyword"><span class="keyword-remove"></span><span class="keyword-text">${input.val()}</span></span>`);
-    
-                console.log(skills);
-    
-                $.ajax({
-                    type: 'POST',
-                    url: `api/setSkills`,
-                    dataType: "json",
-                    data: {
-                        id_user : user.user_id,
-                        skills : ["Mbuyu", "Kasongo"]
-                    },
-                    success: function (data) {
-                        console.log(data);
-                    },
-                    error: function (err) {
-                        console.log(err);
+                },
+                success: function (data) {
+                    if (data.getEtat) {
+                        autocomplete.html(``);
+                        autocomplete.fadeIn();
+                        data.getObjet.map(response => {
+                            autocomplete.append(`<div><span>${response.name}</span></div>`);
+                        })
+                    } else {
+                        autocomplete.html(`<div>Ajouter "<span>${input.val()}</span>" comme specialité</div>`);
+                        autocomplete.fadeIn();
                     }
-                });
-            }else{
-                Snackbar.show({
-                    text: "Veuillez renseigner votre specialite, SVP!",
-                    pos: 'bottom-right',
-                    showAction: true,
-                    actionText: "Fermer",
-                    duration: 5000,
-                    textColor: '#fff',
-                    backgroundColor: '#ad344b'
-                });
-            }
-        } else {
+
+                    
+                    //Lorsqu'on clique sur une div
+                    $("#autocomplete-container div").on('click', function (e) {
+
+                        e.preventDefault();
+                        
+                        var skillValue = e.currentTarget.getElementsByTagName('span')[0].innerHTML;
+                        //AJoute l'item dans le tab skills
+                        skills.push(skillValue);
+                        
+                        //Ajoute le skills dans le HTML
+                        listSkills.append(`<span class="keyword"><span class="keyword-remove"></span><span class="keyword-text">${skillValue}</span></span>`);
+                        
+                        //skills = JSON.stringify(skills);
+                        autocomplete.html(``);
+                        autocomplete.fadeOut();
+                        input.val(``);
+                        $("#btnAddSkills").fadeIn();
+                    });
+
+                    
+                },
+                error: function (err) {
+                    Snackbar.show({
+                        text: "Une erreur est survenue lors du chargement des specialités",
+                        pos: 'bottom-center',
+                        showAction: true,
+                        actionText: "Fermer",
+                        duration: 5000,
+                        textColor: '#fff',
+                        backgroundColor: '#3696f5'
+                    });
+                }
+            });
+        }else{
+            autocomplete.html(``);
+            autocomplete.fadeOut();
+        }
+    });
+
+    //Lorsqu'on clique sur le bouton permettant de valider l'envoi des skills
+    $("#btnAddSkills").on('click', function (e) {
+        e.preventDefault();
+        if (skills.length > 0) {
+            //Transformations de skills
+            skills = JSON.stringify(skills);
+
+            $.ajax({
+                type: 'POST',
+                url: `/api/setSkills`,
+                dataType: "json",
+                data: {
+                    id_user : user.user_id,
+                    skills : skills
+                },
+                success: function (data) {
+                    if (data.getEtat) {
+                        Snackbar.show({
+                            text: "Vos specialités ont étés mis a jour avec success",
+                            pos: 'bottom-right',
+                            showAction: true,
+                            actionText: "Fermer",
+                            duration: 5000,
+                            textColor: '#fff',
+                            backgroundColor: '#3696f5'
+                        });
+                    }else{
+                        Snackbar.show({
+                            text: data.getMessage,
+                            pos: 'bottom-right',
+                            showAction: true,
+                            actionText: "Fermer",
+                            duration: 5000,
+                            textColor: '#fff',
+                            backgroundColor: '#ad344b'
+                        });
+                    }
+                },
+                error: function (err) {
+                    Snackbar.show({
+                        text: "La specification de specialités n'a pas reussi, verifiez votre connexion internet",
+                        pos: 'bottom-center',
+                        showAction: true,
+                        actionText: "Fermer",
+                        duration: 5000,
+                        textColor: '#fff',
+                        backgroundColor: '#ad344b'
+                    });
+                }
+            });
+        }else{
             Snackbar.show({
-                text: "Veuillez d'abord speficié un metier avant d'ajouter une specialité",
+                text: "La liste de vos specialités est vide, recommencez l'ajout",
                 pos: 'bottom-right',
                 showAction: true,
                 actionText: "Fermer",
@@ -731,6 +824,7 @@ const submitSkills = (user, id_job) => {
                 backgroundColor: '#ad344b'
             });
         }
+
         
     })
 };
