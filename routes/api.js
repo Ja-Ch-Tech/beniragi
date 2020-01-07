@@ -50,6 +50,7 @@ router.post('/register', (req, res) => {
 
                     req.session.id_user_beni = inscription.data.getObjet._id;
                     req.session.id_type_user_beni = inscription.data.getObjet.id_type;
+                    req.session.isEmployer = inscription.data.getObjet.isEmployer;
 
                     res.status(200).send(inscription.data);
 
@@ -85,7 +86,7 @@ router.post('/login', (req, res) => {
                     req.session.id_user_beni = user.data.getObjet.id_user;
                     req.session.id_type_user_beni = user.data.getObjet.id_type;
                     req.session.isEmployer = user.data.getObjet.isEmployer;
-
+                    
                     res.status(200);
                     res.send(user.data);
 
@@ -382,6 +383,41 @@ router.get('/getAllTowns', (req, res) => {
         .catch(err => {
             res.status(500).send(err);
         })
+})
+
+//Passation de l'offre
+router.post('/offer/make', (req, res) => {
+    var setData = {
+        "id_employer": req.session.id_user_beni && req.session.id_type_user_beni ? req.session.id_user_beni : "",
+        "id_freelancer": req.body.id_freelancer ? req.body.id_freelancer : "",
+        "message": req.body.message ? req.body.message : ""
+    };
+
+    if (Empty(setData)) {
+        axios.post(`${API}/offer/make`, setData)
+             .then(response => {
+                 if (req.body.attach) {
+                     var attach = {
+                         id_docs: req.body.attach
+                     }
+                     axios.post(`${API}/offer/attachment/${response.data.getObjet._id}`, attach)
+                          .then(responseAttach => {
+                              res.status(200).send(responseAttach.data)
+                          })
+                          .catch(err => {
+                              res.status(202).send(response.data)
+                          })
+                 } else {
+                    res.status(200).send(response.data);
+                 }
+             })
+             .catch(err => {
+                 res.status(500).send(err)
+             })
+    } else {
+        res.status(202).send({getEtat: false, getMessage: "Données maquantes..."})
+    }
+    
 })
 
 module.exports = router;

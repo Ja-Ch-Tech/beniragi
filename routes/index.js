@@ -14,9 +14,9 @@ router.get('/', function(req, res, next) {
 router.get("/logout", (req, res) => {
 
     if (req.session.id_user_beni) {
-
-        req.session.id_user_beni = null;
-        req.session.id_type_user_beni = null;
+        delete req.session.id_user_beni;
+        delete req.session.id_type_user_beni;
+        delete req.session.isEmployer;
 
     } else {
         res.redirect("/");

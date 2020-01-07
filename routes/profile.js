@@ -19,7 +19,7 @@ router.get('/activation', function(req, res, next) {
 router.get('/dashboard', function(req, res, next) {
   if (req.session.id_user_beni) {
     res.render('profile/dashboard', { 
-      title: 'Votre tabeau de board',
+      title: 'Votre tableau de bord',
       classWrapper: '',
       classHeader: '',
       footer: 'hide' 
