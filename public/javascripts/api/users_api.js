@@ -1,4 +1,4 @@
-import { getAllTypesUser, getUserId, NoEmpty, getHostApi, getAllTowns, starRating, getAllJob, dateFeedBack } from './init.js';
+import { getAllTypesUser, getUserId, NoEmpty, getHostApi, getAllTowns, starRating, getAllJob, dateFeedBack,setFavoris } from './init.js';
 //Permet de connecter un utilisateur
 const login = () => {
     $("#login-form").on('submit', function(e) {
@@ -374,6 +374,17 @@ const getNav = () => {
                     if (/profile/i.test(pathName.split("/")[1]) && /parametres/i.test(pathName.split("/")[2])) {
                         userParameters(user, infos);
                     }
+                    //Execution de la fonction renvoyant les favoris
+                    if (/profile/i.test(pathName.split("/")[1]) && /favoris/i.test(pathName.split("/")[2])) {
+                        getFavourites(state, user);
+                    }
+
+                    //Execution de la fonction renvoyant les contacts
+                    if (/profile/i.test(pathName.split("/")[1]) && /contacts/i.test(pathName.split("/")[2])) {
+                        getFreelancersForOffer(state, user);
+                    }
+                    
+                    
                 } else {
                     navContent = `<!-- Lien vers l'activation d'un compte -->
                     <div class="header-widget hide-on-mobile">
@@ -1339,170 +1350,216 @@ const statsInDashboard = () => {
  * @param {Number} limit Nombre de freelancer qu'on veut get
  */
 const topFreelancer = (limit) => {
-    $.ajax({
-        type: 'GET',
-        url: `/api/users/top/${limit}`,
-        dataType: "json",
-        success: function (data) {
-            if (data.getEtat) {
-                const contentHead = `<div class="col-xl-12">
-                                        <div class="section-headline margin-top-0 margin-bottom-25">
-                                            <h3>Top Freelancer</h3>
-                                            <a href="/candidats/liste" class="headline-link color_blue">Voir tous nos candidats</a>
+    getUserId(function (state, session) {
+
+        $.ajax({
+            type: 'GET',
+            url: `/api/users/top/${limit}`,
+            dataType: "json",
+            success: function (data) {
+                if (data.getEtat) {
+                    const contentHead = `<div class="col-xl-12">
+                                            <div class="section-headline margin-top-0 margin-bottom-25">
+                                                <h3>Top Freelancer</h3>
+                                                <a href="/candidats/liste" class="headline-link color_blue">Voir tous nos candidats</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-12">
+                                            <div class="default-slick-carousel freelancers-container freelancers-grid-layout" id="freelancerInTop">
+                                            </div>
+                                        </di>`;
+                    $("#topFreelancer").html(contentHead);
+
+                    if (data.getObjet.length > 0) {
+
+                        var outFreelancer = 0;
+
+                        data.getObjet.map((freelancer, item, tab) => {
+                            //console.log(freelancer);
+
+                            var name = () => {
+                                if (freelancer.identity) {
+                                    return `${freelancer.identity.lastName} ${freelancer.identity.name.toUpperCase()}`
+                                } else {
+                                    return freelancer.email;
+                                }
+                            },
+                                favorite = () => {
+                                    if (state && session.isEmployer) {
+                                        if (freelancer.isThisInFavorite) {
+                                            return `<span data-tippy-placement="top" title="Retirer de mes favoris" data-favoris="true" data-user="${freelancer._id}" class="bookmark-icon favoris bookmarked"></span>`;
+                                        } else {
+                                            return `<span data-tippy-placement="top" title="Ajouter aux favoris" data-favoris="false" data-user="${freelancer._id}" class="bookmark-icon favoris"></span>`
+                                        }
+                                    }else{
+                                        return ``;
+                                    }
+                                    
+                                },
+                                skills = () => {
+                                    if (freelancer.skills && freelancer.skills.length > 0) {
+                                        return `<span>${freelancer.skills[0]} ${freelancer.skills.length > 1 ? ` + ${freelancer.skills[1]}` : ""}</span>`;
+                                    } else {
+                                        return `<span>---</span>`;
+                                    }
+                                },
+                                content = `<!--Freelancer -->
+                                <div style="background-color: #2c2b2b" class="freelancer">
+
+                                    <!-- Overview -->
+                                    <div class="freelancer-overview">
+                                        <div class="freelancer-overview-inner">
+                                            
+                                            <!-- Bookmark Icon -->
+                                            ${favorite()}
+                                            
+                                            <!-- Avatar -->
+                                            <div class="freelancer-avatar">
+                                                <div class="verified-badge"></div>
+                                                <a href="/candidats/${freelancer._id}/profile"><img src="images/user-avatar-big-01.jpg" alt=""></a>
+                                            </div>
+
+                                            <!-- Name -->
+                                            <div class="freelancer-name">
+                                                <h4><a style="color: #fff;" href="/candidats/${freelancer._id}/profile">${name()}<br/><img class="flag" src="/images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top"></a></h4>
+                                                ${skills()}
+                                            </div>
+
+                                            <!-- Rating -->
+                                            <div class="freelancer-rating">
+                                                <div class="star-rating" data-rating="${freelancer.average}"></div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-12">
-                                        <div class="default-slick-carousel freelancers-container freelancers-grid-layout" id="freelancerInTop">
+                                    
+                                    <!-- Details -->
+                                    <div style="background-color: #2c2b2b;" class="freelancer-details">
+                                        <div class="freelancer-details-list">
+                                            <ul>
+                                                <li>Localisation <strong style="color: #fff;"> ${freelancer.town ? `<i class="icon-material-outline-location-on"></i> ${freelancer.town}` : `---`}</strong></li>
+                                                <li>Taux <strong style="color: #fff;">$${freelancer.hourly ? freelancer.hourly.rate : "0"} / hr</strong></li>
+                                                <li>A temps <strong style="color: #fff;">95%</strong></li>
+                                            </ul>
                                         </div>
-                                    </di>`;
-                $("#topFreelancer").html(contentHead);
+                                        <a href="/candidats/${freelancer._id}/profile" class="button button-sliding-icon ripple-effect">Voir le profile <i class="icon-material-outline-arrow-right-alt"></i></a>
+                                    </div>
+                                </div>
+                                <!-- Freelancer / End -->`;
 
-                if (data.getObjet.length > 0) {
+                            outFreelancer++;
 
-                    var outFreelancer = 0;
+                            $("#freelancerInTop").append(content);
 
-                    data.getObjet.map((freelancer, item, tab) => {
-                        console.log(freelancer);
+                            if (outFreelancer == tab.length) {
 
-                        var name = () => {
-                            if (freelancer.identity) {
-                                return `${freelancer.identity.lastName} ${freelancer.identity.name.toUpperCase()}`
-                            } else {
-                                return freelancer.email;
+                                //Système étoile
+                                starRating('.star-rating');
+
+                                //Tooltip
+                                tippy('[data-tippy-placement]', {
+                                    delay: 100,
+                                    arrow: true,
+                                    arrowType: 'sharp',
+                                    size: 'regular',
+                                    duration: 200,
+
+                                    // 'shift-toward', 'fade', 'scale', 'perspective'
+                                    animation: 'scale',
+
+                                    animateFill: true,
+                                    theme: 'dark',
+
+                                    // How far the tooltip is from its reference element in pixels 
+                                    distance: 10,
+
+                                });
+
+                                //Caroussel
+                                $('.default-slick-carousel').slick({
+                                    infinite: false,
+                                    slidesToShow: 3,
+                                    slidesToScroll: 1,
+                                    dots: false,
+                                    arrows: true,
+                                    adaptiveHeight: true,
+                                    responsive: [
+                                        {
+                                            breakpoint: 1292,
+                                            settings: {
+                                                dots: true,
+                                                arrows: false
+                                            }
+                                        },
+                                        {
+                                            breakpoint: 993,
+                                            settings: {
+                                                slidesToShow: 2,
+                                                slidesToScroll: 2,
+                                                dots: true,
+                                                arrows: false
+                                            }
+                                        },
+                                        {
+                                            breakpoint: 769,
+                                            settings: {
+                                                slidesToShow: 1,
+                                                slidesToScroll: 1,
+                                                dots: true,
+                                                arrows: false
+                                            }
+                                        }
+                                    ]
+                                });
+
+                                //Gestion favoris, ajout
+                                $(".freelancer-overview .bookmark-icon").on('click', function (e) {
+                                    e.preventDefault();
+                                    var element = e.currentTarget,
+                                        dataFavoris = {
+                                            user_id : element.getAttribute("data-user"),
+                                            state : element.getAttribute("data-favoris"),
+                                            employer : session.user_id
+                                        };
+
+                                    setFavoris(dataFavoris, element, function (data) {
+                                        if (data) {
+                                            tippy('[data-tippy-placement]', {
+                                                delay: 100,
+                                                arrow: true,
+                                                arrowType: 'sharp',
+                                                size: 'regular',
+                                                duration: 200,
+
+                                                // 'shift-toward', 'fade', 'scale', 'perspective'
+                                                animation: 'scale',
+
+                                                animateFill: true,
+                                                theme: 'dark',
+
+                                                // How far the tooltip is from its reference element in pixels 
+                                                distance: 10,
+
+                                            });
+                                        }
+                                    });
+                                    
+                                })
+
                             }
-                        },
-                            favorite = () => {
-                                if (freelancer.isThisInFavorite) {
-                                    return `<span class="bookmark-icon" style="color: gold"></span>`;
-                                } else {
-                                    return `<span class="bookmark-icon"></span>`
-                                }
-                            },
-                            skills = () => {
-                                if (freelancer.skills && freelancer.skills.length > 0) {
-                                    return `<span>${freelancer.skills[0]} ${freelancer.skills.length > 1 ? ` + ${freelancer.skills[1]}` : ""}</span>`;
-                                } else {
-                                    return `<span>---</span>`;
-                                }
-                            },
-                            content = `<!--Freelancer -->
-							<div style="background-color: #2c2b2b" class="freelancer">
 
-								<!-- Overview -->
-								<div class="freelancer-overview">
-									<div class="freelancer-overview-inner">
-										
-										<!-- Bookmark Icon -->
-										${favorite()}
-										
-										<!-- Avatar -->
-										<div class="freelancer-avatar">
-											<div class="verified-badge"></div>
-											<a href="/candidats/${freelancer._id}/profile"><img src="images/user-avatar-big-01.jpg" alt=""></a>
-										</div>
-
-										<!-- Name -->
-										<div class="freelancer-name">
-											<h4><a style="color: #fff;" href="/candidats/${freelancer._id}/profile">${name()}<br/><img class="flag" src="/images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top"></a></h4>
-											${skills()}
-										</div>
-
-										<!-- Rating -->
-										<div class="freelancer-rating">
-											<div class="star-rating" data-rating="${freelancer.average}"></div>
-										</div>
-									</div>
-								</div>
-								
-								<!-- Details -->
-								<div style="background-color: #2c2b2b;" class="freelancer-details">
-									<div class="freelancer-details-list">
-										<ul>
-											<li>Localisation <strong style="color: #fff;"> ${freelancer.town ? `<i class="icon-material-outline-location-on"></i> ${freelancer.town}` : `---`}</strong></li>
-											<li>Taux <strong style="color: #fff;">$${freelancer.hourly ? freelancer.hourly.rate : "0"} / hr</strong></li>
-											<li>A temps <strong style="color: #fff;">95%</strong></li>
-										</ul>
-									</div>
-									<a href="/candidats/${freelancer._id}/profile" class="button button-sliding-icon ripple-effect">Voir le profile <i class="icon-material-outline-arrow-right-alt"></i></a>
-								</div>
-							</div>
-                            <!-- Freelancer / End -->`;
-
-                        outFreelancer++;
-
-                        $("#freelancerInTop").append(content);
-
-                        if (outFreelancer == tab.length) {
-
-                            //Système étoile
-                            starRating('.star-rating');
-
-                            //Tooltip
-                            tippy('[data-tippy-placement]', {
-                                delay: 100,
-                                arrow: true,
-                                arrowType: 'sharp',
-                                size: 'regular',
-                                duration: 200,
-
-                                // 'shift-toward', 'fade', 'scale', 'perspective'
-                                animation: 'scale',
-
-                                animateFill: true,
-                                theme: 'dark',
-
-                                // How far the tooltip is from its reference element in pixels 
-                                distance: 10,
-
-                            });
-
-                            //Caroussel
-                            $('.default-slick-carousel').slick({
-                                infinite: false,
-                                slidesToShow: 3,
-                                slidesToScroll: 1,
-                                dots: false,
-                                arrows: true,
-                                adaptiveHeight: true,
-                                responsive: [
-                                    {
-                                        breakpoint: 1292,
-                                        settings: {
-                                            dots: true,
-                                            arrows: false
-                                        }
-                                    },
-                                    {
-                                        breakpoint: 993,
-                                        settings: {
-                                            slidesToShow: 2,
-                                            slidesToScroll: 2,
-                                            dots: true,
-                                            arrows: false
-                                        }
-                                    },
-                                    {
-                                        breakpoint: 769,
-                                        settings: {
-                                            slidesToShow: 1,
-                                            slidesToScroll: 1,
-                                            dots: true,
-                                            arrows: false
-                                        }
-                                    }
-                                ]
-                            });
-                        }
-
-                    })
+                        })
+                    }
                 }
+            },
+            error: function (err) {
+                console.log(err);
             }
-        },
-        error: function (err) {
-            console.log(err);
-        }
+        });
     });
+
+    
 }
+
 
 /**
  * Dynamisation des metiers dans le dropdown et footer
@@ -1944,6 +2001,378 @@ const setAttachment = () => {
 
 
 
+}
+/**
+ * Recuperation de favoris d'un employeur
+ */
+const getFavourites = (state, session) => {
+
+    if (state && session.isEmployer) {
+        $.ajax({
+            type: 'GET',
+            url: "/api/getFavorites/" + session.user_id,
+            dataType: "json",
+            success: function(data) {
+                if (data.getEtat) {
+                    const contentHead = `<div id="freelancerList" class="freelancers-container freelancers-grid-layout margin-top-35">
+                                        </di>`;
+                    $("#freelancerInfavoris").html(contentHead);
+
+                    if (data.getObjet.length > 0) {
+
+                        var outFreelancer = 0;
+
+                        data.getObjet.map((freelancer, item, tab) => {
+                            //console.log(freelancer);
+
+                            var name = () => {
+                                if (freelancer.identity) {
+                                    return `${freelancer.identity.lastName} ${freelancer.identity.name.toUpperCase()}`
+                                } else {
+                                    return freelancer.email;
+                                }
+                            },
+                                favorite = () => {
+                                    if (state && session.isEmployer) {
+                                        if (freelancer.isThisInFavorite) {
+                                            return `<span data-tippy-placement="bottom" title="Retirer de mes favoris" data-favoris="true" data-user="${freelancer._id}" class="bookmark-icon bookmarked"></span>`;
+                                        } else {
+                                            return `<span data-favoris="false" data-user="${freelancer._id}" class="bookmark-icon"></span>`
+                                        }
+                                    }else{
+                                        return ``;
+                                    }
+                                    
+                                },
+                                skills = () => {
+                                    if (freelancer.skills && freelancer.skills.length > 0) {
+                                        return `<span>${freelancer.skills[0]} ${freelancer.skills.length > 1 ? ` + ${freelancer.skills[1]}` : ""}</span>`;
+                                    } else {
+                                        return `<span>---</span>`;
+                                    }
+                                },
+                                content = `<!--Freelancer -->
+                                <div style="background-color: #333" class="freelancer">
+
+                                    <!-- Overview -->
+                                    <div class="freelancer-overview">
+                                        <div class="freelancer-overview-inner">
+                                            
+                                            <!-- Bookmark Icon -->
+                                            ${favorite()}
+                                            
+                                            <!-- Avatar -->
+                                            <div class="freelancer-avatar">
+                                                <div class="verified-badge"></div>
+                                                <a href="/candidats/${freelancer._id}/profile"><img src="/images/user-avatar-big-01.jpg" alt=""></a>
+                                            </div>
+
+                                            <!-- Name -->
+                                            <div class="freelancer-name">
+                                                <h4><a style="color: #fff;" href="/candidats/${freelancer._id}/profile">${name()}<br/><img class="flag" src="/images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top"></a></h4>
+                                                ${skills()}
+                                            </div>
+
+                                            <!-- Rating -->
+                                            <div class="freelancer-rating">
+                                                <div class="star-rating" data-rating="${freelancer.average}"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Details -->
+                                    <div style="background-color: #333;" class="freelancer-details">
+                                        <center>
+                                            <div class="freelancer-details-list">
+                                                <center>
+                                                    <ul>
+                                                        <li>Localisation <strong style="color: #fff;"> ${freelancer.town ? `<i class="icon-material-outline-location-on"></i> ${freelancer.town}` : `---`}</strong></li>
+                                                        <li>Taux <strong style="color: #fff;">$${freelancer.hourly ? freelancer.hourly.rate : "0"} / hr</strong></li>
+                                                        <li>A temps <strong style="color: #fff;">95%</strong></li>
+                                                    </ul>
+                                                </center>
+                                            </div>
+                                            <a href="/candidats/${freelancer._id}/profile" class="button button-sliding-icon ripple-effect">Voir le profile <i class="icon-material-outline-arrow-right-alt"></i></a>
+                                        </center>
+                                    </div>
+                                </div>
+                                <!-- Freelancer / End -->`;
+
+                            outFreelancer++;
+
+                            $("#freelancerList").append(content);
+
+                            if (outFreelancer == tab.length) {
+
+                                //Système étoile
+                                starRating('.star-rating');
+
+                                //Tooltip
+                                tippy('[data-tippy-placement]', {
+                                    delay: 100,
+                                    arrow: true,
+                                    arrowType: 'sharp',
+                                    size: 'regular',
+                                    duration: 200,
+
+                                    // 'shift-toward', 'fade', 'scale', 'perspective'
+                                    animation: 'scale',
+
+                                    animateFill: true,
+                                    theme: 'dark',
+
+                                    // How far the tooltip is from its reference element in pixels 
+                                    distance: 10,
+
+                                });
+
+                                //Gestion favoris, ajout
+                                $(".freelancer-overview .bookmark-icon").on('click', function (e) {
+                                    e.preventDefault();
+                                    var element = e.currentTarget,
+                                        dataFavoris = {
+                                            user_id : element.getAttribute("data-user"),
+                                            state : element.getAttribute("data-favoris"),
+                                            employer : session.user_id
+                                        };
+
+                                    setFavoris(dataFavoris, element, function (data) {
+                                        //Retire le bloc
+                                        if (data) {
+                                            //Tooltip
+                                            tippy('[data-tippy-placement]', {
+                                                delay: 100,
+                                                arrow: true,
+                                                arrowType: 'sharp',
+                                                size: 'regular',
+                                                duration: 200,
+
+                                                // 'shift-toward', 'fade', 'scale', 'perspective'
+                                                animation: 'scale',
+
+                                                animateFill: true,
+                                                theme: 'dark',
+
+                                                // How far the tooltip is from its reference element in pixels 
+                                                distance: 10,
+
+                                            });
+                                            //element.parentNode.parentNode.parentNode.remove();
+                                        }
+                                    });
+                                    
+                                })
+
+                            }
+
+                        })
+                    }
+                }else{
+                    $("#freelancerInfavoris").html(`
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div style="margin:13% 0%;"><span style="font-size:150px;" class="icon-line-awesome-star-o"></span><br/><br/><br/>
+                                    <p style="font-size:25px;">La liste de vos favoris est vide</p>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    `);
+                }
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        });
+    } else {}
+    
+}
+
+/**
+ * Recuperation de freelancer a qui on a envoyer aux offres
+ */
+const getFreelancersForOffer = (state, session) => {
+    if (state && session.isEmployer) {
+        $.ajax({
+            type: 'GET',
+            url: "/api/getFreelancersForOffer/" + session.user_id,
+            dataType: "json",
+            success: function(data) {
+                console.log(data)
+                if (data.getEtat) {
+                    const contentHead = `<div id="freelancerList" class="freelancers-container freelancers-grid-layout margin-top-35">
+                                        </di>`;
+                    $("#freelancerInoffer").html(contentHead);
+
+                    if (data.getObjet.length > 0) {
+
+                        var outFreelancer = 0;
+
+                        data.getObjet.map((freelancer, item, tab) => {
+                            //console.log(freelancer);
+
+                            var name = () => {
+                                if (freelancer.infos.identity) {
+                                    return `${freelancer.infos.identity.lastName} ${freelancer.infos.identity.name.toUpperCase()}`
+                                } else {
+                                    return freelancer.infos.email;
+                                }
+                            },
+                                favorite = () => {
+                                    if (state && session.isEmployer) {
+                                        if (freelancer.infos.isThisInFavorite) {
+                                            return `<span data-tippy-placement="bottom" title="Retirer de mes favoris" data-favoris="true" data-user="${freelancer.infos._id}" class="bookmark-icon bookmarked"></span>`;
+                                        } else {
+                                            return `<span data-tippy-placement="bottom" title="Ajouter aux favoris" data-favoris="false" data-user="${freelancer.infos._id}" class="bookmark-icon"></span>`
+                                        }
+                                    }else{
+                                        return ``;
+                                    }
+                                    
+                                },
+                                skills = () => {
+                                    if (freelancer.infos.skills && freelancer.infos.skills.length > 0) {
+                                        return `<span>${freelancer.infos.skills[0]} ${freelancer.infos.skills.length > 1 ? ` + ${freelancer.infos.skills[1]}` : ""}</span>`;
+                                    } else {
+                                        return `<span>---</span>`;
+                                    }
+                                },
+                                content = `<!--Freelancer -->
+                                <div style="background-color: #333" class="freelancer">
+
+                                    <!-- Overview -->
+                                    <div class="freelancer-overview">
+                                        <div class="freelancer-overview-inner">
+                                            
+                                            <!-- Bookmark Icon -->
+                                            ${favorite()}
+                                            
+                                            <!-- Avatar -->
+                                            <div class="freelancer-avatar">
+                                                <div class="verified-badge"></div>
+                                                <a href="/candidats/${freelancer.infos._id}/profile"><img src="/images/user-avatar-big-01.jpg" alt=""></a>
+                                            </div>
+
+                                            <!-- Name -->
+                                            <div class="freelancer-name">
+                                                <h4><a style="color: #fff;" href="/candidats/${freelancer.infos._id}/profile">${name()}<br/><img class="flag" src="/images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top"></a></h4>
+                                                ${skills()}
+                                            </div>
+
+                                            <!-- Rating -->
+                                            <div class="freelancer-rating">
+                                                <div class="star-rating" data-rating="${freelancer.infos.average}"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Details -->
+                                    <div style="background-color: #333;" class="freelancer-details">
+                                        <center>
+                                            <div class="freelancer-details-list">
+                                                <center>
+                                                    <ul>
+                                                        <li>Localisation <strong style="color: #fff;"> ${freelancer.infos.town ? `<i class="icon-material-outline-location-on"></i> ${freelancer.infos.town}` : `---`}</strong></li>
+                                                        <li>Taux <strong style="color: #fff;">$${freelancer.infos.hourly ? freelancer.infos.hourly.rate : "0"} / hr</strong></li>
+                                                        <li>A temps <strong style="color: #fff;">95%</strong></li>
+                                                        <li>Nb. offres <strong style="color: #fff;">${freelancer.nbreOffer ? `${freelancer.nbreOffer}` : `---`}</strong></li>
+                                                    </ul>
+                                                </center>
+                                            </div>
+                                            <a href="#" class="button button-sliding-icon ripple-effect">Laissez votre appreciation 
+                                            <i class="icon-material-outline-arrow-right-alt"></i></a>
+                                        </center>
+                                    </div>
+                                </div>
+                                <!-- Freelancer / End -->`;
+
+                            outFreelancer++;
+
+                            $("#freelancerList").append(content);
+
+                            if (outFreelancer == tab.length) {
+
+                                //Système étoile
+                                starRating('.star-rating');
+
+                                //Tooltip
+                                tippy('[data-tippy-placement]', {
+                                    delay: 100,
+                                    arrow: true,
+                                    arrowType: 'sharp',
+                                    size: 'regular',
+                                    duration: 200,
+
+                                    // 'shift-toward', 'fade', 'scale', 'perspective'
+                                    animation: 'scale',
+
+                                    animateFill: true,
+                                    theme: 'dark',
+
+                                    // How far the tooltip is from its reference element in pixels 
+                                    distance: 10,
+
+                                });
+
+                                //Gestion favoris, ajout
+                                $(".freelancer-overview .bookmark-icon").on('click', function (e) {
+                                    e.preventDefault();
+                                    var element = e.currentTarget,
+                                        dataFavoris = {
+                                            user_id : element.getAttribute("data-user"),
+                                            state : element.getAttribute("data-favoris"),
+                                            employer : session.user_id
+                                        };
+
+                                    setFavoris(dataFavoris, element, function (data) {
+                                        //Retire le bloc
+                                        if (data) {
+                                            //Tooltip
+                                            tippy('[data-tippy-placement]', {
+                                                delay: 100,
+                                                arrow: true,
+                                                arrowType: 'sharp',
+                                                size: 'regular',
+                                                duration: 200,
+
+                                                // 'shift-toward', 'fade', 'scale', 'perspective'
+                                                animation: 'scale',
+
+                                                animateFill: true,
+                                                theme: 'dark',
+
+                                                // How far the tooltip is from its reference element in pixels 
+                                                distance: 10,
+
+                                            });
+                                            //element.parentNode.parentNode.parentNode.remove();
+                                        }
+                                    });
+                                    
+                                })
+
+                            }
+
+                        })
+                    }
+                }else{
+                    $("#freelancerInfavoris").html(`
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div style="margin:13% 0%;"><span style="font-size:150px;" class="icon-line-awesome-star-o"></span><br/><br/><br/>
+                                    <p style="font-size:25px;">La liste de vos favoris est vide</p>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    `);
+                }
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        });
+    }
 }
 
 export { login, register, getStatsUsers, getNav, activeAccount, statsInDashboard, topFreelancer, getDropAnfooterJobs, getDropAnfooterTown, sidebar, detailsUser }

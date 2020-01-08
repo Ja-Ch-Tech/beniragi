@@ -321,6 +321,23 @@ router.post('/searchSkills', (req, res) => {
         })
 });
 
+//Route faisant la mise a jour de favoris
+router.post('/setFavoris', (req, res) => {
+
+    var data = {
+        id_freelancer: req.body.user_id,
+        id_employer: req.body.employer
+    };
+
+    axios.post(`${API}/favoris/set`, data)
+        .then(response => {
+            res.status(200).send(response.data)
+        })
+        .catch(err => {
+            res.status(500).send(err)
+        })
+});
+
 //Route pour la récupération des stats
 router.get('/users/stats', (req, res) => {
     axios.get(`${API}/users/stats/${req.session.id_user_beni}`)
@@ -438,4 +455,25 @@ router.post('/offer/make', (req, res) => {
 
 })
 
+//Recuperation des favoris d'un employeur
+router.get('/getFavorites/:id_employer', (req, res) => {
+    axios.get(`${API}/users/getFavorites/${req.params.id_employer}`)
+        .then(response => {
+            res.status(200).send(response.data);
+        })
+        .catch(err => {
+            res.status(500).send(err);
+        })
+})
+
+//Recupere les freelancer contacter par un employeur
+router.get('/getFreelancersForOffer/:id_employer', (req, res) => {
+    axios.get(`${API}/offer/getFreelancersForOffer/${req.params.id_employer}`)
+        .then(response => {
+            res.status(200).send(response.data);
+        })
+        .catch(err => {
+            res.status(500).send(err);
+        })
+})
 module.exports = router;
