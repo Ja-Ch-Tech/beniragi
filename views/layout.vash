@@ -346,6 +346,7 @@
 <script src="/javascripts/slick.min.js"></script>
 <script src="/javascripts/custom.js"></script>
 <script src="/javascripts/api/router.js" type="module"></script>
+<script src="/javascripts/api/external.js"></script>
 
 <!-- Snackbar // documentation: https://www.polonel.com/snackbar/ -->
 <script>

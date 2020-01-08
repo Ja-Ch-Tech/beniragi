@@ -2,6 +2,7 @@ import { getHostApi, getUserId } from './init.js';
 import { login, register, getStatsUsers as statsUsers, getNav, activeAccount, sidebar, statsInDashboard as miniStats, topFreelancer, getDropAnfooterJobs, getDropAnfooterTown, detailsUser } from './users_api.js';
 import { getJobs } from './jobs.js';
 import { graph } from './view.js';
+import { messageList } from './offer.js';
 
 
 (() => {
@@ -32,6 +33,10 @@ import { graph } from './view.js';
             if (/dashboard/i.test(pathName.split("/")[pathName.split("/").length - 1])) {
                 miniStats();
                 graph();
+            }
+
+            if (/messages/i.test(pathName.split("/")[pathName.split("/").length - 1])) {
+                messageList();
             }
             
         }

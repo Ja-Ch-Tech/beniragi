@@ -438,4 +438,15 @@ router.post('/offer/make', (req, res) => {
 
 })
 
+//Récupération de la liste des messages
+router.get('/offer/getMessages', (req, res) => {
+    axios.get(`${API}/offer/getMessages/${req.session.id_user_beni}`)
+         .then(response => {
+             res.status(200).send(response.data);
+         })
+         .catch(err => {
+             res.status(200).send(err)
+         })
+})
+
 module.exports = router;
