@@ -62,14 +62,10 @@
 		
 						<!-- Freelancer Indicators -->
 						<div class="sidebar-widget">
-							<div class="freelancer-indicators">
+							<div class="freelancer-indicators" id="indicatorsTime">
 		
-								<!-- Indicator -->
-								<div class="indicator">
-									<strong>90%</strong>
-									<div class="indicator-bar" data-indicator-percentage="90"><span></span></div>
-									<span>A temps</span>
-								</div>
+								<!-- Dynamic content -->
+								
 							</div>
 						</div>
 		

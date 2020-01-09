@@ -1306,7 +1306,7 @@ const topFreelancer = (limit) => {
                     var outFreelancer = 0;
 
                     data.getObjet.map((freelancer, item, tab) => {
-                        
+                        console.log(freelancer);
                         var name = () => {
                             if (freelancer.identity) {
                                 return `${freelancer.identity.lastName} ${freelancer.identity.name.toUpperCase()}`
@@ -1363,7 +1363,7 @@ const topFreelancer = (limit) => {
 										<ul>
 											<li>Localisation <strong style="color: #fff;"> ${freelancer.town ? `<i class="icon-material-outline-location-on"></i> ${freelancer.town}` : `---`}</strong></li>
 											<li>Taux <strong style="color: #fff;">$${freelancer.hourly ? freelancer.hourly.rate : "0"} / hr</strong></li>
-											<li>A temps <strong style="color: #fff;">95%</strong></li>
+											<li>A temps <strong style="color: #fff;">${freelancer.inTime}%</strong></li>
 										</ul>
 									</div>
 									<a href="/candidats/${freelancer._id}/profile" class="button button-sliding-icon ripple-effect">Voir le profile <i class="icon-material-outline-arrow-right-alt"></i></a>
@@ -1502,9 +1502,9 @@ const detailsUser = (id) => {
                         },
                         skills = () => {
                             if (freelancer.skills && freelancer.skills.length > 0) {
-                                return `<span style="color: #333;">${freelancer.skills[0]} ${freelancer.skills.length > 1 ? ` + ${freelancer.skills[1]}` : ""}</span>`;
+                                return `<span>${freelancer.skills[0]} ${freelancer.skills.length > 1 ? ` + ${freelancer.skills[1]}` : ""}</span>`;
                             } else {
-                                return `<span style="color: #333;">---</span>`;
+                                return `<span>---</span>`;
                             }
                         },
                         bio = () => {
@@ -1545,7 +1545,7 @@ const detailsUser = (id) => {
                                                         <div class="header-image freelancer-avatar"><img src="/images/user-avatar-big-02.jpg" alt="">
                                                         </div>
                                                         <div class="header-details">
-                                                            <h3 style="color: #333;">${name()} <span style="color: #333;">${skills()}</span></h3>
+                                                            <h3>${name()} <span>${skills()}</span></h3>
                                                             <ul>
                                                                 <li>
                                                                     <div class="star-rating" data-rating="${freelancer.average}"></div>
@@ -1606,6 +1606,30 @@ const detailsUser = (id) => {
                         })
                     }
 
+                    var judgement = () => {
+                            if (freelancer.inTime == 100) {
+                                return "Super-Flash au boulot !"
+                            }else if (freelancer.inTime >= 75) {
+                                return "Flash au boulot !"
+                            }else if (freelancer.inTime > 50) {
+                                return "Rapide au boulot !"
+                            }else if (freelancer.inTime == 50) {
+                                return "Vitesse normale"
+                            }else if (freelancer.inTime >= 40) {
+                                return "Assez rapide, mais plus lent !"
+                            }else if (freelancer.inTime < 40) {
+                                return "Lent !"
+                            }else if (freelancer.inTime <= 20) {
+                                return "Trop lent, trop lent..."
+                            }else if (freelancer.inTime == 0) {
+                                return "Pas encore côté"
+                            }
+                        },
+                        indicatorsTime = `<div class="indicator">
+                                            <strong>${freelancer.inTime}%</strong>
+                                            <div class="indicator-bar" data-indicator-percentage="${freelancer.inTime}"><span></span></div>
+                                            <span>${judgement()}</span>
+                                        </div>`;
                     var favoris = `${favorite()}`,
                         inputIdentity = () => {
                             if (freelancer.identity) {
@@ -1662,6 +1686,8 @@ const detailsUser = (id) => {
                     $("#hourlyDetails").html(hourly);
                     $("#makeOffer").html(offer);
                     $("#favoriteDetails").html(favoris);
+                    $("#indicatorsTime").html(indicatorsTime);
+
                     starRating(".star-rating");
                     submitOffer(id, freelancer.identity ? freelancer.identity.lastName.toUpperCase() : freelancer.email);
                     setAttachment();
@@ -1699,6 +1725,13 @@ const detailsUser = (id) => {
                         midClick: true,
                         removalDelay: 300,
                         mainClass: 'my-mfp-zoom-in'
+                    });
+
+                    $('.indicator-bar').each(function () {
+                        var indicatorLenght = $(this).attr('data-indicator-percentage');
+                        $(this).find("span").css({
+                            width: indicatorLenght + "%"
+                        });
                     });
                 }
             },

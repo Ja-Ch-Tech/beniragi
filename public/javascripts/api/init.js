@@ -240,7 +240,7 @@ const customDateForFeedBack = (date) => {
 function getMonth(month) {
     var monthLetters = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 
-    return monthLetters[parseInt(month) - 1];
+    return monthLetters[parseInt(month)];
 }
 
 export { getHostApi, customDate, getAllTypesUser, getUserId, getHostWeb, NoEmpty, getAllTowns, starRating, getAllJob, customDateForFeedBack as dateFeedBack }
