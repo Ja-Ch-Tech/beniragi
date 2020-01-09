@@ -110,7 +110,7 @@
 							<h3>Ajouter aux favoris ou partager</h3>
 		
 							<!-- Bookmark Button -->
-							<button class="bookmark-button margin-bottom-25" id="favoriteDetails">
+							<button style="display: none;" class="bookmark-button margin-bottom-25" id="favoriteDetails">
 								
 							</button>
 		

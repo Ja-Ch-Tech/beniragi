@@ -164,6 +164,16 @@ const NoEmpty = object => {
     return flag;
 }
 
+//Supprime un element du tableau
+const removeItem = (arr, item, callback) => {
+    for (var i = arr.length; i--;) {
+
+        if (arr[i] === item) {
+            arr.splice(i, 1);
+            callback(arr)
+        }
+    }
+}
 /**
  * Mise en favoris d'un freelancer
  */
@@ -310,4 +320,4 @@ function getMonth(month) {
     return monthLetters[parseInt(month) - 1];
 }
 
-export { getHostApi, customDate, getAllTypesUser, getUserId, getHostWeb, NoEmpty, getAllTowns, starRating, getAllJob, customDateForFeedBack as dateFeedBack, setFavoris }
+export { getHostApi, customDate, getAllTypesUser, getUserId, getHostWeb, NoEmpty, getAllTowns, starRating, getAllJob, customDateForFeedBack as dateFeedBack, setFavoris, removeItem }

@@ -1,4 +1,4 @@
-import { getAllTypesUser, getUserId, NoEmpty, getHostApi, getAllTowns, starRating, getAllJob, dateFeedBack,setFavoris } from './init.js';
+import { getAllTypesUser, getUserId, NoEmpty, getHostApi, getAllTowns, starRating, getAllJob, dateFeedBack,setFavoris, removeItem } from './init.js';
 //Permet de connecter un utilisateur
 const login = () => {
     $("#login-form").on('submit', function(e) {
@@ -477,12 +477,22 @@ const userParameters = (user, details) => {
     skills = () => {
         if (details.getObjet.skills) {
             if (details.getObjet.skills.length > 0) {
-
-                details.getObjet.skills.map(response => {
-                    var skill = `<span class="keyword"><span class="keyword-text">${response}</span></span>`;
+                for (var i = 0; i < details.getObjet.skills.length; i++) {
+                    var skill = `<span data-index="${i}" class="keyword"><span class="keyword-remove skills"></span><span class="keyword-text">${details.getObjet.skills[i]}</span></span>`;
                     $("#listSkills").append(skill);
-                })
+                }
                 
+            }
+        }else{
+            return ``;
+        }
+    },
+    bio = () => {
+        if (details.getObjet.bio) {
+            if (details.getObjet.bio.bio != null) {
+                return details.getObjet.bio.bio;
+            }else{
+                return ``;
             }
         }else{
             return ``;
@@ -561,7 +571,7 @@ const userParameters = (user, details) => {
                             <div class="col-md-12">
                                 <div class="submit-field">
                                     <h5>Votre biographie</h5>
-                                    <textarea name onkeyup="$(this).val().length > 3 ? $('#registerInfosBtn').slideDown() : ''" cols="30" placeholder="Une petite presentation de ce vous etes" rows="5" class="with-border"></textarea>
+                                    <textarea name="bio" id="bio" onkeyup="$(this).val().length > 3 ? $('#registerInfosBtn').slideDown() : ''" cols="30" resize="none" placeholder="Une petite presentation de ce vous etes" rows="5" class="with-border">${bio()}</textarea>
                                 </div>
                           </div>
                         </div>
@@ -698,19 +708,32 @@ const userParameters = (user, details) => {
     $('select').selectpicker();
     boostrapSelect();
     submitSelect(user);
-    submitSkills(user, details.getObjet.jobs ? details.getObjet.jobs.id_job : null);
+
+    //Si on veut supprimer un element des skills
+    $(".keyword .skills").on('click', function (e) {
+        e.preventDefault();
+        var item = e.currentTarget.parentNode.getElementsByClassName('keyword-text')[0].innerHTML;
+        item = String(item);
+        removeItem(details.getObjet.skills, item, function (array) {
+            details.getObjet.skills = array;
+            console.log(array)
+        });
+        e.currentTarget.parentNode.remove();
+        $("#btnAddSkills").fadeIn();
+    })
+    submitSkills(user, details.getObjet.jobs ? details.getObjet.jobs.id_job : null, details);
+
 }
 
 /**
  * Effectue la soumission des skills
  */
-const submitSkills = (user, id_job) => {
+const submitSkills = (user, id_job, details) => {
     var btn = $("#setSkillsBtn"),
         input = $("#setSkillsInput"),
         listSkills = $("#listSkills"),
         autocomplete = $("#autocomplete-container"),
-        skills = new Array();
-
+        skills = details.getObjet.skills ? details.getObjet.skills : new Array();
     input.on('keyup', function (e) {
         e.preventDefault();
         if (input.val().trim().length > 1 && input.val().trim() != "") {
@@ -730,14 +753,16 @@ const submitSkills = (user, id_job) => {
                             autocomplete.append(`<div><span>${response.name}</span></div>`);
                         })
                     } else {
-                        autocomplete.html(`<div>Ajouter "<span>${input.val()}</span>" comme specialité</div>`);
-                        autocomplete.fadeIn();
+                        if (input.val().trim() != null && input.val().trim() != "") {
+                           autocomplete.html(`<div>Ajouter "<span>${input.val()}</span>" comme specialité</div>`);
+                           autocomplete.fadeIn(); 
+                        }
+                        
                     }
 
                     
                     //Lorsqu'on clique sur une div
                     $("#autocomplete-container div").on('click', function (e) {
-
                         e.preventDefault();
                         
                         var skillValue = e.currentTarget.getElementsByTagName('span')[0].innerHTML;
@@ -745,13 +770,25 @@ const submitSkills = (user, id_job) => {
                         skills.push(skillValue);
                         
                         //Ajoute le skills dans le HTML
-                        listSkills.append(`<span class="keyword"><span class="keyword-remove"></span><span class="keyword-text">${skillValue}</span></span>`);
+                        listSkills.append(`<span class="keyword"><span class="keyword-remove skills"></span><span class="keyword-text">${skillValue}</span></span>`);
                         
                         //skills = JSON.stringify(skills);
                         autocomplete.html(``);
                         autocomplete.fadeOut();
                         input.val(``);
                         $("#btnAddSkills").fadeIn();
+
+                        //Si on veut supprimer un element des skills
+                        $(".keyword .skills").on('click', function (e) {
+                            e.preventDefault();
+                            var item = e.currentTarget.parentNode.getElementsByClassName('keyword-text')[0].innerHTML;
+                            item = String(item);
+                            removeItem(skills, item, function (array) {
+                                skills = array;
+                            });
+                            e.currentTarget.parentNode.remove();
+
+                        })
                     });
 
                     
@@ -777,6 +814,7 @@ const submitSkills = (user, id_job) => {
     //Lorsqu'on clique sur le bouton permettant de valider l'envoi des skills
     $("#btnAddSkills").on('click', function (e) {
         e.preventDefault();
+        console.log(skills);
         if (skills.length > 0) {
             //Transformations de skills
             skills = JSON.stringify(skills);
@@ -826,7 +864,7 @@ const submitSkills = (user, id_job) => {
             });
         }else{
             Snackbar.show({
-                text: "La liste de vos specialités est vide, recommencez l'ajout",
+                text: "La liste de vos specialités ne peut etre vide",
                 pos: 'bottom-right',
                 showAction: true,
                 actionText: "Fermer",
@@ -1048,7 +1086,7 @@ const updateAccount = () => {
         e.preventDefault();
         var inputs = e.target.elements,
             objData = {};
-
+        console.log(inputs);
         for (let index = 0; index < inputs.length; index++) {
             if (/input/i.test(e.target.elements[index].localName)) {
                 if (inputs[index].type != "email") {
@@ -1056,8 +1094,10 @@ const updateAccount = () => {
                 }
             }
         }
-        console.log(objData)
         if (NoEmpty(objData)) {
+            if ($("#bio").val().trim() != "") {
+                objData[$("#bio")[0].name] = $("#bio").val();
+            }
             $.ajax({
                 type: 'POST',
                 url: "/api/users/setIdentity",
@@ -1073,7 +1113,7 @@ const updateAccount = () => {
                     if (data.getEtat) {
                         Snackbar.show({
                             text: "Votre compte a ete mis a jour avec success",
-                            pos: 'bottom-right',
+                            pos: 'top-center',
                             showAction: true,
                             actionText: "Fermer",
                             duration: 5000,
@@ -1083,7 +1123,7 @@ const updateAccount = () => {
                     } else {
                         Snackbar.show({
                             text: data.getMessage,
-                            pos: 'bottom-right',
+                            pos: 'top-center',
                             showAction: true,
                             actionText: "Fermer",
                             duration: 5000,
@@ -1641,17 +1681,29 @@ const detailsUser = (id) => {
                             }
                         },
                         favorite = () => {
-                            if (freelancer.isThisInFavorite) {
-
-                                return `<span class="bookmark-icon" style="color: gold;"></span>
-                                        <span class="bookmark-text">Retirer des favoris</span>
-								        <span class="bookmarked-text">Ajouter aux favoris</span>`;
-                            } else {
-                                return `<span class="bookmark-icon"></span>
-                                        <span class="bookmark-text">Ajouter aux favoris</span>
-                                        <span class="bookmarked-text">Retirer des favoris</span>
-                                        `;
+                            if (isGet && user.isEmployer) {
+                                $("#favoriteDetails")[0].style.display = "block";
+                                if (freelancer.isThisInFavorite) {
+                                    $("#favoriteDetails")[0].classList.add("bookmarked");
+                                    $("#favoriteDetails")[0].setAttribute("data-favoris", "true");
+                                    $("#favoriteDetails")[0].setAttribute("data-user", id);
+                                    return `<span class="bookmark-icon"></span>
+                                            <span class="bookmarked-text">Retirer des favoris</span>
+                                            <span class="bookmark-text">Ajouter aux favoris</span>
+                                            `;
+                                } else {
+                                    $("#favoriteDetails")[0].classList.remove("bookmarked");
+                                    $("#favoriteDetails")[0].setAttribute("data-favoris", "false");
+                                    $("#favoriteDetails")[0].setAttribute("data-user", id);
+                                    return `<span class="bookmark-icon"></span>
+                                            <span class="bookmark-text">Retirer des favoris</span>
+                                            <span class="bookmarked-text">Ajouter aux favoris</span>
+                                            `;
+                                }
+                            }else{
+                                return ``;
                             }
+                            
                         },
                         firstSection = `<div class="container">
                                         <div class="row">
@@ -1816,6 +1868,20 @@ const detailsUser = (id) => {
                         removalDelay: 300,
                         mainClass: 'my-mfp-zoom-in'
                     });
+
+                    //on click du bouton favoris
+                    $("#favoriteDetails").on('click', function (e) {
+                        var element = e.currentTarget,
+                            dataFavoris = {
+                                user_id : element.getAttribute("data-user"),
+                                state : element.getAttribute("data-favoris"),
+                                employer : user.user_id
+                            };
+                        setFavoris(dataFavoris, element, function (data) {
+                            return true;
+                        });
+                        
+                    })
                 }
             },
             error: function (err) {
@@ -2171,9 +2237,15 @@ const getFavourites = (state, session) => {
                     $("#freelancerInfavoris").html(`
                         <div class="row">
                             <div class="col-md-12">
-                                <div style="margin:13% 0%;"><span style="font-size:150px;" class="icon-line-awesome-star-o"></span><br/><br/><br/>
-                                    <p style="font-size:25px;">La liste de vos favoris est vide</p>
-                                </div>
+                                <center>
+                                    <div style="margin:2% 0%;"><span style="font-size:150px;" class="icon-line-awesome-star-o"></span><br/><br/><br/>
+                                        <p style="font-size:25px;">La liste de vos favoris est vide</p>
+                                        <p style="font-size:18px;">Ajouter des profiles dans votre liste de favoris de sauvergader certains profiles interessant pour un contact ulterieur</p>
+                                        <a href="/candidats/liste" class="button button-sliding-icon ripple-effect">Trouvez de profiles interessant ICI! 
+                                            <i class="icon-material-outline-arrow-right-alt"></i></a>
+                                    </div>
+
+                                </center>
                             </div>
                             
                         </div>
@@ -2359,8 +2431,11 @@ const getFreelancersForOffer = (state, session) => {
                     $("#freelancerInfavoris").html(`
                         <div class="row">
                             <div class="col-md-12">
-                                <div style="margin:13% 0%;"><span style="font-size:150px;" class="icon-line-awesome-star-o"></span><br/><br/><br/>
-                                    <p style="font-size:25px;">La liste de vos favoris est vide</p>
+                                <div style="margin:13% 0%;"><span style="font-size:150px;" class="icon-material-outline-assignment"></span><br/><br/><br/>
+                                    <p style="font-size:25px;">La liste de vos contacts est vide</p>
+                                    <p>Ici nous listons tous les profiles à qui vous avez envoyer une offre, cela pour vous de rester en contact à n'importe quel moment</p>
+                                    <a href="/candidats/liste" class="button button-sliding-icon ripple-effect">Trouvez de profiles interessant ICI! 
+                                            <i class="icon-material-outline-arrow-right-alt"></i></a>
                                 </div>
                             </div>
                             
