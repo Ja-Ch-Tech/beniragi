@@ -1,3 +1,9 @@
+/**
+ * Permet de selectionner un message à afficher
+ * @param {String} userConnected L'identifiant de l'utilisateur connecté
+ * @param {String} id L'identifiant de la file de message
+ * @param {String} identity Le proprio de la file en question
+ */
 function activeMessage(userConnected, id, identity) {
     window.localStorage.setItem("currentList", id);
 
@@ -21,6 +27,9 @@ function activeMessage(userConnected, id, identity) {
     sendMessage();
 }
 
+/**
+ * Fonction permettant le redimensionnement automatique du textarea
+ */
 function autoResize() {
     jQuery.each(jQuery('textarea[data-autoresize]'), function () {
         var offset = this.offsetHeight - this.clientHeight;
@@ -161,4 +170,21 @@ const NoEmpty = object => {
     }
 
     return flag;
+}
+
+//Définir comme lue
+function setRead(e, id) {
+    $.ajax({
+        type: 'GET',
+        url: `/api/notification/setRead/${id}`,
+        dataType: "json",
+        success: function (data) {
+            if (data.getEtat) {
+                window.location.href = '/profile/messages';
+            }
+        },
+        error: function (err) {
+            console.log(err)
+        }
+    });
 }

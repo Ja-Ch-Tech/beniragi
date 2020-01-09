@@ -493,4 +493,14 @@ router.get('/notification/newMessage/:limit', (req, res) => {
     }
 })
 
+//Route permettant de marquer une notification comme lu
+router.get('/notification/setRead/:id', (req, res) => {
+    axios.get(`${API}/notification/setAlreadyRead/${req.params.id}`)
+         .then(response => {
+            res.status(200).send(response.data)
+         })
+         .catch(err => {
+             res.status(500).send(err)
+         })
+})
 module.exports = router;

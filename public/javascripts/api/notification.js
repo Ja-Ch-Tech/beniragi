@@ -67,11 +67,11 @@ const newMessage = (limit) => {
                         
                         outMessages++;
                         var name = () => {
-                                return message.identity ? message.lastName + " " + message.name : message.email;    
+                                return message.identity ? message.identity.lastName + " " + message.identity.name : message.email;    
                             },
                             contentMessage = `<!-- Notification -->
                                                 <li class="notifications-not-read">
-                                                    <a href="/profile/messages">
+                                                    <a href="#" onclick="setRead($(this), '${message._id}')">
                                                         <span class="notification-avatar status-online"><img src="/images/user-avatar-small-03.jpg" alt=""></span>
                                                         <div class="notification-text">
                                                             <strong>${name()}</strong>
