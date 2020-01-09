@@ -28,7 +28,7 @@ const Empty = object => {
 }
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
     res.send('respond with a resource');
 });
 
@@ -162,15 +162,15 @@ router.get('/users/numberUserByType', (req, res) => {
 
 //Récupération des métiers
 router.get('/jobs/gets/:limit', (req, res) => {
-        axios.get(`${API}/jobs/get/${parseInt(req.params.limit)}`)
-            .then(response => {
-                res.status(200).send(response.data)
-            })
-            .catch(err => {
-                res.status(500).send(err);
-            })
-    })
-    //Permet de recuperer l'identifiant d'un user
+    axios.get(`${API}/jobs/get/${parseInt(req.params.limit)}`)
+        .then(response => {
+            res.status(200).send(response.data)
+        })
+        .catch(err => {
+            res.status(500).send(err);
+        })
+})
+//Permet de recuperer l'identifiant d'un user
 router.get('/getSessionUser', (req, res) => {
     let id = req.session.id_user_beni ? req.session.id_user_beni : null,
         isEmployer = req.session.isEmployer ? true : false;
@@ -340,9 +340,9 @@ router.get('/view/getGraphForSixMonth', (req, res) => {
 
             if (formatData.getObjet.length > 0) {
                 var responseOut = {
-                        month: [],
-                        visit: []
-                    },
+                    month: [],
+                    visit: []
+                },
                     outGraph = 0;
 
                 formatData.getObjet.map((data, index, tab) => {
@@ -441,12 +441,56 @@ router.post('/offer/make', (req, res) => {
 //Récupération de la liste des messages
 router.get('/offer/getMessages', (req, res) => {
     axios.get(`${API}/offer/getMessages/${req.session.id_user_beni}`)
-         .then(response => {
-             res.status(200).send(response.data);
-         })
-         .catch(err => {
-             res.status(200).send(err)
-         })
+        .then(response => {
+            res.status(200).send(response.data);
+        })
+        .catch(err => {
+            res.status(200).send(err)
+        })
+})
+
+//Envoi du message
+router.post('/offer/message/send', (req, res) => {
+    var obj = {
+        id_offer: req.body.id_offer,
+        id_sender: req.session.id_user_beni ? req.session.id_user_beni : null,
+        message: req.body.txt
+    };
+
+    if (Empty(obj)) {
+        axios.post(`${API}/offer/message/send`, obj)
+            .then(response => {
+                var formatData = {
+                    id_sender: obj.id_sender,
+                    message: obj.message,
+                    send_at: new Date().toDateString()
+                };
+
+                res.status(200).send({getEtat: response.data.getEtat, getMessage: response.data.getMessage, getObjet: formatData});
+
+            })
+            .catch(err => {
+                res.status(500).send(err)
+            })
+    } else {
+        res.status(202).send({ getEtat: false, getMessage: "Des données manques !" })
+    }
+})
+
+//Route pour la récupération des nouveaux messages
+router.get('/notification/newMessage/:limit', (req, res) => {
+    
+    if (req.session.id_user_beni && (req.session.id_user_beni != null || req.session.id_user_beni != "null")) {
+        axios.get(`${API}/notification/getNewMessageNotRead/${req.session.id_user_beni}/${parseInt(req.params.limit)}`)
+             .then(response => {
+                 res.status(200).send(response.data)
+             })
+             .catch(err => {
+                 res.status(500).send(err)
+             })
+    } else {
+        res.status(202).send({getEtat: false, getMessage: "Vous n'êtes pas connecté"})
+    }
 })
 
 module.exports = router;

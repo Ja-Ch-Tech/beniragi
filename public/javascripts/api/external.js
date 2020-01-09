@@ -11,13 +11,14 @@ function activeMessage(userConnected, id, identity) {
                     <!-- Dynamic content -->
                 </div>
                 <div class="message-reply">
-                <textarea cols="1" rows="1" style="padding-left: 7px; border: 1px solid #aaa; background-color: transparent;"placeholder="Entrez le message texte..." data-autoresize></textarea>
-                <button class="button ripple-effect">Envoyer</button>
+                <form id="submitMessage" style="display: flex; width: 100%;"><textarea cols="1" rows="1" style="padding-left: 7px; border: 1px solid #aaa; background-color: transparent;" name="textarea" placeholder="Entrez le message texte..." data-autoresize></textarea><button class="button ripple-effect" form="submitMessage">Envoyer</button></form>
+                
               </div>`;
 
     $("#messageSelect").html(content);
     autoResize();
     getMessagesForOffer(userConnected, id);
+    sendMessage();
 }
 
 function autoResize() {
@@ -54,13 +55,13 @@ function getMessagesForOffer(userConnected, id) {
     //Tri côté client
     threadMessage.messages[0].messages.sort((message1, message2) => {
         if (message1.send_at > message2.send_at) {
-            return -1;
+            return 1;
         }
 
-        return 1;
+        return -1;
     });
     threadMessage.messages[0].messages.map((message, item, tab) => {
-       
+
         var content = `<div class="message-bubble ${userConnected == message.id_user ? `me` : ``}">
                         <div class="message-bubble-inner">
                         <div class="message-avatar"><img src="/images/user-avatar-small-01.jpg" alt="" /></div>
@@ -73,5 +74,91 @@ function getMessagesForOffer(userConnected, id) {
 
         $("#messageSet").append(content)
     })
+
+}
+
+/**
+ * Envoi du message dans une offre
+ */
+function sendMessage() {
     
+    $("#submitMessage").on('submit', (e) => {
+        e.preventDefault();
+        var txt = e.target.elements["textarea"].value;
+        
+        var objet = {
+                id_offer: window.localStorage.getItem("currentList"),
+                txt: txt
+            };
+
+        if (NoEmpty(objet)) {
+            $.ajax({
+                type: 'POST',
+                url: "/api/offer/message/send",
+                data: objet,
+                dataType: "json",
+                success: function (data) {
+                    if (data.getEtat) {
+                        var newMessage = `<div class="message-bubble me">
+                                            <div class="message-bubble-inner">
+                                            <div class="message-avatar"><img src="/images/user-avatar-small-01.jpg" alt="" /></div>
+                                            <div class="message-text">
+                                                <p>${data.getObjet.message}</p>
+                                            </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>`;
+                        $("#messageSet").append(newMessage);
+                        e.target.elements["textarea"].value = "";
+                        Snackbar.show({
+                            text: `Message envoyé...`,
+                            pos: 'top-center',
+                            showAction: false,
+                            duration: 3000,
+                            textColor: '#fff',
+                            backgroundColor: '#3696f5'
+                        });
+                    } else {
+                        Snackbar.show({
+                            text: data.getMessage,
+                            pos: 'top-center',
+                            showAction: false,
+                            duration: 3000,
+                            textColor: '#fff',
+                            backgroundColor: '#ad344b'
+                        });
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        } else {
+            Snackbar.show({
+                text: "Le message ne doit pas être vide !",
+                pos: 'top-center',
+                showAction: false,
+                duration: 3000,
+                textColor: '#fff',
+                backgroundColor: '#ad344b'
+            });
+        }
+        
+    })
+}
+
+//Verifie si les champs sont vides
+const NoEmpty = object => {
+    let flag = false;
+
+    for (const value in object) {
+        if (object[value] != "" && object.hasOwnProperty(value)) {
+            flag = true;
+        } else {
+            flag = false;
+            break;
+        }
+    }
+
+    return flag;
 }

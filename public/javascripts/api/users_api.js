@@ -1,4 +1,6 @@
 import { getAllTypesUser, getUserId, NoEmpty, getHostApi, getAllTowns, starRating, getAllJob, dateFeedBack } from './init.js';
+import { newMessage } from './notification.js';
+
 //Permet de connecter un utilisateur
 const login = () => {
     $("#login-form").on('submit', function(e) {
@@ -207,73 +209,10 @@ const getNav = () => {
                         getUserInfos(user.user_id, function(infos) {
                                     if (infos.getObjet.flag) {
                                         navContent = `<!--  User Notifications -->
-                                <div class="header-widget hide-on-mobile">
-                                   
-                                    <!-- Messages -->
-                                    <div id="containerMessage" class="header-notifications">
-                                        <div class="header-notifications-trigger">
-                                            <a id="LinkMessage" href="#"><i class="icon-feather-mail"></i><span>3</span></a>
-                                        </div>
-
-                                        <!-- Dropdown -->
-                                        <div class="header-notifications-dropdown">
-
-                                            <div class="header-notifications-headline">
-                                                <h4>Messages</h4>
-                                                <button class="mark-as-read ripple-effect-dark" title="Mark all as read" data-tippy-placement="left">
-                                                    <i class="icon-feather-check-square"></i>
-                                                </button>
-                                            </div>
-
-                                            <div class="header-notifications-content">
-                                                <div class="header-notifications-scroll" data-simplebar>
-                                                    <ul>
-                                                        <!-- Notification -->
-                                                        <li class="notifications-not-read">
-                                                            <a href="dashboard-messages.html">
-                                                                <span class="notification-avatar status-online"><img src="/images/user-avatar-small-03.jpg" alt=""></span>
-                                                                <div class="notification-text">
-                                                                    <strong>David Peterson</strong>
-                                                                    <p class="notification-msg-text">Thanks for reaching out. I'm quite busy right now on many...</p>
-                                                                    <span class="color">4 hours ago</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-
-                                                        <!-- Notification -->
-                                                        <li class="notifications-not-read">
-                                                            <a href="dashboard-messages.html">
-                                                                <span class="notification-avatar status-offline"><img src="/images/user-avatar-small-02.jpg" alt=""></span>
-                                                                <div class="notification-text">
-                                                                    <strong>Sindy Forest</strong>
-                                                                    <p class="notification-msg-text">Hi Tom! Hate to break it to you, but I'm actually on vacation until...</p>
-                                                                    <span class="color">Yesterday</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-
-                                                        <!-- Notification -->
-                                                        <li class="notifications-not-read">
-                                                            <a href="dashboard-messages.html">
-                                                                <span class="notification-avatar status-online"><img src="/images/user-avatar-placeholder.png" alt=""></span>
-                                                                <div class="notification-text">
-                                                                    <strong>Marcin Kowalski</strong>
-                                                                    <p class="notification-msg-text">I received payment. Thanks for cooperation!</p>
-                                                                    <span class="color">Yesterday</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-
-                                            <a href="dashboard-messages.html" class="header-notifications-button ripple-effect button-sliding-icon">View All Messages<i class="icon-material-outline-arrow-right-alt"></i></a>
-                                        </div>
-                                    </div>
-
+                                <div class="header-widget hide-on-mobile" id="containerMessage">
+                                   <!-- Dynamic content -->
                                 </div>
-                                <!--  User Notifications / End -->
-
+                                
                                 <!-- User Menu -->
                                 <div class="header-widget">
 
@@ -325,51 +264,10 @@ const getNav = () => {
                             </span>`;
                     $("#navMenu").html(navContent);
 
-                    /*--------------------------------------------------*/
-                    /*  Notification Dropdowns
-                    /*--------------------------------------------------*/
-                    $(".header-notifications").each(function () {
-                        var userMenu = $(this);
-                        var userMenuTrigger = $(this).find('.header-notifications-trigger a');
-
-                        $(userMenuTrigger).on('click', function (event) {
-                            event.preventDefault();
-
-                            if ($(this).closest(".header-notifications").is(".active")) {
-                                close_user_dropdown();
-                            } else {
-                                close_user_dropdown();
-                                userMenu.addClass('active');
-                            }
-                        });
-                    });
-
-                    // Closing function
-                    function close_user_dropdown() {
-                        $('.header-notifications').removeClass("active");
-                    }
-
-                    // Closes notification dropdown on click outside the conatainer
-                    var mouse_is_inside = false;
-
-                    $(".header-notifications").on("mouseenter", function () {
-                        mouse_is_inside = true;
-                    });
-                    $(".header-notifications").on("mouseleave", function () {
-                        mouse_is_inside = false;
-                    });
-
-                    $("body").mouseup(function () {
-                        if (!mouse_is_inside) close_user_dropdown();
-                    });
-
-                    // Close with ESC
-                    $(document).keyup(function (e) {
-                        if (e.keyCode == 27) {
-                            close_user_dropdown();
-                        }
-                    });
+                    dropNav("user-menu");
                     toggleVisibility();
+                    newMessage(3);
+
                     //Remplissage des informations sur le user dans les details
                     if (/profile/i.test(pathName.split("/")[1]) && /parametres/i.test(pathName.split("/")[2])) {
                         userParameters(user, infos);
@@ -416,6 +314,52 @@ const getNav = () => {
     });
 }
 
+const dropNav = (dif) => {
+    /*--------------------------------------------------*/
+    /*  Notification Dropdowns
+    /*--------------------------------------------------*/
+    $(`.header-notifications.${dif}`).each(function () {
+        var userMenu = $(this);        
+        var userMenuTrigger = $(this).find('.header-notifications-trigger a');
+
+        $(userMenuTrigger).on('click', function (event) {
+            event.preventDefault();
+
+            if ($(this).closest(`.header-notifications.${dif}`).is(".active")) {
+                close_user_dropdown();
+            } else {
+                close_user_dropdown();
+                userMenu.addClass('active');
+            }
+        });
+    });
+
+    // Closing function
+    function close_user_dropdown() {
+        $(`.header-notifications.${dif}`).removeClass("active");
+    }
+
+    // Closes notification dropdown on click outside the conatainer
+    var mouse_is_inside = false;
+
+    $(`.header-notifications.${dif}`).on("mouseenter", function () {
+        mouse_is_inside = true;
+    });
+    $(`.header-notifications.${dif}`).on("mouseleave", function () {
+        mouse_is_inside = false;
+    });
+
+    $("body").mouseup(function () {
+        if (!mouse_is_inside) close_user_dropdown();
+    });
+
+    // Close with ESC
+    $(document).keyup(function (e) {
+        if (e.keyCode == 27) {
+            close_user_dropdown();
+        }
+    });
+}
 
 /**
  * Module permettant pre remplire les informations du user dans la page parametres
@@ -1362,8 +1306,7 @@ const topFreelancer = (limit) => {
                     var outFreelancer = 0;
 
                     data.getObjet.map((freelancer, item, tab) => {
-                        console.log(freelancer);
-
+                        
                         var name = () => {
                             if (freelancer.identity) {
                                 return `${freelancer.identity.lastName} ${freelancer.identity.name.toUpperCase()}`
@@ -1548,8 +1491,6 @@ const detailsUser = (id) => {
             dataType: "json",
             success: function (data) {
                 if (data.getEtat) {
-
-                    console.log(data.getObjet);
 
                     var freelancer = data.getObjet,
                         name = () => {
@@ -1946,4 +1887,4 @@ const setAttachment = () => {
 
 }
 
-export { login, register, getStatsUsers, getNav, activeAccount, statsInDashboard, topFreelancer, getDropAnfooterJobs, getDropAnfooterTown, sidebar, detailsUser }
+export { login, register, getStatsUsers, getNav, activeAccount, statsInDashboard, topFreelancer, getDropAnfooterJobs, getDropAnfooterTown, sidebar, detailsUser, dropNav }
