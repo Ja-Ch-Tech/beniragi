@@ -1545,12 +1545,12 @@ const detailsUser = (id) => {
                                                         <div class="header-image freelancer-avatar"><img src="/images/user-avatar-big-02.jpg" alt="">
                                                         </div>
                                                         <div class="header-details">
-                                                            <h3>${name()} <span>${skills()}</span></h3>
+                                                            <h3>${name()} </h3><span style="font-size: 1em; font-weight: 100; color: #ccc; display: block;">${freelancer.job && freelancer.job.icon ? `<i class="${freelancer.job.icon}" style="font-size: 1.6em"></i>&nbsp;` : ""}${freelancer.job ? freelancer.job.name : "---"}</span>
                                                             <ul>
                                                                 <li>
                                                                     <div class="star-rating" data-rating="${freelancer.average}"></div>
                                                                 </li>
-                                                                <li><div class="verified-badge-with-title">Verified</div></li>
+                                                                <li><div class="verified-badge-with-title">Certifié</div></li>
                                                                 <li style="text-transform: capitalize">
                                                                     ${freelancer.town ? `${freelancer.town}&nbsp;&nbsp;<img class="flag" src="/images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top">` : ""}
                                                                 </li>
@@ -1563,6 +1563,8 @@ const detailsUser = (id) => {
                                     </div>`,
                         biographie = `${bio()}`;
 
+                        console.log(freelancer);
+                        
                     if (freelancer.feedBacks && freelancer.feedBacks.length > 0) {
                         freelancer.feedBacks.map((feedBack, item, tab) => {
                             var content = `<li>
@@ -1593,14 +1595,14 @@ const detailsUser = (id) => {
                         offer = `${toggleBtnOffer()}`;
 
                     if (freelancer.skills && freelancer.skills.length > 0) {
-                        var head = `<h3>Competences</h3>
+                        var head = `<h3>Compétences</h3>
                                     <div class="task-tags" id="skillDetails">
                                     </div>`;
 
                         $("#skillsDetails").html(head);
 
                         freelancer.skills.map((skill, item, tab) => {
-                            var content = `<a href="https://www.google.com/search?q=talent+${skill}" target="_blank" style="margin-left: 4px"><span>${skill}</span></a>`;
+                            var content = `<a href="https://www.google.com/search?q=Compétence+en+${skill.toLowerCase()}" target="_blank" style="margin-left: 4px"><span>${skill}</span></a>`;
 
                             $("#skillDetails").append(content);
                         })
