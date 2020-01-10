@@ -1,4 +1,4 @@
-import { getAllTypesUser, getUserId, NoEmpty, getHostApi, getAllTowns, starRating, getAllJob, dateFeedBack,setFavoris, removeItem } from './init.js';
+import { getAllTypesUser, getUserId, NoEmpty, getHostApi, getAllTowns, starRating, getAllJob, dateFeedBack,setFavoris, removeItem, isInArray } from './init.js';
 //Permet de connecter un utilisateur
 const login = () => {
     $("#login-form").on('submit', function(e) {
@@ -200,123 +200,124 @@ function toggleVisibility() {
 const getNav = () => {
 
         getUserId(function(state, user) {
-                    var navContent,
-                        pathName = window.location.pathname;
-                    if (state) {
-                        //Recuperation des informations du user
-                        getUserInfos(user.user_id, function(infos) {
-                                    if (infos.getObjet.flag) {
-                                        navContent = `<!--  User Notifications -->
-                                <div class="header-widget hide-on-mobile">
-                                   
-                                    <!-- Messages -->
-                                    <div id="containerMessage" class="header-notifications">
-                                        <div class="header-notifications-trigger">
-                                            <a id="LinkMessage" href="#"><i class="icon-feather-mail"></i><span>3</span></a>
-                                        </div>
-
-                                        <!-- Dropdown -->
-                                        <div class="header-notifications-dropdown">
-
-                                            <div class="header-notifications-headline">
-                                                <h4>Messages</h4>
-                                                <button class="mark-as-read ripple-effect-dark" title="Mark all as read" data-tippy-placement="left">
-                                                    <i class="icon-feather-check-square"></i>
-                                                </button>
-                                            </div>
-
-                                            <div class="header-notifications-content">
-                                                <div class="header-notifications-scroll" data-simplebar>
-                                                    <ul>
-                                                        <!-- Notification -->
-                                                        <li class="notifications-not-read">
-                                                            <a href="dashboard-messages.html">
-                                                                <span class="notification-avatar status-online"><img src="/images/user-avatar-small-03.jpg" alt=""></span>
-                                                                <div class="notification-text">
-                                                                    <strong>David Peterson</strong>
-                                                                    <p class="notification-msg-text">Thanks for reaching out. I'm quite busy right now on many...</p>
-                                                                    <span class="color">4 hours ago</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-
-                                                        <!-- Notification -->
-                                                        <li class="notifications-not-read">
-                                                            <a href="dashboard-messages.html">
-                                                                <span class="notification-avatar status-offline"><img src="/images/user-avatar-small-02.jpg" alt=""></span>
-                                                                <div class="notification-text">
-                                                                    <strong>Sindy Forest</strong>
-                                                                    <p class="notification-msg-text">Hi Tom! Hate to break it to you, but I'm actually on vacation until...</p>
-                                                                    <span class="color">Yesterday</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-
-                                                        <!-- Notification -->
-                                                        <li class="notifications-not-read">
-                                                            <a href="dashboard-messages.html">
-                                                                <span class="notification-avatar status-online"><img src="/images/user-avatar-placeholder.png" alt=""></span>
-                                                                <div class="notification-text">
-                                                                    <strong>Marcin Kowalski</strong>
-                                                                    <p class="notification-msg-text">I received payment. Thanks for cooperation!</p>
-                                                                    <span class="color">Yesterday</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-
-                                            <a href="dashboard-messages.html" class="header-notifications-button ripple-effect button-sliding-icon">View All Messages<i class="icon-material-outline-arrow-right-alt"></i></a>
-                                        </div>
+        var navContent,
+            pathName = window.location.pathname;
+        if (state) {
+            //Recuperation des informations du user
+            getUserInfos(user.user_id, function(infos) {
+                $("#navMenu").html("");
+                if (infos.getObjet.flag) {
+                    navContent = `<!--  User Notifications -->
+                            <div class="header-widget hide-on-mobile">
+                               
+                                <!-- Messages -->
+                                <div id="containerMessage" class="header-notifications">
+                                    <div class="header-notifications-trigger">
+                                        <a id="LinkMessage" href="#"><i class="icon-feather-mail"></i><span>3</span></a>
                                     </div>
 
+                                    <!-- Dropdown -->
+                                    <div class="header-notifications-dropdown">
+
+                                        <div class="header-notifications-headline">
+                                            <h4>Messages</h4>
+                                            <button class="mark-as-read ripple-effect-dark" title="Mark all as read" data-tippy-placement="left">
+                                                <i class="icon-feather-check-square"></i>
+                                            </button>
+                                        </div>
+
+                                        <div class="header-notifications-content">
+                                            <div class="header-notifications-scroll" data-simplebar>
+                                                <ul>
+                                                    <!-- Notification -->
+                                                    <li class="notifications-not-read">
+                                                        <a href="dashboard-messages.html">
+                                                            <span class="notification-avatar status-online"><img src="/images/user-avatar-small-03.jpg" alt=""></span>
+                                                            <div class="notification-text">
+                                                                <strong>David Peterson</strong>
+                                                                <p class="notification-msg-text">Thanks for reaching out. I'm quite busy right now on many...</p>
+                                                                <span class="color">4 hours ago</span>
+                                                            </div>
+                                                        </a>
+                                                    </li>
+
+                                                    <!-- Notification -->
+                                                    <li class="notifications-not-read">
+                                                        <a href="dashboard-messages.html">
+                                                            <span class="notification-avatar status-offline"><img src="/images/user-avatar-small-02.jpg" alt=""></span>
+                                                            <div class="notification-text">
+                                                                <strong>Sindy Forest</strong>
+                                                                <p class="notification-msg-text">Hi Tom! Hate to break it to you, but I'm actually on vacation until...</p>
+                                                                <span class="color">Yesterday</span>
+                                                            </div>
+                                                        </a>
+                                                    </li>
+
+                                                    <!-- Notification -->
+                                                    <li class="notifications-not-read">
+                                                        <a href="dashboard-messages.html">
+                                                            <span class="notification-avatar status-online"><img src="/images/user-avatar-placeholder.png" alt=""></span>
+                                                            <div class="notification-text">
+                                                                <strong>Marcin Kowalski</strong>
+                                                                <p class="notification-msg-text">I received payment. Thanks for cooperation!</p>
+                                                                <span class="color">Yesterday</span>
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <a href="dashboard-messages.html" class="header-notifications-button ripple-effect button-sliding-icon">View All Messages<i class="icon-material-outline-arrow-right-alt"></i></a>
+                                    </div>
                                 </div>
-                                <!--  User Notifications / End -->
 
-                                <!-- User Menu -->
-                                <div class="header-widget">
+                            </div>
+                            <!--  User Notifications / End -->
 
-                                    <!-- Messages -->
-                                    <div id="ContentUserDropdown" class="header-notifications user-menu">
-                                        <div class="header-notifications-trigger">
-                                            <a id="linkUser" href="#"><div class="user-avatar status-online"><img src="/images/user-avatar-small-01.jpg" alt=""></div></a>
-                                        </div>
+                            <!-- User Menu -->
+                            <div class="header-widget">
 
-                                        <!-- Dropdown -->
-                                        <div class="header-notifications-dropdown">
-
-                                            <!-- User Status -->
-                                            <div class="user-status">
-
-                                                <!-- User Name / Avatar -->
-                                                <div class="user-details">
-                                                    <div class="user-avatar status-online"><img src="/images/user-avatar-small-01.jpg" alt=""></div>
-                                                    <div class="user-name">
-                                                        ${infos.getObjet.email} <span>${infos.getObjet.typeUser}</span>
-                                                    </div>
-                                                </div>
-                                                
-                                                <!-- User Status Switcher -->
-                                                <div class="status-switch" id="snackbar-user-status">
-                                                    <label class="user-online ${infos.getObjet.visibility ? `current-status` : ``}">Disponible</label>
-                                                    <label class="user-invisible ${!infos.getObjet.visibility ? `current-status` : ``}">Non-disponible</label>
-                                                    <span class="status-indicator" aria-hidden="true"></span>
-                                                </div>  
-                                        </div>
-                                        
-                                        <ul class="user-menu-small-nav">
-                                            <li><a href="/profile/dashboard"><i class="icon-material-outline-dashboard"></i> Dashboard</a></li>
-                                            <li><a href="/profile/parametres"><i class="icon-material-outline-settings"></i> Settings</a></li>
-                                            <li><a href="/logout"><i class="icon-material-outline-power-settings-new"></i> Logout</a></li>
-                                        </ul>
-
-                                        </div>
+                                <!-- Messages -->
+                                <div id="ContentUserDropdown" class="header-notifications user-menu">
+                                    <div class="header-notifications-trigger">
+                                        <a id="linkUser" href="#"><div class="user-avatar status-online"><img src="/images/user-avatar-small-01.jpg" alt=""></div></a>
                                     </div>
 
+                                    <!-- Dropdown -->
+                                    <div class="header-notifications-dropdown">
+
+                                        <!-- User Status -->
+                                        <div class="user-status">
+
+                                            <!-- User Name / Avatar -->
+                                            <div class="user-details">
+                                                <div class="user-avatar status-online"><img src="/images/user-avatar-small-01.jpg" alt=""></div>
+                                                <div class="user-name">
+                                                    ${infos.getObjet.email} <span>${infos.getObjet.typeUser}</span>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- User Status Switcher -->
+                                            <div class="status-switch" id="snackbar-user-status">
+                                                <label class="user-online ${infos.getObjet.visibility ? `current-status` : ``}">Disponible</label>
+                                                <label class="user-invisible ${!infos.getObjet.visibility ? `current-status` : ``}">Non-disponible</label>
+                                                <span class="status-indicator" aria-hidden="true"></span>
+                                            </div>  
+                                    </div>
+                                    
+                                    <ul class="user-menu-small-nav">
+                                        <li><a href="/profile/dashboard"><i class="icon-material-outline-dashboard"></i> Dashboard</a></li>
+                                        <li><a href="/profile/parametres"><i class="icon-material-outline-settings"></i> Settings</a></li>
+                                        <li><a href="/logout"><i class="icon-material-outline-power-settings-new"></i> Logout</a></li>
+                                    </ul>
+
+                                    </div>
                                 </div>
-                                <!-- User Menu / End -->
-                                <span class="mmenu-trigger">
+
+                            </div>
+                            <!-- User Menu / End -->
+                            <span class="mmenu-trigger">
                                 <button class="hamburger hamburger--collapse" type="button">
                                     <span class="hamburger-box">
                                         <span class="hamburger-inner"></span>
@@ -383,8 +384,8 @@ const getNav = () => {
                     if (/profile/i.test(pathName.split("/")[1]) && /contacts/i.test(pathName.split("/")[2])) {
                         getFreelancersForOffer(state, user);
                     }
-                    
-                    
+        
+        
                 } else {
                     navContent = `<!-- Lien vers l'activation d'un compte -->
                     <div class="header-widget hide-on-mobile">
@@ -433,7 +434,7 @@ const getNav = () => {
  */
 
 const userParameters = (user, details) => {
-    console.log(details)
+    localStorage.setItem("verrou",details.getObjet.jobs ? true : false);
     var jobAndSkillsInput = () => {
         if (user.isEmployer) {
             return ``;
@@ -707,7 +708,9 @@ const userParameters = (user, details) => {
 
     $('select').selectpicker();
     boostrapSelect();
-    submitSelect(user);
+    submitSelect(user, function (state) {
+        if (state) {localStorage.setItem("verrou",true)} else {localStorage.setItem("verrou",false)}
+    });
 
     //Si on veut supprimer un element des skills
     $(".keyword .skills").on('click', function (e) {
@@ -734,81 +737,108 @@ const submitSkills = (user, id_job, details) => {
         listSkills = $("#listSkills"),
         autocomplete = $("#autocomplete-container"),
         skills = details.getObjet.skills ? details.getObjet.skills : new Array();
+    
+
     input.on('keyup', function (e) {
         e.preventDefault();
-        if (input.val().trim().length > 1 && input.val().trim() != "") {
-            $.ajax({
-                type: 'POST',
-                url: `/api/searchSkills`,
-                dataType: "json",
-                data: {
-                    id_freelancer : user.user_id,
-                    name : input.val()
-                },
-                success: function (data) {
-                    if (data.getEtat) {
-                        autocomplete.html(``);
-                        autocomplete.fadeIn();
-                        data.getObjet.map(response => {
-                            autocomplete.append(`<div><span>${response.name}</span></div>`);
-                        })
-                    } else {
-                        if (input.val().trim() != null && input.val().trim() != "") {
-                           autocomplete.html(`<div>Ajouter "<span>${input.val()}</span>" comme specialité</div>`);
-                           autocomplete.fadeIn(); 
+        if (input.val().trim().length > 2 && input.val().trim() != "") {
+            if (localStorage.getItem("verrou") == "true") {
+                $.ajax({
+                    type: 'POST',
+                    url: `/api/searchSkills`,
+                    dataType: "json",
+                    data: {
+                        id_freelancer : user.user_id,
+                        name : input.val()
+                    },
+                    success: function (data) {
+                        if (data.getEtat) {
+                            autocomplete.html(``);
+                            autocomplete.fadeIn();
+                            data.getObjet.map(response => {
+                                if (!isInArray(response.name, skills)) {
+                                    autocomplete.append(`<div><span>${response.name}</span></div>`);
+                                }
+                            })
+                        } else {
+                            if (input.val().trim() != null && input.val().trim() != "") {
+                               autocomplete.html(`<div>Ajouter "<span>${input.val()}</span>" comme specialité</div>`);
+                               autocomplete.fadeIn(); 
+                            }
+                            
                         }
-                        
-                    }
 
-                    
-                    //Lorsqu'on clique sur une div
-                    $("#autocomplete-container div").on('click', function (e) {
-                        e.preventDefault();
                         
-                        var skillValue = e.currentTarget.getElementsByTagName('span')[0].innerHTML;
-                        //AJoute l'item dans le tab skills
-                        skills.push(skillValue);
-                        
-                        //Ajoute le skills dans le HTML
-                        listSkills.append(`<span class="keyword"><span class="keyword-remove skills"></span><span class="keyword-text">${skillValue}</span></span>`);
-                        
-                        //skills = JSON.stringify(skills);
-                        autocomplete.html(``);
-                        autocomplete.fadeOut();
-                        input.val(``);
-                        $("#btnAddSkills").fadeIn();
-
-                        //Si on veut supprimer un element des skills
-                        $(".keyword .skills").on('click', function (e) {
+                        //Lorsqu'on clique sur une div
+                        $("#autocomplete-container div").on('click', function (e) {
                             e.preventDefault();
-                            var item = e.currentTarget.parentNode.getElementsByClassName('keyword-text')[0].innerHTML;
-                            item = String(item);
-                            removeItem(skills, item, function (array) {
-                                skills = array;
-                            });
-                            e.currentTarget.parentNode.remove();
+                            
+                            var skillValue = e.currentTarget.getElementsByTagName('span')[0].innerHTML;
+                            //AJoute l'item dans le tab skills
+                            if (!isInArray(skillValue, skills)) {
+                                skills.push(skillValue);
+                                //Ajoute le skills dans le HTML
+                                listSkills.append(`<span class="keyword"><span class="keyword-remove skills"></span><span class="keyword-text">${skillValue}</span></span>`);
+                            
+                                autocomplete.html(``);
+                                autocomplete.fadeOut();
+                                input.val(``);
+                                $("#btnAddSkills").fadeIn();
+                            }else{
+                                Snackbar.show({
+                                    text: "Vous ne pouvez pas ajouter une meme specialité plusieurs fois",
+                                    pos: 'bottom-right',
+                                    showAction: true,
+                                    actionText: "Fermer",
+                                    duration: 5000,
+                                    textColor: '#fff',
+                                    backgroundColor: '#ad344b'
+                                });
+                            }
 
-                        })
-                    });
+                            //Si on veut supprimer un element des skills
+                            $(".keyword .skills").on('click', function (e) {
+                                e.preventDefault();
+                                var item = e.currentTarget.parentNode.getElementsByClassName('keyword-text')[0].innerHTML;
+                                item = String(item);
+                                removeItem(skills, item, function (array) {
+                                    skills = array;
+                                });
+                                e.currentTarget.parentNode.remove();
 
-                    
-                },
-                error: function (err) {
-                    Snackbar.show({
-                        text: "Une erreur est survenue lors du chargement des specialités",
-                        pos: 'bottom-center',
-                        showAction: true,
-                        actionText: "Fermer",
-                        duration: 5000,
-                        textColor: '#fff',
-                        backgroundColor: '#3696f5'
-                    });
-                }
-            });
+                            })
+                        });
+
+                        
+                    },
+                    error: function (err) {
+                        Snackbar.show({
+                            text: "Une erreur est survenue lors du chargement des specialités",
+                            pos: 'bottom-center',
+                            showAction: true,
+                            actionText: "Fermer",
+                            duration: 5000,
+                            textColor: '#fff',
+                            backgroundColor: '#3696f5'
+                        });
+                    }
+                });
+            } else {
+                Snackbar.show({
+                    text: "Specifiez d'abord un metier avant d'effectuer cette action",
+                    pos: 'bottom-right',
+                    showAction: true,
+                    actionText: "Fermer",
+                    duration: 5000,
+                    textColor: '#fff',
+                    backgroundColor: '#ad344b'
+                });
+            }
         }else{
             autocomplete.html(``);
             autocomplete.fadeOut();
         }
+        
     });
 
     //Lorsqu'on clique sur le bouton permettant de valider l'envoi des skills
@@ -818,7 +848,6 @@ const submitSkills = (user, id_job, details) => {
         if (skills.length > 0) {
             //Transformations de skills
             skills = JSON.stringify(skills);
-
             $.ajax({
                 type: 'POST',
                 url: `/api/setSkills`,
@@ -873,14 +902,12 @@ const submitSkills = (user, id_job, details) => {
                 backgroundColor: '#ad344b'
             });
         }
-
-        
-    })
+    });
 };
 /**
  * Effectue la soumission des inputs select (Mise a jour d'un job, d'une ville)
  */
-const submitSelect = (user) => {
+const submitSelect = (user,callback) => {
     $('select').on('change', function (e) {
         var select = e.currentTarget,
             value = select.options[select.selectedIndex].value;
@@ -913,6 +940,7 @@ const submitSelect = (user) => {
                                 textColor: '#fff',
                                 backgroundColor: '#3696f5'
                             });
+                            callback(true);
                         } else {
                             Snackbar.show({
                                 text: data.getMessage,
@@ -923,6 +951,7 @@ const submitSelect = (user) => {
                                 textColor: '#fff',
                                 backgroundColor: '#ad344b'
                             });
+                            callback(false)
                         }
                         console.log(data);
                     },
@@ -1008,7 +1037,6 @@ const boostrapSelect = () => {
                             li,
                             sortieJob = 0;
                         if (data.getEtat) {
-                            console.log(data);
                             data.getObjet.map(job => {
                                 sortieJob++;
 
@@ -1017,20 +1045,9 @@ const boostrapSelect = () => {
                                 option.value = job._id;
                                 option.innerHTML = job.name;
                                 select.appendChild(option);
-
-                                //Remplissage du dropdown
-                                li = document.createElement('li');
-                                li.setAttribute("data-original-index", sortieJob + 1);
-                                li.innerHTML = `<a tabindex="0" class data-tokens="null" role="option" aria-disabled="false" aria-selected="false">
-                                    <span class="text">${job.name}</span>
-                                    <span class="glyphicon glyphicon-ok check-mark"></span>
-                                </a>`;
-
-                                ulDrop.appendChild(li);
-
                                 if (sortieJob == data.getObjet.length) {
                                     verrouJob = true;
-                                    $(".dropdown-toggle").next().next().selectpicker();
+                                    $("#inputJob").selectpicker('refresh');
                                 }
                             });
                         }
@@ -1057,18 +1074,9 @@ const boostrapSelect = () => {
                             option.innerHTML = town.name;
                             select.appendChild(option);
 
-                            //Remplissage du dropdown
-                            li = document.createElement('li');
-                            li.setAttribute("data-original-index", sortieTown + 1);
-                            li.innerHTML = `<a tabindex="0" class data-tokens="null" role="option" aria-disabled="false" aria-selected="false">
-                                    <span class="text">${town.name}</span>
-                                    <span class="glyphicon glyphicon-ok check-mark"></span>
-                                </a>`;
-
-                            ulDrop.appendChild(li);
-
                             if (sortieTown == data.getObjet.length) {
                                 verrouTown = true;
+                                $("#inputTown").selectpicker('refresh');
                             }
                         });
                     }

@@ -174,6 +174,11 @@ const removeItem = (arr, item, callback) => {
         }
     }
 }
+
+//Verifie l'existence d'un element dans un tableau
+function isInArray(value, array) {
+  return array.indexOf(value) > -1;
+}
 /**
  * Mise en favoris d'un freelancer
  */
@@ -320,4 +325,4 @@ function getMonth(month) {
     return monthLetters[parseInt(month) - 1];
 }
 
-export { getHostApi, customDate, getAllTypesUser, getUserId, getHostWeb, NoEmpty, getAllTowns, starRating, getAllJob, customDateForFeedBack as dateFeedBack, setFavoris, removeItem }
+export { getHostApi, customDate, getAllTypesUser, getUserId, getHostWeb, NoEmpty, getAllTowns, starRating, getAllJob, customDateForFeedBack as dateFeedBack, setFavoris, removeItem, isInArray }
