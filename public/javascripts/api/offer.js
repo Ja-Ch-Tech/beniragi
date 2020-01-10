@@ -9,7 +9,6 @@ const getMessagesList = () => {
         success: function (data) {
             if (data.getEtat) {
                 if (data.getObjet.length > 0) {
-                    console.log(data.getObjet);
                     
                     //Tri côté client
                     data.getObjet.sort((contact1, contact2) => {

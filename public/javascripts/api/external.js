@@ -71,7 +71,7 @@ function getMessagesForOffer(userConnected, id) {
     });
     threadMessage.messages[0].messages.map((message, item, tab) => {
 
-        var content = `<div class="message-bubble ${userConnected == message.id_user ? `me` : ``}">
+        var content = `<div class="message-bubble ${userConnected == message.id_sender ? `me` : ``}">
                         <div class="message-bubble-inner">
                         <div class="message-avatar"><img src="/images/user-avatar-small-01.jpg" alt="" /></div>
                         <div class="message-text">

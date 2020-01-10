@@ -1617,9 +1617,9 @@ const detailsUser = (id) => {
                                 return "Vitesse normale"
                             }else if (freelancer.inTime >= 40) {
                                 return "Assez rapide, mais plus lent !"
-                            }else if (freelancer.inTime < 40) {
+                            }else if (freelancer.inTime >= 20) {
                                 return "Lent !"
-                            }else if (freelancer.inTime <= 20) {
+                            }else if (freelancer.inTime > 0) {
                                 return "Trop lent, trop lent..."
                             }else if (freelancer.inTime == 0) {
                                 return "Pas encore côté"
