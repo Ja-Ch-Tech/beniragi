@@ -1,4 +1,4 @@
-import { getAllTypesUser, getUserId, NoEmpty, getHostApi, getAllTowns, starRating, getAllJob, dateFeedBack } from './init.js';
+import { getAllTypesUser, getUserId, NoEmpty, getHostApi, getAllTowns, starRating, getAllJob, dateFeedBack, setFavoris, removeItem, isInArray } from './init.js';
 import { newMessage } from './notification.js';
 
 //Permet de connecter un utilisateur
@@ -216,46 +216,46 @@ const getNav = () => {
                                 <!-- User Menu -->
                                 <div class="header-widget">
 
-                                    <!-- Messages -->
-                                    <div id="ContentUserDropdown" class="header-notifications user-menu">
-                                        <div class="header-notifications-trigger">
-                                            <a id="linkUser" href="#"><div class="user-avatar status-online"><img src="/images/user-avatar-small-01.jpg" alt=""></div></a>
-                                        </div>
-
-                                        <!-- Dropdown -->
-                                        <div class="header-notifications-dropdown">
-
-                                            <!-- User Status -->
-                                            <div class="user-status">
-
-                                                <!-- User Name / Avatar -->
-                                                <div class="user-details">
-                                                    <div class="user-avatar status-online"><img src="/images/user-avatar-small-01.jpg" alt=""></div>
-                                                    <div class="user-name">
-                                                        ${infos.getObjet.email} <span>${infos.getObjet.typeUser}</span>
-                                                    </div>
-                                                </div>
-                                                
-                                                <!-- User Status Switcher -->
-                                                <div class="status-switch" id="snackbar-user-status">
-                                                    <label class="user-online ${infos.getObjet.visibility ? `current-status` : ``}">Disponible</label>
-                                                    <label class="user-invisible ${!infos.getObjet.visibility ? `current-status` : ``}">Non-disponible</label>
-                                                    <span class="status-indicator" aria-hidden="true"></span>
-                                                </div>  
-                                        </div>
-                                        
-                                        <ul class="user-menu-small-nav">
-                                            <li><a href="/profile/dashboard"><i class="icon-material-outline-dashboard"></i> Dashboard</a></li>
-                                            <li><a href="/profile/parametres"><i class="icon-material-outline-settings"></i> Settings</a></li>
-                                            <li><a href="/logout"><i class="icon-material-outline-power-settings-new"></i> Logout</a></li>
-                                        </ul>
-
-                                        </div>
+                                <!-- Messages -->
+                                <div id="ContentUserDropdown" class="header-notifications user-menu">
+                                    <div class="header-notifications-trigger">
+                                        <a id="linkUser" href="#"><div class="user-avatar status-online"><img src="/images/user-avatar-small-01.jpg" alt=""></div></a>
                                     </div>
 
+                                    <!-- Dropdown -->
+                                    <div class="header-notifications-dropdown">
+
+                                        <!-- User Status -->
+                                        <div class="user-status">
+
+                                            <!-- User Name / Avatar -->
+                                            <div class="user-details">
+                                                <div class="user-avatar status-online"><img src="/images/user-avatar-small-01.jpg" alt=""></div>
+                                                <div class="user-name">
+                                                    ${infos.getObjet.email} <span>${infos.getObjet.typeUser}</span>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- User Status Switcher -->
+                                            <div class="status-switch" id="snackbar-user-status">
+                                                <label class="user-online ${infos.getObjet.visibility ? `current-status` : ``}">Disponible</label>
+                                                <label class="user-invisible ${!infos.getObjet.visibility ? `current-status` : ``}">Non-disponible</label>
+                                                <span class="status-indicator" aria-hidden="true"></span>
+                                            </div>  
+                                    </div>
+                                    
+                                    <ul class="user-menu-small-nav">
+                                        <li><a href="/profile/dashboard"><i class="icon-material-outline-dashboard"></i> Dashboard</a></li>
+                                        <li><a href="/profile/parametres"><i class="icon-material-outline-settings"></i> Settings</a></li>
+                                        <li><a href="/logout"><i class="icon-material-outline-power-settings-new"></i> Logout</a></li>
+                                    </ul>
+
+                                    </div>
                                 </div>
-                                <!-- User Menu / End -->
-                                <span class="mmenu-trigger">
+
+                            </div>
+                            <!-- User Menu / End -->
+                            <span class="mmenu-trigger">
                                 <button class="hamburger hamburger--collapse" type="button">
                                     <span class="hamburger-box">
                                         <span class="hamburger-inner"></span>
@@ -272,6 +272,17 @@ const getNav = () => {
                     if (/profile/i.test(pathName.split("/")[1]) && /parametres/i.test(pathName.split("/")[2])) {
                         userParameters(user, infos);
                     }
+                    //Execution de la fonction renvoyant les favoris
+                    if (/profile/i.test(pathName.split("/")[1]) && /favoris/i.test(pathName.split("/")[2])) {
+                        getFavourites(state, user);
+                    }
+
+                    //Execution de la fonction renvoyant les contacts
+                    if (/profile/i.test(pathName.split("/")[1]) && /contacts/i.test(pathName.split("/")[2])) {
+                        getFreelancersForOffer(state, user);
+                    }
+        
+        
                 } else {
                     navContent = `<!-- Lien vers l'activation d'un compte -->
                     <div class="header-widget hide-on-mobile">
@@ -366,7 +377,7 @@ const dropNav = (dif) => {
  */
 
 const userParameters = (user, details) => {
-    console.log(details)
+    localStorage.setItem("verrou",details.getObjet.jobs ? true : false);
     var jobAndSkillsInput = () => {
         if (user.isEmployer) {
             return ``;
@@ -410,12 +421,22 @@ const userParameters = (user, details) => {
     skills = () => {
         if (details.getObjet.skills) {
             if (details.getObjet.skills.length > 0) {
-
-                details.getObjet.skills.map(response => {
-                    var skill = `<span class="keyword"><span class="keyword-text">${response}</span></span>`;
+                for (var i = 0; i < details.getObjet.skills.length; i++) {
+                    var skill = `<span data-index="${i}" class="keyword"><span class="keyword-remove skills"></span><span class="keyword-text">${details.getObjet.skills[i]}</span></span>`;
                     $("#listSkills").append(skill);
-                })
+                }
                 
+            }
+        }else{
+            return ``;
+        }
+    },
+    bio = () => {
+        if (details.getObjet.bio) {
+            if (details.getObjet.bio.bio != null) {
+                return details.getObjet.bio.bio;
+            }else{
+                return ``;
             }
         }else{
             return ``;
@@ -494,7 +515,7 @@ const userParameters = (user, details) => {
                             <div class="col-md-12">
                                 <div class="submit-field">
                                     <h5>Votre biographie</h5>
-                                    <textarea name onkeyup="$(this).val().length > 3 ? $('#registerInfosBtn').slideDown() : ''" cols="30" placeholder="Une petite presentation de ce vous etes" rows="5" class="with-border"></textarea>
+                                    <textarea name="bio" id="bio" onkeyup="$(this).val().length > 3 ? $('#registerInfosBtn').slideDown() : ''" cols="30" resize="none" placeholder="Une petite presentation de ce vous etes" rows="5" class="with-border">${bio()}</textarea>
                                 </div>
                           </div>
                         </div>
@@ -630,90 +651,146 @@ const userParameters = (user, details) => {
 
     $('select').selectpicker();
     boostrapSelect();
-    submitSelect(user);
-    submitSkills(user, details.getObjet.jobs ? details.getObjet.jobs.id_job : null);
+    submitSelect(user, function (state) {
+        if (state) {localStorage.setItem("verrou",true)} else {localStorage.setItem("verrou",false)}
+    });
+
+    //Si on veut supprimer un element des skills
+    $(".keyword .skills").on('click', function (e) {
+        e.preventDefault();
+        var item = e.currentTarget.parentNode.getElementsByClassName('keyword-text')[0].innerHTML;
+        item = String(item);
+        removeItem(details.getObjet.skills, item, function (array) {
+            details.getObjet.skills = array;
+            console.log(array)
+        });
+        e.currentTarget.parentNode.remove();
+        $("#btnAddSkills").fadeIn();
+    })
+    submitSkills(user, details.getObjet.jobs ? details.getObjet.jobs.id_job : null, details);
+
 }
 
 /**
  * Effectue la soumission des skills
  */
-const submitSkills = (user, id_job) => {
+const submitSkills = (user, id_job, details) => {
     var btn = $("#setSkillsBtn"),
         input = $("#setSkillsInput"),
         listSkills = $("#listSkills"),
         autocomplete = $("#autocomplete-container"),
-        skills = new Array();
+        skills = details.getObjet.skills ? details.getObjet.skills : new Array();
+    
 
     input.on('keyup', function (e) {
         e.preventDefault();
-        if (input.val().trim().length > 1 && input.val().trim() != "") {
-            $.ajax({
-                type: 'POST',
-                url: `/api/searchSkills`,
-                dataType: "json",
-                data: {
-                    id_freelancer : user.user_id,
-                    name : input.val()
-                },
-                success: function (data) {
-                    if (data.getEtat) {
-                        autocomplete.html(``);
-                        autocomplete.fadeIn();
-                        data.getObjet.map(response => {
-                            autocomplete.append(`<div><span>${response.name}</span></div>`);
-                        })
-                    } else {
-                        autocomplete.html(`<div>Ajouter "<span>${input.val()}</span>" comme specialité</div>`);
-                        autocomplete.fadeIn();
+        if (input.val().trim().length > 2 && input.val().trim() != "") {
+            if (localStorage.getItem("verrou") == "true") {
+                $.ajax({
+                    type: 'POST',
+                    url: `/api/searchSkills`,
+                    dataType: "json",
+                    data: {
+                        id_freelancer : user.user_id,
+                        name : input.val()
+                    },
+                    success: function (data) {
+                        if (data.getEtat) {
+                            autocomplete.html(``);
+                            autocomplete.fadeIn();
+                            data.getObjet.map(response => {
+                                if (!isInArray(response.name, skills)) {
+                                    autocomplete.append(`<div><span>${response.name}</span></div>`);
+                                }
+                            })
+                        } else {
+                            if (input.val().trim() != null && input.val().trim() != "") {
+                               autocomplete.html(`<div>Ajouter "<span>${input.val()}</span>" comme specialité</div>`);
+                               autocomplete.fadeIn(); 
+                            }
+                            
+                        }
+
+                        
+                        //Lorsqu'on clique sur une div
+                        $("#autocomplete-container div").on('click', function (e) {
+                            e.preventDefault();
+                            
+                            var skillValue = e.currentTarget.getElementsByTagName('span')[0].innerHTML;
+                            //AJoute l'item dans le tab skills
+                            if (!isInArray(skillValue, skills)) {
+                                skills.push(skillValue);
+                                //Ajoute le skills dans le HTML
+                                listSkills.append(`<span class="keyword"><span class="keyword-remove skills"></span><span class="keyword-text">${skillValue}</span></span>`);
+                            
+                                autocomplete.html(``);
+                                autocomplete.fadeOut();
+                                input.val(``);
+                                $("#btnAddSkills").fadeIn();
+                            }else{
+                                Snackbar.show({
+                                    text: "Vous ne pouvez pas ajouter une meme specialité plusieurs fois",
+                                    pos: 'bottom-right',
+                                    showAction: true,
+                                    actionText: "Fermer",
+                                    duration: 5000,
+                                    textColor: '#fff',
+                                    backgroundColor: '#ad344b'
+                                });
+                            }
+
+                            //Si on veut supprimer un element des skills
+                            $(".keyword .skills").on('click', function (e) {
+                                e.preventDefault();
+                                var item = e.currentTarget.parentNode.getElementsByClassName('keyword-text')[0].innerHTML;
+                                item = String(item);
+                                removeItem(skills, item, function (array) {
+                                    skills = array;
+                                });
+                                e.currentTarget.parentNode.remove();
+
+                            })
+                        });
+
+                        
+                    },
+                    error: function (err) {
+                        Snackbar.show({
+                            text: "Une erreur est survenue lors du chargement des specialités",
+                            pos: 'bottom-center',
+                            showAction: true,
+                            actionText: "Fermer",
+                            duration: 5000,
+                            textColor: '#fff',
+                            backgroundColor: '#3696f5'
+                        });
                     }
-
-                    
-                    //Lorsqu'on clique sur une div
-                    $("#autocomplete-container div").on('click', function (e) {
-
-                        e.preventDefault();
-                        
-                        var skillValue = e.currentTarget.getElementsByTagName('span')[0].innerHTML;
-                        //AJoute l'item dans le tab skills
-                        skills.push(skillValue);
-                        
-                        //Ajoute le skills dans le HTML
-                        listSkills.append(`<span class="keyword"><span class="keyword-remove"></span><span class="keyword-text">${skillValue}</span></span>`);
-                        
-                        //skills = JSON.stringify(skills);
-                        autocomplete.html(``);
-                        autocomplete.fadeOut();
-                        input.val(``);
-                        $("#btnAddSkills").fadeIn();
-                    });
-
-                    
-                },
-                error: function (err) {
-                    Snackbar.show({
-                        text: "Une erreur est survenue lors du chargement des specialités",
-                        pos: 'bottom-center',
-                        showAction: true,
-                        actionText: "Fermer",
-                        duration: 5000,
-                        textColor: '#fff',
-                        backgroundColor: '#3696f5'
-                    });
-                }
-            });
+                });
+            } else {
+                Snackbar.show({
+                    text: "Specifiez d'abord un metier avant d'effectuer cette action",
+                    pos: 'bottom-right',
+                    showAction: true,
+                    actionText: "Fermer",
+                    duration: 5000,
+                    textColor: '#fff',
+                    backgroundColor: '#ad344b'
+                });
+            }
         }else{
             autocomplete.html(``);
             autocomplete.fadeOut();
         }
+        
     });
 
     //Lorsqu'on clique sur le bouton permettant de valider l'envoi des skills
     $("#btnAddSkills").on('click', function (e) {
         e.preventDefault();
+        console.log(skills);
         if (skills.length > 0) {
             //Transformations de skills
             skills = JSON.stringify(skills);
-
             $.ajax({
                 type: 'POST',
                 url: `/api/setSkills`,
@@ -759,7 +836,7 @@ const submitSkills = (user, id_job) => {
             });
         }else{
             Snackbar.show({
-                text: "La liste de vos specialités est vide, recommencez l'ajout",
+                text: "La liste de vos specialités ne peut etre vide",
                 pos: 'bottom-right',
                 showAction: true,
                 actionText: "Fermer",
@@ -768,14 +845,12 @@ const submitSkills = (user, id_job) => {
                 backgroundColor: '#ad344b'
             });
         }
-
-        
-    })
+    });
 };
 /**
  * Effectue la soumission des inputs select (Mise a jour d'un job, d'une ville)
  */
-const submitSelect = (user) => {
+const submitSelect = (user,callback) => {
     $('select').on('change', function (e) {
         var select = e.currentTarget,
             value = select.options[select.selectedIndex].value;
@@ -808,6 +883,7 @@ const submitSelect = (user) => {
                                 textColor: '#fff',
                                 backgroundColor: '#3696f5'
                             });
+                            callback(true);
                         } else {
                             Snackbar.show({
                                 text: data.getMessage,
@@ -818,6 +894,7 @@ const submitSelect = (user) => {
                                 textColor: '#fff',
                                 backgroundColor: '#ad344b'
                             });
+                            callback(false)
                         }
                         console.log(data);
                     },
@@ -903,7 +980,6 @@ const boostrapSelect = () => {
                             li,
                             sortieJob = 0;
                         if (data.getEtat) {
-                            console.log(data);
                             data.getObjet.map(job => {
                                 sortieJob++;
 
@@ -912,20 +988,9 @@ const boostrapSelect = () => {
                                 option.value = job._id;
                                 option.innerHTML = job.name;
                                 select.appendChild(option);
-
-                                //Remplissage du dropdown
-                                li = document.createElement('li');
-                                li.setAttribute("data-original-index", sortieJob + 1);
-                                li.innerHTML = `<a tabindex="0" class data-tokens="null" role="option" aria-disabled="false" aria-selected="false">
-                                    <span class="text">${job.name}</span>
-                                    <span class="glyphicon glyphicon-ok check-mark"></span>
-                                </a>`;
-
-                                ulDrop.appendChild(li);
-
                                 if (sortieJob == data.getObjet.length) {
                                     verrouJob = true;
-                                    $(".dropdown-toggle").next().next().selectpicker();
+                                    $("#inputJob").selectpicker('refresh');
                                 }
                             });
                         }
@@ -952,18 +1017,9 @@ const boostrapSelect = () => {
                             option.innerHTML = town.name;
                             select.appendChild(option);
 
-                            //Remplissage du dropdown
-                            li = document.createElement('li');
-                            li.setAttribute("data-original-index", sortieTown + 1);
-                            li.innerHTML = `<a tabindex="0" class data-tokens="null" role="option" aria-disabled="false" aria-selected="false">
-                                    <span class="text">${town.name}</span>
-                                    <span class="glyphicon glyphicon-ok check-mark"></span>
-                                </a>`;
-
-                            ulDrop.appendChild(li);
-
                             if (sortieTown == data.getObjet.length) {
                                 verrouTown = true;
+                                $("#inputTown").selectpicker('refresh');
                             }
                         });
                     }
@@ -981,7 +1037,7 @@ const updateAccount = () => {
         e.preventDefault();
         var inputs = e.target.elements,
             objData = {};
-
+        console.log(inputs);
         for (let index = 0; index < inputs.length; index++) {
             if (/input/i.test(e.target.elements[index].localName)) {
                 if (inputs[index].type != "email") {
@@ -989,8 +1045,10 @@ const updateAccount = () => {
                 }
             }
         }
-        console.log(objData)
         if (NoEmpty(objData)) {
+            if ($("#bio").val().trim() != "") {
+                objData[$("#bio")[0].name] = $("#bio").val();
+            }
             $.ajax({
                 type: 'POST',
                 url: "/api/users/setIdentity",
@@ -1006,7 +1064,7 @@ const updateAccount = () => {
                     if (data.getEtat) {
                         Snackbar.show({
                             text: "Votre compte a ete mis a jour avec success",
-                            pos: 'bottom-right',
+                            pos: 'top-center',
                             showAction: true,
                             actionText: "Fermer",
                             duration: 5000,
@@ -1016,7 +1074,7 @@ const updateAccount = () => {
                     } else {
                         Snackbar.show({
                             text: data.getMessage,
-                            pos: 'bottom-right',
+                            pos: 'top-center',
                             showAction: true,
                             actionText: "Fermer",
                             duration: 5000,
@@ -1283,27 +1341,29 @@ const statsInDashboard = () => {
  * @param {Number} limit Nombre de freelancer qu'on veut get
  */
 const topFreelancer = (limit) => {
-    $.ajax({
-        type: 'GET',
-        url: `/api/users/top/${limit}`,
-        dataType: "json",
-        success: function (data) {
-            if (data.getEtat) {
-                const contentHead = `<div class="col-xl-12">
-                                        <div class="section-headline margin-top-0 margin-bottom-25">
-                                            <h3>Top Freelancer</h3>
-                                            <a href="/candidats/liste" class="headline-link color_blue">Voir tous nos candidats</a>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-12">
-                                        <div class="default-slick-carousel freelancers-container freelancers-grid-layout" id="freelancerInTop">
-                                        </div>
-                                    </di>`;
-                $("#topFreelancer").html(contentHead);
+    getUserId(function (state, session) {
 
-                if (data.getObjet.length > 0) {
+        $.ajax({
+            type: 'GET',
+            url: `/api/users/top/${limit}`,
+            dataType: "json",
+            success: function (data) {
+                if (data.getEtat) {
+                    const contentHead = `<div class="col-xl-12">
+                                            <div class="section-headline margin-top-0 margin-bottom-25">
+                                                <h3>Top Freelancer</h3>
+                                                <a href="/candidats/liste" class="headline-link color_blue">Voir tous nos candidats</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-12">
+                                            <div class="default-slick-carousel freelancers-container freelancers-grid-layout" id="freelancerInTop">
+                                            </div>
+                                        </di>`;
+                    $("#topFreelancer").html(contentHead);
 
-                    var outFreelancer = 0;
+                    if (data.getObjet.length > 0) {
+
+                        var outFreelancer = 0;
 
                     data.getObjet.map((freelancer, item, tab) => {
                         console.log(freelancer);
@@ -1315,17 +1375,22 @@ const topFreelancer = (limit) => {
                             }
                         },
                             favorite = () => {
-                                if (freelancer.isThisInFavorite) {
-                                    return `<span class="bookmark-icon" style="color: gold"></span>`;
+                                if (state && session.isEmployer) {
+                                    if (freelancer.isThisInFavorite) {
+                                        return `<span data-tippy-placement="top" title="Retirer de mes favoris" data-favoris="true" data-user="${freelancer._id}" class="bookmark-icon favoris bookmarked"></span>`;
+                                    } else {
+                                        return `<span data-tippy-placement="top" title="Ajouter aux favoris" data-favoris="false" data-user="${freelancer._id}" class="bookmark-icon favoris"></span>`
+                                    }
                                 } else {
-                                    return `<span class="bookmark-icon"></span>`
+                                    return ``;
                                 }
+
                             },
                             skills = () => {
                                 if (freelancer.skills && freelancer.skills.length > 0) {
                                     return `<span>${freelancer.skills[0]} ${freelancer.skills.length > 1 ? ` + ${freelancer.skills[1]}` : ""}</span>`;
                                 } else {
-                                    return `<span>---</span>`;
+                                    return freelancer.email;
                                 }
                             },
                             content = `<!--Freelancer -->
@@ -1395,57 +1460,96 @@ const topFreelancer = (limit) => {
                                 theme: 'dark',
 
                                 // How far the tooltip is from its reference element in pixels 
-                                distance: 10,
+                                distance: 10
 
-                            });
+                                });
 
-                            //Caroussel
-                            $('.default-slick-carousel').slick({
-                                infinite: false,
-                                slidesToShow: 3,
-                                slidesToScroll: 1,
-                                dots: false,
-                                arrows: true,
-                                adaptiveHeight: true,
-                                responsive: [
-                                    {
-                                        breakpoint: 1292,
-                                        settings: {
-                                            dots: true,
-                                            arrows: false
+                                //Caroussel
+                                $('.default-slick-carousel').slick({
+                                    infinite: false,
+                                    slidesToShow: 3,
+                                    slidesToScroll: 1,
+                                    dots: false,
+                                    arrows: true,
+                                    adaptiveHeight: true,
+                                    responsive: [
+                                        {
+                                            breakpoint: 1292,
+                                            settings: {
+                                                dots: true,
+                                                arrows: false
+                                            }
+                                        },
+                                        {
+                                            breakpoint: 993,
+                                            settings: {
+                                                slidesToShow: 2,
+                                                slidesToScroll: 2,
+                                                dots: true,
+                                                arrows: false
+                                            }
+                                        },
+                                        {
+                                            breakpoint: 769,
+                                            settings: {
+                                                slidesToShow: 1,
+                                                slidesToScroll: 1,
+                                                dots: true,
+                                                arrows: false
+                                            }
                                         }
-                                    },
-                                    {
-                                        breakpoint: 993,
-                                        settings: {
-                                            slidesToShow: 2,
-                                            slidesToScroll: 2,
-                                            dots: true,
-                                            arrows: false
-                                        }
-                                    },
-                                    {
-                                        breakpoint: 769,
-                                        settings: {
-                                            slidesToShow: 1,
-                                            slidesToScroll: 1,
-                                            dots: true,
-                                            arrows: false
-                                        }
-                                    }
-                                ]
-                            });
-                        }
+                                    ]
+                                });
 
-                    })
+                                //Gestion favoris, ajout
+                                $(".freelancer-overview .bookmark-icon").on('click', function (e) {
+                                    e.preventDefault();
+                                    var element = e.currentTarget,
+                                        dataFavoris = {
+                                            user_id : element.getAttribute("data-user"),
+                                            state : element.getAttribute("data-favoris"),
+                                            employer : session.user_id
+                                        };
+
+                                    setFavoris(dataFavoris, element, function (data) {
+                                        if (data) {
+                                            tippy('[data-tippy-placement]', {
+                                                delay: 100,
+                                                arrow: true,
+                                                arrowType: 'sharp',
+                                                size: 'regular',
+                                                duration: 200,
+
+                                                // 'shift-toward', 'fade', 'scale', 'perspective'
+                                                animation: 'scale',
+
+                                                animateFill: true,
+                                                theme: 'dark',
+
+                                                // How far the tooltip is from its reference element in pixels 
+                                                distance: 10,
+
+                                            });
+                                        }
+                                    });
+                                    
+                                })
+
+                            }
+
+                        })
+                    }
                 }
+            },
+            error: function (err) {
+                console.log(err);
             }
-        },
-        error: function (err) {
-            console.log(err);
-        }
+        });
     });
+
+    
 }
+
 
 /**
  * Dynamisation des metiers dans le dropdown et footer
@@ -1525,17 +1629,29 @@ const detailsUser = (id) => {
                             }
                         },
                         favorite = () => {
-                            if (freelancer.isThisInFavorite) {
-
-                                return `<span class="bookmark-icon" style="color: gold;"></span>
-                                        <span class="bookmark-text">Retirer des favoris</span>
-								        <span class="bookmarked-text">Ajouter aux favoris</span>`;
-                            } else {
-                                return `<span class="bookmark-icon"></span>
-                                        <span class="bookmark-text">Ajouter aux favoris</span>
-                                        <span class="bookmarked-text">Retirer des favoris</span>
-                                        `;
+                            if (isGet && user.isEmployer) {
+                                $("#favoriteDetails")[0].style.display = "block";
+                                if (freelancer.isThisInFavorite) {
+                                    $("#favoriteDetails")[0].classList.add("bookmarked");
+                                    $("#favoriteDetails")[0].setAttribute("data-favoris", "true");
+                                    $("#favoriteDetails")[0].setAttribute("data-user", id);
+                                    return `<span class="bookmark-icon"></span>
+                                            <span class="bookmarked-text">Retirer des favoris</span>
+                                            <span class="bookmark-text">Ajouter aux favoris</span>
+                                            `;
+                                } else {
+                                    $("#favoriteDetails")[0].classList.remove("bookmarked");
+                                    $("#favoriteDetails")[0].setAttribute("data-favoris", "false");
+                                    $("#favoriteDetails")[0].setAttribute("data-user", id);
+                                    return `<span class="bookmark-icon"></span>
+                                            <span class="bookmark-text">Retirer des favoris</span>
+                                            <span class="bookmarked-text">Ajouter aux favoris</span>
+                                            `;
+                                }
+                            }else{
+                                return ``;
                             }
+                            
                         },
                         firstSection = `<div class="container">
                                         <div class="row">
@@ -1735,6 +1851,19 @@ const detailsUser = (id) => {
                             width: indicatorLenght + "%"
                         });
                     });
+                    //on click du bouton favoris
+                    $("#favoriteDetails").on('click', function (e) {
+                        var element = e.currentTarget,
+                            dataFavoris = {
+                                user_id : element.getAttribute("data-user"),
+                                state : element.getAttribute("data-favoris"),
+                                employer : user.user_id
+                            };
+                        setFavoris(dataFavoris, element, function (data) {
+                            return true;
+                        });
+                        
+                    })
                 }
             },
             error: function (err) {
@@ -1920,6 +2049,387 @@ const setAttachment = () => {
 
 
 
+}
+/**
+ * Recuperation de favoris d'un employeur
+ */
+const getFavourites = (state, session) => {
+
+    if (state && session.isEmployer) {
+        $.ajax({
+            type: 'GET',
+            url: "/api/getFavorites/" + session.user_id,
+            dataType: "json",
+            success: function(data) {
+                if (data.getEtat) {
+                    const contentHead = `<div id="freelancerList" class="freelancers-container freelancers-grid-layout margin-top-35">
+                                        </di>`;
+                    $("#freelancerInfavoris").html(contentHead);
+
+                    if (data.getObjet.length > 0) {
+
+                        var outFreelancer = 0;
+
+                        data.getObjet.map((freelancer, item, tab) => {
+                            //console.log(freelancer);
+
+                            var name = () => {
+                                if (freelancer.identity) {
+                                    return `${freelancer.identity.lastName} ${freelancer.identity.name.toUpperCase()}`
+                                } else {
+                                    return freelancer.email;
+                                }
+                            },
+                                favorite = () => {
+                                    if (state && session.isEmployer) {
+                                        if (freelancer.isThisInFavorite) {
+                                            return `<span data-tippy-placement="bottom" title="Retirer de mes favoris" data-favoris="true" data-user="${freelancer._id}" class="bookmark-icon bookmarked"></span>`;
+                                        } else {
+                                            return `<span data-favoris="false" data-user="${freelancer._id}" class="bookmark-icon"></span>`
+                                        }
+                                    }else{
+                                        return ``;
+                                    }
+                                    
+                                },
+                                skills = () => {
+                                    if (freelancer.skills && freelancer.skills.length > 0) {
+                                        return `<span>${freelancer.skills[0]} ${freelancer.skills.length > 1 ? ` + ${freelancer.skills[1]}` : ""}</span>`;
+                                    } else {
+                                        return `<span>---</span>`;
+                                    }
+                                },
+                                content = `<!--Freelancer -->
+                                <div style="background-color: #333" class="freelancer">
+
+                                    <!-- Overview -->
+                                    <div class="freelancer-overview">
+                                        <div class="freelancer-overview-inner">
+                                            
+                                            <!-- Bookmark Icon -->
+                                            ${favorite()}
+                                            
+                                            <!-- Avatar -->
+                                            <div class="freelancer-avatar">
+                                                <div class="verified-badge"></div>
+                                                <a href="/candidats/${freelancer._id}/profile"><img src="/images/user-avatar-big-01.jpg" alt=""></a>
+                                            </div>
+
+                                            <!-- Name -->
+                                            <div class="freelancer-name">
+                                                <h4><a style="color: #fff;" href="/candidats/${freelancer._id}/profile">${name()}<br/><img class="flag" src="/images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top"></a></h4>
+                                                ${skills()}
+                                            </div>
+
+                                            <!-- Rating -->
+                                            <div class="freelancer-rating">
+                                                <div class="star-rating" data-rating="${freelancer.average}"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Details -->
+                                    <div style="background-color: #333;" class="freelancer-details">
+                                        <center>
+                                            <div class="freelancer-details-list">
+                                                <center>
+                                                    <ul>
+                                                        <li>Localisation <strong style="color: #fff;"> ${freelancer.town ? `<i class="icon-material-outline-location-on"></i> ${freelancer.town}` : `---`}</strong></li>
+                                                        <li>Taux <strong style="color: #fff;">$${freelancer.hourly ? freelancer.hourly.rate : "0"} / hr</strong></li>
+                                                        <li>A temps <strong style="color: #fff;">95%</strong></li>
+                                                    </ul>
+                                                </center>
+                                            </div>
+                                            <a href="/candidats/${freelancer._id}/profile" class="button button-sliding-icon ripple-effect">Voir le profile <i class="icon-material-outline-arrow-right-alt"></i></a>
+                                        </center>
+                                    </div>
+                                </div>
+                                <!-- Freelancer / End -->`;
+
+                            outFreelancer++;
+
+                            $("#freelancerList").append(content);
+
+                            if (outFreelancer == tab.length) {
+
+                                //Système étoile
+                                starRating('.star-rating');
+
+                                //Tooltip
+                                tippy('[data-tippy-placement]', {
+                                    delay: 100,
+                                    arrow: true,
+                                    arrowType: 'sharp',
+                                    size: 'regular',
+                                    duration: 200,
+
+                                    // 'shift-toward', 'fade', 'scale', 'perspective'
+                                    animation: 'scale',
+
+                                    animateFill: true,
+                                    theme: 'dark',
+
+                                    // How far the tooltip is from its reference element in pixels 
+                                    distance: 10,
+
+                                });
+
+                                //Gestion favoris, ajout
+                                $(".freelancer-overview .bookmark-icon").on('click', function (e) {
+                                    e.preventDefault();
+                                    var element = e.currentTarget,
+                                        dataFavoris = {
+                                            user_id : element.getAttribute("data-user"),
+                                            state : element.getAttribute("data-favoris"),
+                                            employer : session.user_id
+                                        };
+
+                                    setFavoris(dataFavoris, element, function (data) {
+                                        //Retire le bloc
+                                        if (data) {
+                                            //Tooltip
+                                            tippy('[data-tippy-placement]', {
+                                                delay: 100,
+                                                arrow: true,
+                                                arrowType: 'sharp',
+                                                size: 'regular',
+                                                duration: 200,
+
+                                                // 'shift-toward', 'fade', 'scale', 'perspective'
+                                                animation: 'scale',
+
+                                                animateFill: true,
+                                                theme: 'dark',
+
+                                                // How far the tooltip is from its reference element in pixels 
+                                                distance: 10,
+
+                                            });
+                                            //element.parentNode.parentNode.parentNode.remove();
+                                        }
+                                    });
+                                    
+                                })
+
+                            }
+
+                        })
+                    }
+                }else{
+                    $("#freelancerInfavoris").html(`
+                        <div class="row">
+                            <div class="col-md-12">
+                                <center>
+                                    <div style="margin:2% 0%;"><span style="font-size:150px;" class="icon-line-awesome-star-o"></span><br/><br/><br/>
+                                        <p style="font-size:25px;">La liste de vos favoris est vide</p>
+                                        <p style="font-size:18px;">Ajouter des profiles dans votre liste de favoris de sauvergader certains profiles interessant pour un contact ulterieur</p>
+                                        <a href="/candidats/liste" class="button button-sliding-icon ripple-effect">Trouvez de profiles interessant ICI! 
+                                            <i class="icon-material-outline-arrow-right-alt"></i></a>
+                                    </div>
+
+                                </center>
+                            </div>
+                            
+                        </div>
+                    `);
+                }
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        });
+    } else {}
+    
+}
+
+/**
+ * Recuperation de freelancer a qui on a envoyer aux offres
+ */
+const getFreelancersForOffer = (state, session) => {
+    if (state && session.isEmployer) {
+        $.ajax({
+            type: 'GET',
+            url: "/api/getFreelancersForOffer/" + session.user_id,
+            dataType: "json",
+            success: function(data) {
+                console.log(data)
+                if (data.getEtat) {
+                    const contentHead = `<div id="freelancerList" class="freelancers-container freelancers-grid-layout margin-top-35">
+                                        </di>`;
+                    $("#freelancerInoffer").html(contentHead);
+
+                    if (data.getObjet.length > 0) {
+
+                        var outFreelancer = 0;
+
+                        data.getObjet.map((freelancer, item, tab) => {
+                            //console.log(freelancer);
+
+                            var name = () => {
+                                if (freelancer.infos.identity) {
+                                    return `${freelancer.infos.identity.lastName} ${freelancer.infos.identity.name.toUpperCase()}`
+                                } else {
+                                    return freelancer.infos.email;
+                                }
+                            },
+                                favorite = () => {
+                                    if (state && session.isEmployer) {
+                                        if (freelancer.infos.isThisInFavorite) {
+                                            return `<span data-tippy-placement="bottom" title="Retirer de mes favoris" data-favoris="true" data-user="${freelancer.infos._id}" class="bookmark-icon bookmarked"></span>`;
+                                        } else {
+                                            return `<span data-tippy-placement="bottom" title="Ajouter aux favoris" data-favoris="false" data-user="${freelancer.infos._id}" class="bookmark-icon"></span>`
+                                        }
+                                    }else{
+                                        return ``;
+                                    }
+                                    
+                                },
+                                skills = () => {
+                                    if (freelancer.infos.skills && freelancer.infos.skills.length > 0) {
+                                        return `<span>${freelancer.infos.skills[0]} ${freelancer.infos.skills.length > 1 ? ` + ${freelancer.infos.skills[1]}` : ""}</span>`;
+                                    } else {
+                                        return `<span>---</span>`;
+                                    }
+                                },
+                                content = `<!--Freelancer -->
+                                <div style="background-color: #333" class="freelancer">
+
+                                    <!-- Overview -->
+                                    <div class="freelancer-overview">
+                                        <div class="freelancer-overview-inner">
+                                            
+                                            <!-- Bookmark Icon -->
+                                            ${favorite()}
+                                            
+                                            <!-- Avatar -->
+                                            <div class="freelancer-avatar">
+                                                <div class="verified-badge"></div>
+                                                <a href="/candidats/${freelancer.infos._id}/profile"><img src="/images/user-avatar-big-01.jpg" alt=""></a>
+                                            </div>
+
+                                            <!-- Name -->
+                                            <div class="freelancer-name">
+                                                <h4><a style="color: #fff;" href="/candidats/${freelancer.infos._id}/profile">${name()}<br/><img class="flag" src="/images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top"></a></h4>
+                                                ${skills()}
+                                            </div>
+
+                                            <!-- Rating -->
+                                            <div class="freelancer-rating">
+                                                <div class="star-rating" data-rating="${freelancer.infos.average}"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Details -->
+                                    <div style="background-color: #333;" class="freelancer-details">
+                                        <center>
+                                            <div class="freelancer-details-list">
+                                                <center>
+                                                    <ul>
+                                                        <li>Localisation <strong style="color: #fff;"> ${freelancer.infos.town ? `<i class="icon-material-outline-location-on"></i> ${freelancer.infos.town}` : `---`}</strong></li>
+                                                        <li>Taux <strong style="color: #fff;">$${freelancer.infos.hourly ? freelancer.infos.hourly.rate : "0"} / hr</strong></li>
+                                                        <li>A temps <strong style="color: #fff;">95%</strong></li>
+                                                        <li>Nb. offres <strong style="color: #fff;">${freelancer.nbreOffer ? `${freelancer.nbreOffer}` : `---`}</strong></li>
+                                                    </ul>
+                                                </center>
+                                            </div>
+                                            <a href="#" class="button button-sliding-icon ripple-effect">Laissez votre appreciation 
+                                            <i class="icon-material-outline-arrow-right-alt"></i></a>
+                                        </center>
+                                    </div>
+                                </div>
+                                <!-- Freelancer / End -->`;
+
+                            outFreelancer++;
+
+                            $("#freelancerList").append(content);
+
+                            if (outFreelancer == tab.length) {
+
+                                //Système étoile
+                                starRating('.star-rating');
+
+                                //Tooltip
+                                tippy('[data-tippy-placement]', {
+                                    delay: 100,
+                                    arrow: true,
+                                    arrowType: 'sharp',
+                                    size: 'regular',
+                                    duration: 200,
+
+                                    // 'shift-toward', 'fade', 'scale', 'perspective'
+                                    animation: 'scale',
+
+                                    animateFill: true,
+                                    theme: 'dark',
+
+                                    // How far the tooltip is from its reference element in pixels 
+                                    distance: 10,
+
+                                });
+
+                                //Gestion favoris, ajout
+                                $(".freelancer-overview .bookmark-icon").on('click', function (e) {
+                                    e.preventDefault();
+                                    var element = e.currentTarget,
+                                        dataFavoris = {
+                                            user_id : element.getAttribute("data-user"),
+                                            state : element.getAttribute("data-favoris"),
+                                            employer : session.user_id
+                                        };
+
+                                    setFavoris(dataFavoris, element, function (data) {
+                                        //Retire le bloc
+                                        if (data) {
+                                            //Tooltip
+                                            tippy('[data-tippy-placement]', {
+                                                delay: 100,
+                                                arrow: true,
+                                                arrowType: 'sharp',
+                                                size: 'regular',
+                                                duration: 200,
+
+                                                // 'shift-toward', 'fade', 'scale', 'perspective'
+                                                animation: 'scale',
+
+                                                animateFill: true,
+                                                theme: 'dark',
+
+                                                // How far the tooltip is from its reference element in pixels 
+                                                distance: 10,
+
+                                            });
+                                            //element.parentNode.parentNode.parentNode.remove();
+                                        }
+                                    });
+                                    
+                                })
+
+                            }
+
+                        })
+                    }
+                }else{
+                    $("#freelancerInfavoris").html(`
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div style="margin:13% 0%;"><span style="font-size:150px;" class="icon-material-outline-assignment"></span><br/><br/><br/>
+                                    <p style="font-size:25px;">La liste de vos contacts est vide</p>
+                                    <p>Ici nous listons tous les profiles à qui vous avez envoyer une offre, cela pour vous de rester en contact à n'importe quel moment</p>
+                                    <a href="/candidats/liste" class="button button-sliding-icon ripple-effect">Trouvez de profiles interessant ICI! 
+                                            <i class="icon-material-outline-arrow-right-alt"></i></a>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    `);
+                }
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        });
+    }
 }
 
 export { login, register, getStatsUsers, getNav, activeAccount, statsInDashboard, topFreelancer, getDropAnfooterJobs, getDropAnfooterTown, sidebar, detailsUser, dropNav }

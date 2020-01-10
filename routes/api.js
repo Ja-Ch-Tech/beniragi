@@ -108,24 +108,44 @@ router.post('/login', (req, res) => {
 router.post('/users/setIdentity', (req, res) => {
 
     var data = {
-        nom: req.body.nom,
-        postnom: req.body.postnom,
-        prenom: req.body.prenom,
-        numero: req.body.numero,
-        id_user: req.session.id_user_beni
-    };
+            nom: req.body.nom,
+            postnom: req.body.postnom,
+            prenom: req.body.prenom,
+            numero: req.body.numero,
+            id_user: req.session.id_user_beni
+        }, 
+        dataDescription = {
+            id_user : req.session.id_user_beni,
+            bio : req.body.bio
+        };
 
     if (Empty(data)) {
 
         axios.post(`${API}/users/setIdentity`, data)
             .then(user => {
                 if (user.data.getEtat) {
-                    res.status(200);
-                    res.send(user.data);
+
+                    //Si la description est aussi remplit
+                    if (Empty(dataDescription)) {
+                        //Deuxieme requete pour mettre a jour la description
+                        axios.post(`${API}/users/setBio`, dataDescription)
+                            .then(response => {
+                                if (response.data.getEtat) {
+                                    res.status(200).send(response.data);
+                                } else {
+                                    res.status(200).send(response.data)
+                                }
+                            })
+                            .catch(error => {
+                                res.send(error)
+                            })
+                    }else{
+                        res.status(200).send(user.data);
+                    }
+                    
 
                 } else {
-                    res.status(200);
-                    res.send(user.data)
+                    res.status(200).send(user.data)
                 }
             })
             .catch(error => {
@@ -321,6 +341,23 @@ router.post('/searchSkills', (req, res) => {
         })
 });
 
+//Route faisant la mise a jour de favoris
+router.post('/setFavoris', (req, res) => {
+
+    var data = {
+        id_freelancer: req.body.user_id,
+        id_employer: req.body.employer
+    };
+
+    axios.post(`${API}/favoris/set`, data)
+        .then(response => {
+            res.status(200).send(response.data)
+        })
+        .catch(err => {
+            res.status(500).send(err)
+        })
+});
+
 //Route pour la récupération des stats
 router.get('/users/stats', (req, res) => {
     axios.get(`${API}/users/stats/${req.session.id_user_beni}`)
@@ -445,7 +482,19 @@ router.get('/offer/getMessages', (req, res) => {
             res.status(200).send(response.data);
         })
         .catch(err => {
-            res.status(200).send(err)
+            res.status(500).send(err)
+        })
+
+})
+
+//Recuperation des favoris d'un employeur
+router.get('/getFavorites/:id_employer', (req, res) => {
+    axios.get(`${API}/users/getFavorites/${req.params.id_employer}`)
+        .then(response => {
+            res.status(200).send(response.data);
+        })
+        .catch(err => {
+            res.status(500).send(err)
         })
 })
 
@@ -503,4 +552,16 @@ router.get('/notification/setRead/:id', (req, res) => {
              res.status(500).send(err)
          })
 })
+
+//Recupere les freelancer contacter par un employeur
+router.get('/getFreelancersForOffer/:id_employer', (req, res) => {
+    axios.get(`${API}/offer/getFreelancersForOffer/${req.params.id_employer}`)
+        .then(response => {
+            res.status(200).send(response.data);
+        })
+        .catch(err => {
+            res.status(500).send(err);
+        })
+})
+
 module.exports = router;

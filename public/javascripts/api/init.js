@@ -164,6 +164,88 @@ const NoEmpty = object => {
     return flag;
 }
 
+//Supprime un element du tableau
+const removeItem = (arr, item, callback) => {
+    for (var i = arr.length; i--;) {
+
+        if (arr[i] === item) {
+            arr.splice(i, 1);
+            callback(arr)
+        }
+    }
+}
+
+//Verifie l'existence d'un element dans un tableau
+function isInArray(value, array) {
+  return array.indexOf(value) > -1;
+}
+/**
+ * Mise en favoris d'un freelancer
+ */
+const setFavoris = (dataFavoris, element, callback) => {
+    if (NoEmpty(dataFavoris)) {
+        $.ajax({
+            type: 'POST',
+            url: "/api/setFavoris",
+            dataType: "json",
+            data : dataFavoris,
+            success: function(data) {
+                if (data.getMessage) {
+
+                    if (element.getAttribute("data-favoris") == "true") {
+                        element.classList.remove("bookmarked");
+                        element.setAttribute("data-favoris", "false");
+                        element.setAttribute("title", "Ajouter aux favoris");
+                    } else {
+                        element.classList.add("bookmarked");
+                        element.setAttribute("data-favoris", "true");
+                        element.setAttribute("title", "Retirer de mes favoris");
+                    }
+
+                    Snackbar.show({
+                        text: data.getMessage,
+                        pos: 'top-center',
+                        showAction: false,
+                        duration: 3000,
+                        textColor: '#fff',
+                        backgroundColor: '#ad344b'
+                    });
+                    callback(true);
+                }else{
+                    Snackbar.show({
+                        text: data.getMessage,
+                        pos: 'top-center',
+                        showAction: false,
+                        duration: 3000,
+                        textColor: '#fff',
+                        backgroundColor: '#ad344b'
+                    });
+                    callback(false);
+                }
+            },
+            error: function(err) {
+                Snackbar.show({
+                    text: "Une erreur est survenue, verifiez votre connexion internet",
+                    pos: 'top-center',
+                    showAction: false,
+                    duration: 3000,
+                    textColor: '#fff',
+                    backgroundColor: '#ad344b'
+                });
+            }
+        });
+    }else{
+        Snackbar.show({
+            text: "Cette operation n'a pas reussie car certaines informations manque",
+            pos: 'top-center',
+            showAction: false,
+            duration: 3000,
+            textColor: '#fff',
+            backgroundColor: '#ad344b'
+        });
+    }
+}
+
 //Start evaluation
 const starRating = (ratingElem) => {
 
@@ -243,4 +325,4 @@ function getMonth(month) {
     return monthLetters[parseInt(month)];
 }
 
-export { getHostApi, customDate, getAllTypesUser, getUserId, getHostWeb, NoEmpty, getAllTowns, starRating, getAllJob, customDateForFeedBack as dateFeedBack }
+export { getHostApi, customDate, getAllTypesUser, getUserId, getHostWeb, NoEmpty, getAllTowns, starRating, getAllJob, customDateForFeedBack as dateFeedBack, setFavoris, removeItem, isInArray }
