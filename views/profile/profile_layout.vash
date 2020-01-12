@@ -99,27 +99,21 @@
               <!-- Welcome Text -->
               <div class="welcome-text">
                 <h3>Laissez un feedback </h3>
-                <span>Noté <a href="#">Peter Valentín</a> par rapport à sa facon de travailler</span>
+                <span id="nameFreelancer"></span>
               </div>
                 
               <!-- Form -->
               <form method="post" id="leave-review-form">
 
                 <div class="feedback-yes-no">
-                  <div class="submit-field">
-                    <strong>Sur quel projet aviez vous travailler ?</strong>
-                    <input type="text" class="with-border" placeholder="Nom du projet">
-                  </div>
-                </div>
-                <div class="feedback-yes-no">
                   <strong>A-t-il finit son travail à temps ?</strong>
                   <div class="radio">
-                    <input id="radio-3" name="radio2" type="radio" required>
+                    <input value="oui" id="radio-3" name="intime" type="radio" required>
                     <label for="radio-3"><span class="radio-label"></span> OUI</label>
                   </div>
 
                   <div class="radio">
-                    <input id="radio-4" name="radio2" type="radio" required>
+                    <input value="non" id="radio-4" name="intime" type="radio" required>
                     <label for="radio-4"><span class="radio-label"></span> NON</label>
                   </div>
                 </div>
@@ -127,25 +121,25 @@
                 <div class="feedback-yes-no">
                   <strong>Note du travail</strong>
                   <div class="leave-rating">
-                    <input type="radio" name="rating" id="rating-radio-1" value="1" required>
+                    <input type="radio" name="rating" id="rating-radio-1" value="5" required>
                     <label for="rating-radio-1" class="icon-material-outline-star"></label>
-                    <input type="radio" name="rating" id="rating-radio-2" value="2" required>
+                    <input type="radio" name="rating" id="rating-radio-2" value="4" required>
                     <label for="rating-radio-2" class="icon-material-outline-star"></label>
                     <input type="radio" name="rating" id="rating-radio-3" value="3" required>
                     <label for="rating-radio-3" class="icon-material-outline-star"></label>
-                    <input type="radio" name="rating" id="rating-radio-4" value="4" required>
+                    <input type="radio" name="rating" id="rating-radio-4" value="2" required>
                     <label for="rating-radio-4" class="icon-material-outline-star"></label>
-                    <input type="radio" name="rating" id="rating-radio-5" value="5" required>
+                    <input type="radio" name="rating" id="rating-radio-5" value="1" required>
                     <label for="rating-radio-5" class="icon-material-outline-star"></label>
                   </div><div class="clearfix"></div>
                 </div>
 
-                <textarea class="with-border" placeholder="Un commentaire" name="message2" id="message2" cols="7" required></textarea>
+                <textarea style="background-color:#fff;border-color:#ccc;" class="with-border" placeholder="Un commentaire" name="commentaiire" id="commentaiire" cols="7" required></textarea>
 
               </form>
               
               <!-- Button -->
-              <button class="button full-width button-sliding-icon ripple-effect" type="submit" form="leave-review-form">Valider <i class="icon-material-outline-arrow-right-alt"></i></button>
+              <button id="btn-leave-review" class="button full-width button-sliding-icon ripple-effect" type="submit" form="leave-review-form">Valider <i class="icon-material-outline-arrow-right-alt"></i></button>
 
             </div>
 

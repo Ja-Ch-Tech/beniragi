@@ -2392,7 +2392,7 @@ em.mm-counter+a.mm-fullsubopen+span {
     }
     #logo img {
         border: none;
-        max-width: 100px;
+        max-width: 65px;
         height: auto;
     }
     header.fullwidth .container {
@@ -2409,7 +2409,7 @@ em.mm-counter+a.mm-fullsubopen+span {
     #header .right-side {
         position: absolute;
         width: auto;
-        background-color: #fff;
+        background-color:transparent;
         text-align: left;
     }
     .mmenu-trigger {
@@ -4564,7 +4564,7 @@ span.blog-item-tag {
 /* Small Footer */
 
 .small-footer {
-    border-top: 1px solid #e0e0e0;
+    border-top: 1px solid #333;
     padding-top: 0px;
     width: calc(100% + 80px);
     left: -40px;
@@ -15301,7 +15301,7 @@ ul.dashboard-box-list {
 }
 
 ul.dashboard-box-list>li {
-    border-bottom: 1px solid #e4e4e4;
+    border-bottom: 1px solid #2c2b2b;
     padding: 0;
     line-height: 26px;
     padding: 22px 30px;
@@ -15318,7 +15318,8 @@ ul.dashboard-box-list>li:last-child {
 }
 
 ul.dashboard-box-list>li:hover {
-    background-color: #fcfcfc;
+    background-color: rgba(0, 0, 0, .07);
+    cursor: pointer;
 }
 
 .dashboard-box-list .notification-text {
@@ -16152,7 +16153,7 @@ ul.dashboard-box-list>li:hover {
     margin: 0;
     box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.06);
     border-radius: 4px;
-    background-color: #fff;
+    background-color: #333;
 }
 
 
@@ -16191,9 +16192,9 @@ ul.dashboard-box-list>li:hover {
     margin: 0;
     padding: 22px 30px;
     color: #333;
-    background-color: #fff;
+    background-color: #333;
     display: block;
-    border-bottom: 1px solid #eaeaea;
+    border-bottom: 1px solid #2c2b2b;
     border-radius: 4px 4px 0 0;
     position: relative;
 }
@@ -16279,7 +16280,7 @@ ul.dashboard-box-list>li:hover {
 }
 
 .messages-inbox ul li:nth-child(2n) {
-    background-color: #fafafa;
+    background-color: #262626;
 }
 
 .messages-inbox ul li:last-child {
@@ -16341,7 +16342,7 @@ ul.dashboard-box-list>li:hover {
 
 .message-by-headline h5 {
     font-weight: 600;
-    color: #333;
+    color: #ad344b;
     margin: 0 0 7px 0;
     padding: 0;
 }

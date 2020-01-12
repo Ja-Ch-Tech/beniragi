@@ -564,4 +564,33 @@ router.get('/getFreelancersForOffer/:id_employer', (req, res) => {
         })
 })
 
+//Soumission d'un feedback
+router.post('/setReview', (req, res) => {
+    var data = {
+        id_employer: req.body.id_employeur,
+        id_freelancer: req.body.id_freelancer,
+        note : parseInt(req.body.rating),
+        inTime : req.body.intime == "oui" ? true : false,
+        message : req.body.commentaiire
+    };
+    axios.post(`${API}/evaluation`, data)
+        .then(response => {
+            res.status(200).send(response.data)
+        })
+        .catch(err => {
+            res.status(500).send(err)
+        })
+});
+
+//Recupere les feedbacks
+router.get('/getFeedBacks/:id_freelancer', (req, res) => {
+    axios.get(`${API}/evaluation/getFeedBacks/${req.params.id_freelancer}`)
+        .then(response => {
+            res.status(200).send(response.data);
+        })
+        .catch(err => {
+            res.status(500).send(err);
+        })
+})
+
 module.exports = router;

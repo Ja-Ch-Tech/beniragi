@@ -1,4 +1,4 @@
-import { getAllTypesUser, getUserId, NoEmpty, getHostApi, getAllTowns, starRating, getAllJob, dateFeedBack, setFavoris, removeItem, isInArray } from './init.js';
+import { getAllTypesUser, getUserId, NoEmpty, getHostApi, getAllTowns, starRating, getAllJob, dateFeedBack, setFavoris, removeItem, isInArray} from './init.js';
 import { newMessage } from './notification.js';
 
 //Permet de connecter un utilisateur
@@ -280,6 +280,11 @@ const getNav = () => {
                     //Execution de la fonction renvoyant les contacts
                     if (/profile/i.test(pathName.split("/")[1]) && /contacts/i.test(pathName.split("/")[2])) {
                         getFreelancersForOffer(state, user);
+                    }
+
+                    //Execution de la fonction renvoyant les feedbacks
+                    if (/profile/i.test(pathName.split("/")[1]) && /feedback/i.test(pathName.split("/")[2])) {
+                        getReview(state, user);
                     }
         
         
@@ -2333,7 +2338,7 @@ const getFreelancersForOffer = (state, session) => {
                                                     </ul>
                                                 </center>
                                             </div>
-                                            <a href="#" class="button button-sliding-icon ripple-effect">Laissez votre appreciation 
+                                            <a data-user="${freelancer.infos._id}" data-name="${name()}" href="#small-dialog-2" class="popup-with-zoom-anim button button-sliding-icon ripple-effect leave-review-btn">Laissez votre appreciation 
                                             <i class="icon-material-outline-arrow-right-alt"></i></a>
                                         </center>
                                     </div>
@@ -2366,6 +2371,29 @@ const getFreelancersForOffer = (state, session) => {
                                     // How far the tooltip is from its reference element in pixels 
                                     distance: 10,
 
+                                });
+                                
+                                //chargement du popup de connexion et inscription
+                                $('.popup-with-zoom-anim').magnificPopup({
+                                    type: 'inline',
+
+                                    fixedContentPos: false,
+                                    fixedBgPos: true,
+
+                                    overflowY: 'auto',
+
+                                    closeBtnInside: true,
+                                    preloader: false,
+
+                                    midClick: true,
+                                    removalDelay: 300,
+                                    mainClass: 'my-mfp-zoom-in'
+                                });
+
+                                $(".leave-review-btn").on('click', function (e) {
+                                    var name = e.currentTarget.getAttribute("data-name"),
+                                        id_user = e.currentTarget.getAttribute("data-user");
+                                    $("#nameFreelancer").html(`Noté <a id="${id_user}" href="#">${name}</a> par rapport à sa facon de travailler`)
                                 });
 
                                 //Gestion favoris, ajout
@@ -2403,7 +2431,10 @@ const getFreelancersForOffer = (state, session) => {
                                         }
                                     });
                                     
-                                })
+                                });
+
+                                //send feedback
+                                sendReview(session);
 
                             }
 
@@ -2421,6 +2452,163 @@ const getFreelancersForOffer = (state, session) => {
                                 </div>
                             </div>
                             
+                        </div>
+                    `);
+                }
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        });
+    }
+}
+
+/**
+ * Met a jour un feedback
+ */
+const sendReview = (session) => {
+    $("#leave-review-form").on('submit', function (e) {
+        e.preventDefault();
+        var inputs = e.target.elements,
+            objData = {};
+        for (let index = 0; index < inputs.length; index++) {
+            var name = e.target.elements[index].name;
+            if (/input/i.test(e.target.elements[index].localName)) {
+                if (e.target.elements[index].type == "radio") {
+                    if (e.target.elements[index].checked) {
+                        objData[name] = e.target.elements[index].value;
+                    }
+                } else {
+                    objData[name] = e.target.elements[index].value;
+                }
+            }
+            if (/textarea/i.test(e.target.elements[index].localName)) {
+                objData[name] = e.target.elements[index].value;
+            }
+        }
+        objData["id_freelancer"] = $("#nameFreelancer a")[0].id;
+        objData["id_employeur"] = session.user_id;
+        if (NoEmpty(objData)) {
+            $.ajax({
+                type: 'POST',
+                url: "/api/setReview",
+                dataType: "json",
+                data : objData,
+                beforeSend : function () {
+                    $("#btn-leave-review").html("Envoi en cours...");
+                },
+                success: function(data) {
+                    $("#btn-leave-review").html(`Valider <i class="icon-material-outline-arrow-right-alt"></i>`);
+                    if (data.getEtat) {
+                        Snackbar.show({
+                            text: "Votre appreciation est envoye avec success",
+                            pos: 'top-center',
+                            showAction: false,
+                            duration: 3000,
+                            textColor: '#fff',
+                            backgroundColor: '#3696f5'
+                        });
+                    } else {
+                        Snackbar.show({
+                            text: data.getMessage,
+                            pos: 'top-center',
+                            showAction: false,
+                            duration: 3000,
+                            textColor: '#fff',
+                            backgroundColor: '#ad344b'
+                        });
+                    }
+                },
+                error: function(err) {
+                    Snackbar.show({
+                        text: "Une erreur est survenue, verifiez votre connexion internet",
+                        pos: 'top-center',
+                        showAction: false,
+                        duration: 3000,
+                        textColor: '#fff',
+                        backgroundColor: '#ad344b'
+                    });
+                }
+            });
+        }else{
+            Snackbar.show({
+                text: "Veuillez renseigner tous les champs",
+                pos: 'top-center',
+                showAction: true,
+                actionText: "Fermer",
+                duration: 5000,
+                textColor: '#fff',
+                backgroundColor: '#ad344b'
+            });
+        }
+    })
+}
+
+const getReview = (state, user) => {
+    if (state) {
+        $.ajax({
+            type: 'GET',
+            url: "/api/getFeedBacks/" + user.user_id,
+            dataType: "json",
+            success: function(data) {
+                if (data.getEtat) {
+                    if (data.getObjet.feedBacks.length > 0) {
+                        $("#listReview").html(``);
+                        var outfeedback=0;
+                        data.getObjet.feedBacks.map(review => {
+
+                            outfeedback++;
+                            var name = () => {
+                                if (review.identity_employeur.identity) {
+                                    return `${review.identity_employeur.identity.lastName} ${review.identity_employeur.identity.name.toUpperCase()}`
+                                } else {
+                                    return review.identity_employeur.email;
+                                }
+                            },
+                            contentFeedback = `<li>
+                                <div class="boxed-list-item">
+                                    <!-- Content -->
+                                    <div class="item-content">
+                                        <div class="item-details margin-top-10">
+                                        <div class="star-rating" data-rating="${review.evaluation.note}"></div>
+                                        <div class="detail-item"><i class="icon-material-outline-date-range"></i>${dateFeedBack(review.evaluation.created_at)}</div>
+                                        </div>
+                                        <div class="item-description">
+                                        <p>${review.evaluation.message}</p>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <a class="button gray pull-right ripple-effect margin-top-5 margin-bottom-10"><i class="icon-feather-user"></i>
+                                    ${name()}
+                                    </a>
+                                </li>`;
+                            $("#listReview").append(contentFeedback);
+
+                            if (outfeedback == data.getObjet.feedBacks.length) {
+                                starRating('.star-rating');
+                            }
+                        });
+                    }else{
+                        $("#listReview").html(`
+                            <div class="col-md-12">
+                                <center>
+                                    <div style="margin:7% 0%;"><span style="font-size:150px;" class="icon-line-awesome-comments-o"></span><br/><br/><br/>
+                                        <p style="font-size:25px;">Aucun feedback n'est emit sur vous </p>
+                                        <p>Ici nous listons tout ce que les gens qui vous ont contacter pense de vous, par rapport a votre facon de travailler</p><br/>
+                                    </div>
+                                </center>
+                            </div>
+                        `);
+                    }
+                } else {
+                    $("#listReview").html(`
+                        <div class="col-md-12">
+                            <center>
+                                <div style="margin:7% 0%;"><span style="font-size:150px;" class="icon-line-awesome-comments-o"></span><br/><br/><br/>
+                                    <p style="font-size:25px;">Aucun feedback n'est emit sur vous </p>
+                                    <p>Ici nous listons tout ce que les gens qui vous ont contacter pense de vous, par rapport a votre facon de travailler</p><br/>
+                                </div>
+                            </center>
                         </div>
                     `);
                 }

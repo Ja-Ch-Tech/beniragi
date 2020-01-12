@@ -23,47 +23,27 @@
 
               <!-- Headline -->
               <div class="headline">
-                <h3><i class="icon-material-outline-face"></i> Rate Freelancers</h3>
+                <h3><i class="icon-material-outline-face"></i> Notes et appreciations</h3>
               </div>
 
               <div class="content">
-                <ul class="dashboard-box-list">
-                  <li>
-                    <div class="boxed-list-item">
-                      <!-- Content -->
-                      <div class="item-content">
-                        <h4>Help Fix Laravel PHP issue</h4>
-                        <div class="item-details margin-top-10">
-                          <div class="star-rating" data-rating="5.0"></div>
-                          <div class="detail-item"><i class="icon-material-outline-date-range"></i> August 2018</div>
+                <ul id="listReview" class="dashboard-box-list">
+                    <div class="col-md-12">
+                      <center>
+                        <div style="margin:13% 0%;" class="lds-spinner">
+                          <div></div>
+                          <div></div>
+                          <div></div>
+                          <div></div>
+                          <div></div>
+                          <div></div>
+                          <div></div>
+                          <div></div>
+                          <div></div>
                         </div>
-                        <div class="item-description">
-                          <p>Excellent programmer - helped me fixing small issue.</p>
-                        </div>
-                      </div>
+                      </center>
                     </div>
-                    <a class="button gray pull-right ripple-effect margin-top-5 margin-bottom-10"><i class="icon-feather-user"></i>
-                        JOSUEMBUYU
-                    </a>
-                  </li>
-                  <li>
-                    <div class="boxed-list-item">
-                      <!-- Content -->
-                      <div class="item-content">
-                        <h4>Help Fix Laravel PHP issue</h4>
-                        <div class="item-details margin-top-10">
-                          <div class="star-rating" data-rating="5.0"></div>
-                          <div class="detail-item"><i class="icon-material-outline-date-range"></i> August 2018</div>
-                        </div>
-                        <div class="item-description">
-                          <p>Excellent programmer - helped me fixing small issue.</p>
-                        </div>
-                      </div>
-                    </div>
-                    <a class="button gray pull-right ripple-effect margin-top-5 margin-bottom-10"><i class="icon-feather-user"></i>
-                        EMMANUEL MATONDO
-                    </a>
-                  </li>
+                    <!-- Dynamic content -->
                 </ul>
               </div>
             </div>
@@ -72,5 +52,7 @@
 
         </div>
         <!-- Row / End -->
+
+        
     })
 })

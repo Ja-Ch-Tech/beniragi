@@ -1,6 +1,6 @@
 const getHostApi = () => {
-    //return "http://localhost:3456/";
-    return "https://api-beniragi-service.herokuapp.com/";
+    return "http://localhost:3456/";
+    //return "https://api-beniragi-service.herokuapp.com/";
 }
 
 const getHostWeb = () => {
@@ -312,7 +312,7 @@ const starRating = (ratingElem) => {
 
 const customDateForFeedBack = (date) => {
     var formatDate = new Date(date);
-    return getMonth(formatDate.getMonth()) + " " + formatDate.getFullYear();
+    return formatDate.getDate() + " " + getMonth(formatDate.getMonth()) + " " + formatDate.getFullYear();
 }
 
 /**
