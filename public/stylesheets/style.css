@@ -16200,7 +16200,7 @@ ul.dashboard-box-list>li:hover {
 }
 
 .messages-headline input {
-    background-color: #f6f6f6;
+    background-color: #2c2b2b;
     box-shadow: none;
     height: 38px;
     padding: 14px;
@@ -16280,7 +16280,7 @@ ul.dashboard-box-list>li:hover {
 }
 
 .messages-inbox ul li:nth-child(2n) {
-    background-color: #262626;
+    background-color: #333;
 }
 
 .messages-inbox ul li:last-child {
@@ -16392,7 +16392,7 @@ ul.dashboard-box-list>li:hover {
 
 .messages-container-inner .messages-inbox {
     max-width: 340px;
-    border-right: 1px solid #eaeaea;
+    border-right: 1px solid #2c2b2b;
 }
 
 .messages-container-inner .messages-inbox ul li a {
@@ -16554,7 +16554,7 @@ ul.dashboard-box-list>li:hover {
 /* Reply */
 
 .message-reply {
-    border-top: 1px solid #eaeaea;
+    border-top: 1px solid #2c2b2b;
     padding: 30px;
     display: flex;
     align-items: flex-start;

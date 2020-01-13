@@ -2,7 +2,26 @@
   @html.block('content', function(model) {
 	<section id="detailsUser">
 		<!-- Titlebar ================================================== -->
-		<div class="single-page-header freelancer-header" data-background-image="images/single-freelancer.jpg" id="detailsHeader">
+		<div class="single-page-header freelancer-header" id="detailsHeader">
+		  	<div class="container">
+		  		<div class="row">
+		  			<div class="col-md-12">
+		  				<div class="single-page-header-inner">
+						  <div style="margin:3% 45%;" class="lds-spinner">
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+						  </div>
+		  				</div>
+		  			</div>
+		  		</div>
+		  	</div>
 			<!-- Dynamic content -->
 		</div>
 		<!-- Page Content================================================== -->

@@ -17,7 +17,7 @@ function activeMessage(userConnected, id, identity) {
                     <!-- Dynamic content -->
                 </div>
                 <div class="message-reply">
-                <form id="submitMessage" style="display: flex; width: 100%;"><textarea cols="1" rows="1" style="padding-left: 7px; border: 1px solid #aaa; background-color: transparent;" name="textarea" placeholder="Entrez le message texte..." data-autoresize></textarea><button class="button ripple-effect" form="submitMessage">Envoyer</button></form>
+                <form id="submitMessage" style="display: flex; width: 100%;"><textarea cols="1" rows="1" style="padding-left: 7px; border: 1px solid #2c2b2b; background-color: transparent;" name="textarea" placeholder="Entrez le message texte..." data-autoresize></textarea><button class="button ripple-effect" form="submitMessage">Envoyer</button></form>
                 
               </div>`;
 

@@ -209,7 +209,7 @@ const getNav = () => {
                         getUserInfos(user.user_id, function(infos) {
                                     if (infos.getObjet.flag) {
                                         navContent = `
-                                
+
                                 <!--  User Notifications -->
                                 <div class="header-widget hide-on-mobile" id="containerMessage">
                                    <!-- Dynamic content -->
@@ -2094,9 +2094,12 @@ const getFavourites = (state, session) => {
                                 favorite = () => {
                                     if (state && session.isEmployer) {
                                         if (freelancer.isThisInFavorite) {
-                                            return `<span data-tippy-placement="bottom" title="Retirer de mes favoris" data-favoris="true" data-user="${freelancer._id}" class="bookmark-icon bookmarked"></span>`;
+                                            return `<span data-tippy-placement="bottom" title="Retirer de mes favoris" data-favoris="true" data-user="${freelancer._id}" class="bookmark-icon bookmarked"></span>
+                                                <div class="sbl-circ loader-favoris"></div>
+                                            `;
                                         } else {
-                                            return `<span data-favoris="false" data-user="${freelancer._id}" class="bookmark-icon"></span>`
+                                            return `<span data-favoris="false" data-user="${freelancer._id}" class="bookmark-icon"></span>
+                                                <div class="sbl-circ loader-favoris"></div>`
                                         }
                                     }else{
                                         return ``;
@@ -2286,9 +2289,11 @@ const getFreelancersForOffer = (state, session) => {
                                 favorite = () => {
                                     if (state && session.isEmployer) {
                                         if (freelancer.infos.isThisInFavorite) {
-                                            return `<span data-tippy-placement="bottom" title="Retirer de mes favoris" data-favoris="true" data-user="${freelancer.infos._id}" class="bookmark-icon bookmarked"></span>`;
+                                            return `<span data-tippy-placement="bottom" title="Retirer de mes favoris" data-favoris="true" data-user="${freelancer.infos._id}" class="bookmark-icon bookmarked"></span>
+                                                <div class="sbl-circ loader-favoris"></div>`;
                                         } else {
-                                            return `<span data-tippy-placement="bottom" title="Ajouter aux favoris" data-favoris="false" data-user="${freelancer.infos._id}" class="bookmark-icon"></span>`
+                                            return `<span data-tippy-placement="bottom" title="Ajouter aux favoris" data-favoris="false" data-user="${freelancer.infos._id}" class="bookmark-icon"></span>
+                                                <div class="sbl-circ loader-favoris"></div>`
                                         }
                                     }else{
                                         return ``;
