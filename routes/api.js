@@ -593,4 +593,20 @@ router.get('/getFeedBacks/:id_freelancer', (req, res) => {
         })
 })
 
+//Récupère les offres
+router.get('/notification/getOffers/:limit', (req, res) => {
+    if (req.session.id_user_beni && (req.session.id_user_beni != null || req.session.id_user_beni != "null")) {
+
+        axios.get(`${API}/notification/getAll/${req.session.id_user_beni}/${parseInt(req.params.limit)}`)
+            .then(response => {
+                res.status(200).send(response.data)
+            })
+            .catch(err => {
+                res.status(500).send(err)
+            })
+    } else {
+        res.status(202).send({ getEtat: false, getMessage: "Vous n'êtes pas connecté" })
+    }
+})
+
 module.exports = router;

@@ -234,7 +234,7 @@ const getNav = () => {
                                             <div class="user-details">
                                                 <div class="user-avatar status-online"><img src="/images/user-avatar-small-01.jpg" alt=""></div>
                                                 <div class="user-name">
-                                                    ${infos.getObjet.email} <span>${infos.getObjet.typeUser}</span>
+                                                    ${infos.getObjet.identity ? infos.getObjet.identity.lastName + " " + infos.getObjet.identity.name : infos.getObjet.email} <span>${infos.getObjet.typeUser}</span>
                                                 </div>
                                             </div>
                                             
