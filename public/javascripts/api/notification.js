@@ -146,7 +146,6 @@ const newOffer = (limit) => {
                 var outNotification = 0;
 
                 data.getObjet.map((notification, item, tab) => {
-                    console.log(notification);
                     
                     outNotification++;
                     var name = () => {
@@ -154,7 +153,7 @@ const newOffer = (limit) => {
                     },
                     content = `<!-- Notification -->
                                 <li class="notifications-not-read">
-                                    <a href="/profile/messages">
+                                    <a href="#" onclick="setRead($(this), '${notification._id}')">
                                         <span class="notification-icon"><i class="icon-material-outline-group"></i></span>
                                         <span class="notification-text">
                                             <strong>${name()}</strong> vous a fait une offre de travail.
