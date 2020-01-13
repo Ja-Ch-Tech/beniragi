@@ -189,7 +189,13 @@ const setFavoris = (dataFavoris, element, callback) => {
             url: "/api/setFavoris",
             dataType: "json",
             data : dataFavoris,
+            beforeSend : function () {
+                element.style.display = "none";  
+                element.nextElementSibling.style.display = "block";  
+            },
             success: function(data) {
+                element.nextElementSibling.style.display = "none"; 
+                element.style.display = "block";  
                 if (data.getMessage) {
 
                     if (element.getAttribute("data-favoris") == "true") {

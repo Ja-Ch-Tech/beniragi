@@ -208,7 +208,9 @@ const getNav = () => {
                         //Recuperation des informations du user
                         getUserInfos(user.user_id, function(infos) {
                                     if (infos.getObjet.flag) {
-                                        navContent = `<!--  User Notifications -->
+                                        navContent = `
+                                
+                                <!--  User Notifications -->
                                 <div class="header-widget hide-on-mobile" id="containerMessage">
                                    <!-- Dynamic content -->
                                 </div>
@@ -1382,9 +1384,13 @@ const topFreelancer = (limit) => {
                             favorite = () => {
                                 if (state && session.isEmployer) {
                                     if (freelancer.isThisInFavorite) {
-                                        return `<span data-tippy-placement="top" title="Retirer de mes favoris" data-favoris="true" data-user="${freelancer._id}" class="bookmark-icon favoris bookmarked"></span>`;
+                                        return `<span data-tippy-placement="top" title="Retirer de mes favoris" data-favoris="true" data-user="${freelancer._id}" class="bookmark-icon favoris bookmarked"></span>
+                                            <div class="sbl-circ loader-favoris"></div>
+                                        `;
                                     } else {
-                                        return `<span data-tippy-placement="top" title="Ajouter aux favoris" data-favoris="false" data-user="${freelancer._id}" class="bookmark-icon favoris"></span>`
+                                        return `<span data-tippy-placement="top" title="Ajouter aux favoris" data-favoris="false" data-user="${freelancer._id}" class="bookmark-icon favoris"></span>
+                                            <div class="sbl-circ loader-favoris"></div>
+                                        `
                                     }
                                 } else {
                                     return ``;
@@ -1467,78 +1473,78 @@ const topFreelancer = (limit) => {
                                 // How far the tooltip is from its reference element in pixels 
                                 distance: 10
 
-                                });
+                            });
 
-                                //Caroussel
-                                $('.default-slick-carousel').slick({
-                                    infinite: false,
-                                    slidesToShow: 3,
-                                    slidesToScroll: 1,
-                                    dots: false,
-                                    arrows: true,
-                                    adaptiveHeight: true,
-                                    responsive: [
-                                        {
-                                            breakpoint: 1292,
-                                            settings: {
-                                                dots: true,
-                                                arrows: false
-                                            }
-                                        },
-                                        {
-                                            breakpoint: 993,
-                                            settings: {
-                                                slidesToShow: 2,
-                                                slidesToScroll: 2,
-                                                dots: true,
-                                                arrows: false
-                                            }
-                                        },
-                                        {
-                                            breakpoint: 769,
-                                            settings: {
-                                                slidesToShow: 1,
-                                                slidesToScroll: 1,
-                                                dots: true,
-                                                arrows: false
-                                            }
+                            //Caroussel
+                            $('.default-slick-carousel').slick({
+                                infinite: false,
+                                slidesToShow: 3,
+                                slidesToScroll: 1,
+                                dots: false,
+                                arrows: true,
+                                adaptiveHeight: true,
+                                responsive: [
+                                    {
+                                        breakpoint: 1292,
+                                        settings: {
+                                            dots: true,
+                                            arrows: false
                                         }
-                                    ]
-                                });
-
-                                //Gestion favoris, ajout
-                                $(".freelancer-overview .bookmark-icon").on('click', function (e) {
-                                    e.preventDefault();
-                                    var element = e.currentTarget,
-                                        dataFavoris = {
-                                            user_id : element.getAttribute("data-user"),
-                                            state : element.getAttribute("data-favoris"),
-                                            employer : session.user_id
-                                        };
-
-                                    setFavoris(dataFavoris, element, function (data) {
-                                        if (data) {
-                                            tippy('[data-tippy-placement]', {
-                                                delay: 100,
-                                                arrow: true,
-                                                arrowType: 'sharp',
-                                                size: 'regular',
-                                                duration: 200,
-
-                                                // 'shift-toward', 'fade', 'scale', 'perspective'
-                                                animation: 'scale',
-
-                                                animateFill: true,
-                                                theme: 'dark',
-
-                                                // How far the tooltip is from its reference element in pixels 
-                                                distance: 10,
-
-                                            });
+                                    },
+                                    {
+                                        breakpoint: 993,
+                                        settings: {
+                                            slidesToShow: 2,
+                                            slidesToScroll: 2,
+                                            dots: true,
+                                            arrows: false
                                         }
-                                    });
-                                    
-                                })
+                                    },
+                                    {
+                                        breakpoint: 769,
+                                        settings: {
+                                            slidesToShow: 1,
+                                            slidesToScroll: 1,
+                                            dots: true,
+                                            arrows: false
+                                        }
+                                    }
+                                ]
+                            });
+
+                            //Gestion favoris, ajout
+                            $(".freelancer-overview .bookmark-icon").on('click', function (e) {
+                                e.preventDefault();
+                                var element = e.currentTarget,
+                                    dataFavoris = {
+                                        user_id : element.getAttribute("data-user"),
+                                        state : element.getAttribute("data-favoris"),
+                                        employer : session.user_id
+                                    };
+
+                                setFavoris(dataFavoris, element, function (data) {
+                                    if (data) {
+                                        tippy('[data-tippy-placement]', {
+                                            delay: 100,
+                                            arrow: true,
+                                            arrowType: 'sharp',
+                                            size: 'regular',
+                                            duration: 200,
+
+                                            // 'shift-toward', 'fade', 'scale', 'perspective'
+                                            animation: 'scale',
+
+                                            animateFill: true,
+                                            theme: 'dark',
+
+                                            // How far the tooltip is from its reference element in pixels 
+                                            distance: 10,
+
+                                        });
+                                    }
+                                });
+                                
+                            })
 
                             }
 

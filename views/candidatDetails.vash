@@ -109,6 +109,7 @@
 							<button style="display: none;" class="bookmark-button margin-bottom-25" id="favoriteDetails">
 								
 							</button>
+							<div style="display: none;margin-bottom: 30px;" class="sbl-circ"></div>
 		
 							<!-- Copy URL -->
 							<div class="copy-url">

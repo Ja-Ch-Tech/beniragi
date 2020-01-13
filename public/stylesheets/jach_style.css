@@ -283,6 +283,29 @@
     }
 }
 
+/*Petit loader utiliser sur les favoris*/
+.loader-favoris{
+  right: 40px;
+  top: 40px;
+  position: absolute;
+  display: none;
+}
+.sbl-circ {
+  height: 20px;
+  width: 20px;
+  color: #ccc;
+  display: inline-block;
+  border: 5px solid;
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: rotate 1s linear infinite; }
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0); }
+  100% {
+    transform: rotate(360deg); } }
+
 .autocomplete-container {
     position: absolute;
     background-color: #2c2b2b;

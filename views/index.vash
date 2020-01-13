@@ -28,6 +28,7 @@
 								<div class="input-with-icon">
 									<input style="background-color:#fff;" id="autocomplete-input" type="text" placeholder="Localisation ou ville">
 									<i class="icon-material-outline-location-on"></i>
+									
 								</div>
 							</div>
 
