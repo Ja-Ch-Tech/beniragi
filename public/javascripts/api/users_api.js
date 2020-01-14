@@ -1397,11 +1397,11 @@ const topFreelancer = (limit) => {
                                 }
 
                             },
-                            skills = () => {
-                                if (freelancer.skills && freelancer.skills.length > 0) {
-                                    return `<span>${freelancer.skills[0]} ${freelancer.skills.length > 1 ? ` + ${freelancer.skills[1]}` : ""}</span>`;
+                            job = () => {
+                                if (freelancer.job && freelancer.job.name) {
+                                    return `<span style="font-size: .9em"><i class="${freelancer.job.icon}" style="font-size: 1.2em"></i>&nbsp;${freelancer.job.name}</span>`;
                                 } else {
-                                    return freelancer.email;
+                                    return `<br/>`;
                                 }
                             },
                             content = `<!--Freelancer -->
@@ -1423,7 +1423,7 @@ const topFreelancer = (limit) => {
 										<!-- Name -->
 										<div class="freelancer-name">
 											<h4><a style="color: #fff;" href="/candidats/${freelancer._id}/profile">${name()}<br/><img class="flag" src="/images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top"></a></h4>
-											${skills()}
+											${job()}
 										</div>
 
 										<!-- Rating -->
@@ -1689,8 +1689,6 @@ const detailsUser = (id) => {
                                         </div>
                                     </div>`,
                         biographie = `${bio()}`;
-
-                        console.log(freelancer);
                         
                     if (freelancer.feedBacks && freelancer.feedBacks.length > 0) {
                         freelancer.feedBacks.map((feedBack, item, tab) => {
@@ -1706,9 +1704,9 @@ const detailsUser = (id) => {
 										<div class="item-description">
 											<p>${feedBack.evaluation.message}</p>
 										</div>
-										<a class="button gray pull-right ripple-effect margin-top-5 margin-bottom-10"><i
+										<a class="button gray pull-right ripple-effect margin-top-5 margin-bottom-10 text-capitalize"><i
 												class="icon-feather-user"></i>
-											${feedBack.identity_employeur.email}
+											${feedBack.identity_employeur.identity ? feedBack.identity_employeur.identity.lastName + " " + feedBack.identity_employeur.identity.name : feedBack.identity_employeur.email}
 										</a>
 									</div>
 								</div>
@@ -1757,7 +1755,7 @@ const detailsUser = (id) => {
                         indicatorsTime = `<div class="indicator">
                                             <strong>${freelancer.inTime}%</strong>
                                             <div class="indicator-bar" data-indicator-percentage="${freelancer.inTime}"><span></span></div>
-                                            <span>${judgement()}</span>
+                                            <span style="font-size: .8em">${judgement()}</span>
                                         </div>`;
                     var favoris = `${favorite()}`,
                         inputIdentity = () => {
