@@ -22,7 +22,7 @@
             <div class="messages-inbox">
               <div class="messages-headline">
                 <div class="input-with-icon">
-                    <input id="autocomplete-input" type="text" placeholder="Recherche">
+                    <input id="searchInMessages" type="text" placeholder="Recherche">
                   <i class="icon-material-outline-search"></i>
                 </div>
               </div>

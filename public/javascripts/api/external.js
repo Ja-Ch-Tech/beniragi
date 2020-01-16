@@ -4,12 +4,14 @@
  * @param {String} id L'identifiant de la file de message
  * @param {String} identity Le proprio de la file en question
  */
-function activeMessage(userConnected, id, identity) {
+function activeMessage(userConnected, id, identity, flag) {
+    console.log(flag);
+    
     window.localStorage.setItem("currentList", id);
 
     var content = `<div class="messages-headline">
-                  <h4>${identity}</h4>
-                  <a href="#" class="message-action"><i class="icon-feather-trash-2"></i> Supprimer la conversation</a>
+                  <h4 style="color: #ccc; text-transform: uppercase">${identity}</h4>
+                    ${flag == "true" ? `<span class="message-action" id="flagMessage" style="cursor: pointer" onclick="toggleOffer('${id}')"><i class="icon-feather-trash-2"></i> Bloquer l'ofrre</span>` : `<span style="cursor: pointer" class="message-action" id="flagMessage" onclick="toggleOffer('${id}')">Relancer l'ofrre</span>`}
                 </div>
                 
                 <!-- Message Content Inner -->
@@ -17,7 +19,7 @@ function activeMessage(userConnected, id, identity) {
                     <!-- Dynamic content -->
                 </div>
                 <div class="message-reply">
-                <form id="submitMessage" style="display: flex; width: 100%;"><textarea cols="1" rows="1" style="padding-left: 7px; border: 1px solid #2c2b2b; background-color: transparent;" name="textarea" placeholder="Entrez le message texte..." data-autoresize></textarea><button class="button ripple-effect" form="submitMessage">Envoyer</button></form>
+                <form id="submitMessage" style="display: flex; width: 100%;"><textarea cols="1" rows="1" id="textMessage" style="padding-left: 7px; border: 1px solid #2c2b2b; background-color: transparent;" name="textarea" placeholder="Entrez le message texte..." data-autoresize></textarea><button class="button ripple-effect" form="submitMessage" id="btnSubmitMessage">Envoyer</button></form>
                 
               </div>`;
 
@@ -129,7 +131,7 @@ function sendMessage() {
                         });
                     } else {
                         Snackbar.show({
-                            text: data.getMessage,
+                            text: data.getMessage + "...",
                             pos: 'top-center',
                             showAction: false,
                             duration: 3000,
@@ -185,6 +187,44 @@ function setRead(e, id) {
         },
         error: function (err) {
             console.log(err)
+        }
+    });
+}
+
+//Bloquer ou relancer l'offre
+function toggleOffer(id) {
+
+    $.ajax({
+        type: 'POST',
+        url: `/api/offer/toggle/${id}`,
+        dataType: "json",
+        success: function (data) {
+            if (data.getEtat) {
+                if (data.getObjet.flag == true) {
+                    Snackbar.show({
+                        text: "L'offre a été bloqué",
+                        pos: 'bottom-center',
+                        duration: 3000,
+                        textColor: '#fff',
+                        backgroundColor: '#3696f5'
+                    });
+
+                    $("#flagMessage").html("Relancer l'offre");
+
+                } else {
+                    Snackbar.show({
+                        text: "L'offre a été relancé",
+                        pos: 'bottom-center',
+                        textColor: '#fff',
+                        backgroundColor: '#3696f5'
+                    });
+
+                    $("#flagMessage").html(`<i class="icon-feather-trash-2"></i> Bloquer l'ofrre</span>`);
+                }
+            }
+        },
+        error: function (err) {
+            console.log(err);
         }
     });
 }

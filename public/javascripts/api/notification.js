@@ -25,7 +25,7 @@ const newMessage = (limit) => {
 
                             <div class="header-notifications-headline">
                                 <h4>Messages</h4>
-                                <button class="mark-as-read ripple-effect-dark" title="Marquer tout comme lu" data-tippy-placement="left">
+                                <button class="mark-as-read ripple-effect-dark" id="setReadMessage" title="Marquer tout comme lu" data-tippy-placement="left">
                                     <i class="icon-feather-check-square"></i>
                                 </button>
                             </div>
@@ -91,6 +91,7 @@ const newMessage = (limit) => {
 
                         if (outMessages === tab.length) {
                             dropNav("message");
+                            setAllRead("message", "setReadMessage");
                         }
                         
                     })
@@ -126,7 +127,7 @@ const newOffer = (limit) => {
 
                             <div class="header-notifications-headline">
                                 <h4>Notifications</h4>
-                                <button class="mark-as-read ripple-effect-dark" title="Marquer tout comme lue" data-tippy-placement="left">
+                                <button class="mark-as-read ripple-effect-dark" id="setReadOffer" title="Marquer tout comme lue" data-tippy-placement="left">
                                     <i class="icon-feather-check-square"></i>
                                 </button>
                             </div>
@@ -167,6 +168,9 @@ const newOffer = (limit) => {
                         //Dropdown
                         dropNav("notifications");
 
+                        //Marque tous comme lu
+                        setAllRead("offer", "setReadOffer");
+
                         //Tooltip
                         tippy('[data-tippy-placement]', {
                             delay: 100,
@@ -187,6 +191,38 @@ const newOffer = (limit) => {
                         });
                     }
                 })
+            }
+        },
+        error: function (err) {
+            console.log(err);
+        }
+    });
+}
+
+/**
+ * Marquer tous comme lue
+ * @param {String} type Le type de définition de lecture qu'on veut faire
+ * @param {String} id l'attribut id
+ */
+const setAllRead = (type, id) => {
+    $("#" + id).on("click", () => {
+        requestForSetRead(type);
+    })
+}
+
+/**
+ * La requête vers le serveur pour marquer comme lu
+ * @param {String} type Le de définition de lecture qu'on veut faire
+ */
+function requestForSetRead(type) {
+    $.ajax({
+        type: 'GET',
+        url: `/api/notification/setAllRead/${type}`,
+        dataType: "json",
+        success: function (data) {
+            
+            if (data.getEtat) {
+                window.location.reload();
             }
         },
         error: function (err) {

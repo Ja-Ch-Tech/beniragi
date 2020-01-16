@@ -21,15 +21,20 @@ const getMessagesList = () => {
                     
                     // On sauvegarde en local storage
                     window.localStorage.setItem("conversation", JSON.stringify(data.getObjet));
+
+                    var outList = 0;
                     
                     data.getObjet.map((contact, item, tab) => {
+                        console.log(contact);
+                        
                         getOtherEntrant(contact.entrants, (info, userConnected) => {
-                            
+                            outList++;
+
                             var infoHeader = () => {
                                     return info.identity ? info.identity.lastName + " " + info.identity.name : info.email 
                                 },
                                 content = `<!-- class="active-message"-->
-                                            <li onclick="activeMessage('${userConnected}','${contact._id}', '${infoHeader()}')">
+                                            <li onclick="activeMessage('${userConnected}','${contact._id}', '${infoHeader()}', '${contact.flag[0].flag}')">
                                             <a href="#">
                                                 <div class="message-avatar"><i class="status-icon status-online"></i><img src="/images/user-avatar-small-02.jpg" alt="" /></div>
 
@@ -43,9 +48,12 @@ const getMessagesList = () => {
                                             </a>
                                             </li>`;
 
-                            $("#listMessages").append(content)
+                            $("#listMessages").append(content);
+
+                            if (outList == tab.length) {
+                                //search();
+                            }
                         })
-                            
                     })
                 }
             }

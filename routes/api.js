@@ -552,7 +552,7 @@ router.get('/notification/setRead/:id', (req, res) => {
              res.status(500).send(err)
          })
 })
-
+    
 //Recupere les freelancer contacter par un employeur
 router.get('/getFreelancersForOffer/:id_employer', (req, res) => {
     axios.get(`${API}/offer/getFreelancersForOffer/${req.params.id_employer}`)
@@ -609,4 +609,25 @@ router.get('/notification/getOffers/:limit', (req, res) => {
     }
 })
 
+//Route permettant de tout marquer comme lu
+router.get('/notification/setAllRead/:type', (req, res) => {
+    axios.get(`${API}/notification/setAllAlreadyRead/${req.session.id_user_beni}/${req.params.type}`)
+        .then(response => {
+            res.status(200).send(response.data)
+        })
+        .catch(err => {
+            res.status(500).send(err)
+        })
+})
+
+//Route permattant le blocage ou le relancement de l'offre
+router.post('/offer/toggle/:id_offer', (req, res) => {
+    axios.post(`${API}/offer/toggle/${req.params.id_offer}/${req.session.id_user_beni}`)
+         .then(response => {
+            res.status(200).send(response.data)
+         })
+         .catch(err => {
+            res.status(500).send(err)
+         })
+})
 module.exports = router;

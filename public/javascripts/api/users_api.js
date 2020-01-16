@@ -2264,7 +2264,6 @@ const getFreelancersForOffer = (state, session) => {
             url: "/api/getFreelancersForOffer/" + session.user_id,
             dataType: "json",
             success: function(data) {
-                console.log(data)
                 if (data.getEtat) {
                     const contentHead = `<div id="freelancerList" class="freelancers-container freelancers-grid-layout margin-top-35">
                                         </di>`;
@@ -2275,7 +2274,7 @@ const getFreelancersForOffer = (state, session) => {
                         var outFreelancer = 0;
 
                         data.getObjet.map((freelancer, item, tab) => {
-                            //console.log(freelancer);
+                            console.log(freelancer);
 
                             var name = () => {
                                 if (freelancer.infos.identity) {
@@ -2347,7 +2346,7 @@ const getFreelancersForOffer = (state, session) => {
                                                     </ul>
                                                 </center>
                                             </div>
-                                            <a data-user="${freelancer.infos._id}" data-name="${name()}" href="#small-dialog-2" class="popup-with-zoom-anim button button-sliding-icon ripple-effect leave-review-btn">Laissez votre appreciation 
+                                            <a data-user="${freelancer.infos._id}" data-feedback='${JSON.stringify(freelancer.infos.thisFeedBack)}' data-name="${name()}" href="#small-dialog-2" class="popup-with-zoom-anim button button-sliding-icon ripple-effect leave-review-btn">Laissez votre appreciation 
                                             <i class="icon-material-outline-arrow-right-alt"></i></a>
                                         </center>
                                     </div>
@@ -2401,8 +2400,24 @@ const getFreelancersForOffer = (state, session) => {
 
                                 $(".leave-review-btn").on('click', function (e) {
                                     var name = e.currentTarget.getAttribute("data-name"),
-                                        id_user = e.currentTarget.getAttribute("data-user");
-                                    $("#nameFreelancer").html(`Noté <a id="${id_user}" href="#">${name}</a> par rapport à sa facon de travailler`)
+                                        id_user = e.currentTarget.getAttribute("data-user"),
+                                        feedBack = JSON.parse(e.currentTarget.getAttribute("data-feedback"));
+  
+                                    $("#nameFreelancer").html(`Noter <a id="${id_user}" href="#">${name}</a> par rapport à sa facon de travailler`);
+
+                                    var check = () => {
+                                        if (feedBack.evaluation.inTime == 1) {
+                                            document.querySelector("input[name=intime]#radio-3").setAttribute("checked", "checked")
+                                        } else {
+                                            document.querySelector("input[name=intime]#radio-4").setAttribute("checked", "checked")
+                                        }
+                                    }
+
+                                    check();
+
+                                    $("#commentaiire").text(feedBack.evaluation.message);
+                                    
+                                        
                                 });
 
                                 //Gestion favoris, ajout
