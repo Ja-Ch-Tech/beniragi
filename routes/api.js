@@ -630,4 +630,16 @@ router.post('/offer/toggle/:id_offer', (req, res) => {
             res.status(500).send(err)
          })
 })
+
+//Passage de visible à invisible et vice-versa
+router.post('/users/toggleVisibility', (req, res) => {
+    axios.post(`${API}/users/toggleVisibility/${req.session.id_user_beni}`)
+         .then(response => {
+             res.status(200).send(response.data)
+         })
+         .catch(err => {
+             res.status(500).send(err)
+         })
+})
+
 module.exports = router;

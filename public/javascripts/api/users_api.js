@@ -184,15 +184,25 @@ function toggleVisibility() {
     }
 
     $('.status-switch label.user-invisible').on('click', function() {
-        $('.status-indicator').addClass('right');
-        $('.status-switch label').removeClass('current-status');
-        $('.user-invisible').addClass('current-status');
+
+        visibility((flag) => {
+            if (flag) {
+                $('.status-indicator').addClass('right');
+                $('.status-switch label').removeClass('current-status');
+                $('.user-invisible').addClass('current-status');
+            }
+        })
     });
 
     $('.status-switch label.user-online').on('click', function() {
-        $('.status-indicator').removeClass('right');
-        $('.status-switch label').removeClass('current-status');
-        $('.user-online').addClass('current-status');
+        
+        visibility((flag) => {
+            if (flag) {
+                $('.status-indicator').removeClass('right');
+                $('.status-switch label').removeClass('current-status');
+                $('.user-online').addClass('current-status');
+            }
+        })
     });
 }
 
@@ -1373,7 +1383,6 @@ const topFreelancer = (limit) => {
                         var outFreelancer = 0;
 
                     data.getObjet.map((freelancer, item, tab) => {
-                        console.log(freelancer);
                         var name = () => {
                             if (freelancer.identity) {
                                 return `${freelancer.identity.lastName} ${freelancer.identity.name.toUpperCase()}`
@@ -2644,4 +2653,22 @@ const getReview = (state, user) => {
     }
 }
 
-export { login, register, getStatsUsers, getNav, activeAccount, statsInDashboard, topFreelancer, getDropAnfooterJobs, getDropAnfooterTown, sidebar, detailsUser, dropNav }
+/**
+ * Envoi la requête pour faire le toggle
+ * @param {Function} callback La fonction de retour
+ */
+const visibility = (callback) => {
+    $.ajax({
+        type: 'POST',
+        url: "/api/users/toggleVisibility",
+        dataType: "json",
+        success: function (data) {
+            callback(data.getEtat)
+        },
+        error: function (err) {
+            callback(false);
+        }
+    });
+}
+
+export { login, register, getStatsUsers, getNav, activeAccount, statsInDashboard, topFreelancer, getDropAnfooterJobs, getDropAnfooterTown, sidebar, detailsUser, dropNav}

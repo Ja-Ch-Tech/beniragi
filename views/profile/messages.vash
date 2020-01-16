@@ -37,6 +37,9 @@
             <div class="message-content" id="messageSelect">
               
                 <!-- Dynamic content -->
+                <div style="padding: 80px; transform: translate(10%);">
+                  <img src="/images/svg/undraw_ideas_s70l.svg" alt="" style="width: 350px;">
+                </div>
 
             </div>
             <!-- Message Content -->

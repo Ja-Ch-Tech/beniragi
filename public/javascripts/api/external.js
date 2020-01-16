@@ -11,7 +11,7 @@ function activeMessage(userConnected, id, identity, flag) {
 
     var content = `<div class="messages-headline">
                   <h4 style="color: #ccc; text-transform: uppercase">${identity}</h4>
-                    ${flag == "true" ? `<span class="message-action" id="flagMessage" style="cursor: pointer" onclick="toggleOffer('${id}')"><i class="icon-feather-trash-2"></i> Bloquer l'ofrre</span>` : `<span style="cursor: pointer" class="message-action" id="flagMessage" onclick="toggleOffer('${id}')">Relancer l'ofrre</span>`}
+                    ${flag == "true" ? `<span class="message-action" id="flagMessage" style="cursor: pointer" onclick="toggleOffer('${id}')"><i class="icon-material-outline-lock"></i> Bloquer l'ofrre</span>` : `<span style="cursor: pointer" class="message-action" id="flagMessage" onclick="toggleOffer('${id}')"><i class="icon-material-outline-lock-open"></i> Relancer l'ofrre</span>`}
                 </div>
                 
                 <!-- Message Content Inner -->
@@ -209,7 +209,7 @@ function toggleOffer(id) {
                         backgroundColor: '#3696f5'
                     });
 
-                    $("#flagMessage").html("Relancer l'offre");
+                    $("#flagMessage").html(`<i class="icon-material-outline-lock-open"></i> Relancer l'offre`);
 
                 } else {
                     Snackbar.show({
@@ -219,7 +219,7 @@ function toggleOffer(id) {
                         backgroundColor: '#3696f5'
                     });
 
-                    $("#flagMessage").html(`<i class="icon-feather-trash-2"></i> Bloquer l'ofrre</span>`);
+                    $("#flagMessage").html(`<i class="icon-material-outline-lock"></i> Bloquer l'ofrre</span>`);
                 }
             }
         },
