@@ -642,4 +642,18 @@ router.post('/users/toggleVisibility', (req, res) => {
          })
 })
 
+router.post('/megaSearch/:id_viewer', (req, res) => {
+    var data = {
+        "job" : req.body.job,
+        "town" : req.body.town
+    };
+    axios.post(`${API}/users/smartSearch/${req.params.id_viewer}`, data)
+         .then(response => {
+            res.status(200).send(response.data)
+         })
+         .catch(err => {
+            res.status(500).send(err)
+         })
+})
+
 module.exports = router;
