@@ -1,4 +1,4 @@
-import { getHostApi, getUserId } from './init.js';
+import { getHostApi, getUserId, storageKeys, megaSearch } from './init.js';
 import { login, register, getStatsUsers as statsUsers, getNav, activeAccount, sidebar, statsInDashboard as miniStats, topFreelancer, getDropAnfooterJobs, getDropAnfooterTown, detailsUser } from './users_api.js';
 import { getJobs } from './jobs.js';
 import { graph } from './view.js';
@@ -17,6 +17,9 @@ import { messageList } from './offer.js';
             statsUsers();
             getJobs(8);
             topFreelancer(15);
+            storageKeys("mega-search-home", (response) => {
+                window.location.href = "candidats/liste";
+            });
         }
     //#endregion
 
@@ -46,6 +49,16 @@ import { messageList } from './offer.js';
         if (/candidats|candidat/i.test(pathName.split("/")[1])) {
             if (/profile/i.test(pathName.split("/")[pathName.split("/").length - 1])) {
                 detailsUser(pathName.split("/")[pathName.split("/").length - 2]);          
+            }
+
+            if (/liste/i.test(pathName.split("/")[pathName.split("/").length - 1])) {
+                //Relance quand on tombe sur cette page
+                megaSearch();
+
+                //Lorsqu'on soummet le formulaire de la page recherche
+                storageKeys("form-candidat-list", (response) => {
+                    megaSearch();
+                });
             }
         }
     //#endregion

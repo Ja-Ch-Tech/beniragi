@@ -5,6 +5,7 @@ const getJobs = (limit) => {
         dataType: "json",
         success: function (data) {
             if (data.getEtat) {
+                var sortieElement = 0;
                 if (data.getObjet.length > 0) {
                     var contentHead = `<div class="col-xl-12">
                                             <div class="section-headline centered margin-bottom-15">
@@ -18,8 +19,9 @@ const getJobs = (limit) => {
                     $("#listJobs").html(contentHead);
                     
                     data.getObjet.map(job => {
+                        sortieElement++;
                         if (job.name != "") {
-                            var content = `<a href="/candidats/liste" class="category-box">
+                            var content = `<a data-name="${job.name}" href="/candidats/liste" class="category-box liste_category">
                                                 <div class="category-box-icon">
                                                     <i class="${job.icon}"></i>
                                                 </div>
@@ -31,6 +33,14 @@ const getJobs = (limit) => {
                                             </a>`;
 
                             $("#allJobs").append(content);
+
+                            if (sortieElement == data.getObjet.length) {
+                                $(".liste_category").on('click', function (e) {
+                                    var value = e.currentTarget.getAttribute("data-name");
+                                    sessionStorage.setItem("metier__search_item", value);
+                                    sessionStorage.setItem("location__search_item", '');
+                                });
+                            }
                         }
                     })
                 }

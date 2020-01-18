@@ -1369,7 +1369,7 @@ const topFreelancer = (limit) => {
                     const contentHead = `<div class="col-xl-12">
                                             <div class="section-headline margin-top-0 margin-bottom-25">
                                                 <h3>Top Freelancer</h3>
-                                                <a href="/candidats/liste" class="headline-link color_blue">Voir tous nos candidats</a>
+                                                <a href="/candidats/liste" class="headline-link color_blue candidat-all-liste">Voir tous nos candidats</a>
                                             </div>
                                         </div>
                                         <div class="col-xl-12">
@@ -1558,7 +1558,13 @@ const topFreelancer = (limit) => {
                             }
 
                         })
-                    }
+                    };
+
+                    //Pour parcourir tous les candidats
+                    $(".candidat-all-liste").on('click', function (e) {
+                        sessionStorage.setItem("metier__search_item", '');
+                        sessionStorage.setItem("location__search_item", '');
+                    })
                 }
             },
             error: function (err) {
@@ -1577,11 +1583,21 @@ const topFreelancer = (limit) => {
 const getDropAnfooterJobs = (limit) => {
     getAllJob(limit, function (data) {
         if (data.getEtat) {
+            var sortieElement = 0;
             data.getObjet.map(element => {
-                var contentDrop = `<li><a href="/candidats/liste">${element.name}</a></li>`,
-                    contentFooter = `<li><a href="/candidats/liste"><span>${element.name}</span></a></li>`;
+                sortieElement++;
+                var contentDrop = `<li data-name="${element.name}" class="liste_category"><a href="/candidats/liste">${element.name}</a></li>`,
+                    contentFooter = `<li data-name="${element.name}" class="liste_category"><a href="/candidats/liste"><span>${element.name}</span></a></li>`;
                 $("#dropJob").append(contentDrop);
                 $("#footerJobs").append(contentFooter);
+
+                if (sortieElement == data.getObjet.length) {
+                    $(".liste_category").on('click', function (e) {
+                        var value = e.currentTarget.getAttribute("data-name");
+                        sessionStorage.setItem("metier__search_item", value);
+                        sessionStorage.setItem("location__search_item", "");
+                    });
+                }
             });
         }
     });
@@ -1593,11 +1609,21 @@ const getDropAnfooterJobs = (limit) => {
 const getDropAnfooterTown = () => {
     getAllTowns(function (data) {
         if (data.getEtat) {
+            var sortieElement = 0;
             data.getObjet.map(element => {
-                var contentDrop = `<li><a href="/candidats/liste">${element.name}</a></li>`,
-                    contentFooter = `<li><a href="/candidats/liste"><span>${element.name}</span></a></li>`;
+                sortieElement++;
+                var contentDrop = `<li data-name="${element.name}" class="liste_town"><a href="/candidats/liste">${element.name}</a></li>`,
+                    contentFooter = `<li data-name="${element.name}" class="liste_town"><a href="/candidats/liste"><span>${element.name}</span></a></li>`;
                 $("#dropTown").append(contentDrop);
                 $("#footerTown").append(contentFooter);
+
+                if (sortieElement == data.getObjet.length) {
+                    $(".liste_town").on('click', function (e) {
+                        var value = e.currentTarget.getAttribute("data-name");
+                        sessionStorage.setItem("location__search_item", value);
+                        sessionStorage.setItem("metier__search_item", "");
+                    });
+                }
             });
         }
     })
@@ -2670,5 +2696,8 @@ const visibility = (callback) => {
         }
     });
 }
+
+
+
 
 export { login, register, getStatsUsers, getNav, activeAccount, statsInDashboard, topFreelancer, getDropAnfooterJobs, getDropAnfooterTown, sidebar, detailsUser, dropNav}

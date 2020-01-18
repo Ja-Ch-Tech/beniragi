@@ -1,6 +1,6 @@
 const getHostApi = () => {
-    //return "http://localhost:3456/";
-    return "https://api-beniragi-service.herokuapp.com/";
+    return "http://localhost:3456/";
+    //return "https://api-beniragi-service.herokuapp.com/";
 }
 
 const getHostWeb = () => {
@@ -331,4 +331,221 @@ function getMonth(month) {
     return monthLetters[parseInt(month)];
 }
 
-export { getHostApi, customDate, getAllTypesUser, getUserId, getHostWeb, NoEmpty, getAllTowns, starRating, getAllJob, customDateForFeedBack as dateFeedBack, setFavoris, removeItem, isInArray }
+/**
+ * Permet de mettre en session les cles de recherche
+ * @param {Function} callback La fonction de retour
+ */
+const storageKeys = (id, callback) => {
+   $("#" + id).on('submit', function (e) {
+        e.preventDefault();
+
+        var inputs = e.target.elements,
+            sortieInput = 0;
+
+        for (var index = 0; index < inputs.length; index++) {
+            sortieInput++;
+            if (/input/i.test(e.target.elements[index].localName)) {
+                sessionStorage.setItem(inputs[index].name, inputs[index].value);
+            }
+
+            if (sortieInput == inputs.length) {
+                callback(true);
+            }
+        }
+    }) 
+}
+
+ /**
+ * Permet de faire la recherche
+ * @param {Function} callback La fonction de retour
+ */
+const megaSearch = () => {
+    getUserId(function (state, session) {
+        var job = sessionStorage.getItem('metier__search_item') ? sessionStorage.getItem('metier__search_item') : null,
+            town = sessionStorage.getItem('location__search_item') ? sessionStorage.getItem('location__search_item') : null,
+            objData = {
+                "job" : job,
+                "town" : town
+            },
+        user_id = state ? session.user_id : null;
+        //Gestion inputs
+        $("#location__search_item").val(town);
+        $("#metier__search_item").val(job);
+        
+        $.ajax({
+            type: 'POST',
+            url: "/api/megaSearch/" + user_id,
+            dataType: "json",
+            data : objData,
+            beforeSend : function () {
+                $("#resultat-recherche").html(`<center>
+                      <div style="margin:13% 0%;" class="lds-spinner">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                      </div>
+                    </center>
+                `);
+            },
+            success: function(data) {
+                var content,
+                    sortieRecherche = 0;
+                if (data.getEtat) {
+                    content = `<h3 class="page-title">Resultats trouvés (${data.getObjet.length})</h3>
+                               <div id="freelancer__list" class="freelancers-container freelancers-list-layout compact-list margin-top-35 margin-bottom-35">
+
+                               </div>`;
+                    $("#resultat-recherche").html(content);
+                    data.getObjet.map(element => {
+                        console.log(element)
+                        sortieRecherche++;
+                        var name = () => {
+                            if (element.identity) {
+                                return `${element.identity.lastName} ${element.identity.name.toUpperCase()}`
+                            } else {
+                                return element.email;
+                            }
+                        },
+                        favorite = () => {
+                            if (state && session.isEmployer) {
+                                if (element.isThisInFavorite) {
+                                    return `<span data-tippy-placement="bottom" title="Retirer de mes favoris" data-favoris="true" data-user="${element._id}" class="bookmark-icon bookmarked"></span>
+                                        <div class="sbl-circ" style="right:40px;top:20px;position: absolute;display: none;"></div>`;
+                                } else {
+                                    return `<span data-tippy-placement="bottom" title="Ajouter aux favoris" data-favoris="false" data-user="${element._id}" class="bookmark-icon"></span>
+                                        <div class="sbl-circ" style="right:40px;top:20px;position: absolute;display: none;"></div>`
+                                }
+                            }else{
+                                return ``;
+                            }
+                            
+                        },
+                        contentElement = `<!--Freelancer -->
+                            <div class="freelancer">
+                                <!-- Overview -->
+                                <div class="freelancer-overview">
+                                    <div class="freelancer-overview-inner">
+                                        <!-- Bookmark Icon -->
+                                        ${favorite()}
+                                        <!-- Avatar -->
+                                        <div class="freelancer-avatar">
+                                            <div class="verified-badge"></div>
+                                            <a href="/candidats/12/profile"><img src="/images/user-avatar-big-01.jpg" alt=""></a>
+                                        </div>
+
+                                        <!-- Name -->
+                                        <div class="freelancer-name">
+                                            <h4><a href="/candidats/12/profile">${name()}<img class="flag" src="/images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top"></a></h4>
+                                            <span>${element.job ? element.job.name : `---`}</span>
+                                            <!-- Rating -->
+                                            <div class="freelancer-rating">
+                                                <div class="star-rating" data-rating="${element.average}"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Details -->
+                                <div class="freelancer-details">
+                                    <div class="freelancer-details-list">
+                                        <ul>
+                                            <li>Localisation <strong><i class="icon-material-outline-location-on"></i> ${element.town ? element.town : `---`}</strong></li>
+                                            <li>Taux horaire <strong>$60 / hr</strong></li>
+                                            <li>A temps <strong>${element.inTime ? element.inTime + '%' : `---`}</strong></li>
+                                        </ul>
+                                    </div>
+                                    <a href="/candidats/12/profile" class="button button-sliding-icon ripple-effect">Voir le profile <i class="icon-material-outline-arrow-right-alt"></i></a>
+
+                                </div>
+                            </div>
+                            <!-- Freelancer / End -->`;
+
+                        $("#freelancer__list").append(contentElement);
+
+                        if (data.getObjet.length == sortieRecherche) {
+
+                            //Système étoile
+                            starRating('.star-rating');
+
+                            //Tooltip
+                            tippy('[data-tippy-placement]', {
+                                delay: 100,
+                                arrow: true,
+                                arrowType: 'sharp',
+                                size: 'regular',
+                                duration: 200,
+
+                                // 'shift-toward', 'fade', 'scale', 'perspective'
+                                animation: 'scale',
+
+                                animateFill: true,
+                                theme: 'dark',
+
+                                // How far the tooltip is from its reference element in pixels 
+                                distance: 10,
+
+                            });
+
+                            //Favoris
+                            //Gestion favoris, ajout
+                            $(".freelancer-overview .bookmark-icon").on('click', function (e) {
+                                e.preventDefault();
+                                var element = e.currentTarget,
+                                    dataFavoris = {
+                                        user_id : element.getAttribute("data-user"),
+                                        state : element.getAttribute("data-favoris"),
+                                        employer : session.user_id
+                                    };
+
+                                setFavoris(dataFavoris, element, function (data) {
+                                    //Retire le bloc
+                                    if (data) {
+                                        //Tooltip
+                                        tippy('[data-tippy-placement]', {
+                                            delay: 100,
+                                            arrow: true,
+                                            arrowType: 'sharp',
+                                            size: 'regular',
+                                            duration: 200,
+
+                                            // 'shift-toward', 'fade', 'scale', 'perspective'
+                                            animation: 'scale',
+
+                                            animateFill: true,
+                                            theme: 'dark',
+
+                                            // How far the tooltip is from its reference element in pixels 
+                                            distance: 10,
+
+                                        });
+                                        //element.parentNode.parentNode.parentNode.remove();
+                                    }
+                                });
+                                
+                            });
+                        }
+                    });
+
+                } else {
+                    $("#resultat-recherche").html(`
+                        <center>
+                            <img width=400 src="/images/svg/undraw_empty_xct9.svg"><br/><br/><br/>
+                            <h1>Aucun resultat n'est trouvé pour votre recherche</h1><br/>
+                        </center>
+                    `);
+                }
+            },
+            error: function(err) {
+                console.log(err)
+            }
+        });
+    })
+}
+
+export { getHostApi, customDate, getAllTypesUser, getUserId, getHostWeb, NoEmpty, getAllTowns, starRating, getAllJob, customDateForFeedBack as dateFeedBack, setFavoris, removeItem, isInArray, storageKeys,megaSearch }

@@ -5844,7 +5844,7 @@ screen and (-ms-high-contrast: none) {
     width: calc(100% * (1/2) - 30px);
     border-radius: 4px;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
-    background-color: #fff;
+    background-color: #2c2b2b;
     transition: 0.3s;
     position: relative;
     cursor: default;
@@ -5903,7 +5903,7 @@ screen and (-ms-high-contrast: none) {
 .freelancer-name h4 a {
     font-size: 18px;
     font-weight: 600;
-    color: #333;
+    color: #fff;
     cursor: pointer;
 }
 
@@ -5965,7 +5965,7 @@ screen and (-ms-high-contrast: none) {
 
 .freelancer-details-list ul li strong {
     display: block;
-    color: #333;
+    color: #fff;
 }
 
 .freelancer-details-list ul li strong i {
@@ -6120,7 +6120,8 @@ screen and (-ms-high-contrast: none) {
 }
 
 .freelancers-list-layout .bookmark-icon {
-    display: none;
+    display: block;
+    margin-top: -25px;
 }
 
 .freelancers-list-layout .freelancer-details-list ul {
@@ -6148,13 +6149,13 @@ screen and (-ms-high-contrast: none) {
 }
 
 .compact-list.freelancers-list-layout {
-    background-color: #fff;
+    background-color: #2c2b2b;
     border-radius: 4px;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
 }
 
 .compact-list.freelancers-list-layout .freelancer:nth-child(2n) {
-    background-color: #fafafa;
+    background-color: #2c2b2b;
 }
 
 .compact-list.freelancers-list-layout .freelancer:hover:before {
@@ -16735,7 +16736,7 @@ h3,
 h4,
 h5,
 h6 {
-    color: #333;
+    color: #f5f5f5;
     font-weight: 500;
     margin: 0;
     padding: 0;
