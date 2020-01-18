@@ -1,0 +1,43 @@
+@html.extend('layout', function(model) {
+  @html.block('content', function(model) {
+	<div id="titlebar" class="gradient">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+
+					<h2 class="color_white">Recuperation du mot de passe</h2>
+					
+					<!-- Breadcrumbs -->
+					<nav id="breadcrumbs" class="dark">
+						<ul>
+							<li><a href="/">Accueil</a></li>
+							<li><a href="/recuperation/mdp">Recuperation</a></li>
+						</ul>
+					</nav>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-xl-4">
+				<center>
+					<img src="/images/svg/undraw_forgot_password_gi2d.svg">
+				</center>
+				
+			</div>
+			<div class="col-xl-5">
+				<p style="font-size: 19px;color: #888;" class="color_white">
+					Vous avez oublier votre mot de passe ? Pas de panique, entrez votre adresse email pour recuperer votre compte
+				</p>
+				<form action="#" method="post" id="recuperation-password-form" class="newsletter">
+					<input type="email" id="email_recovery" name="email" placeholder="ADRESSE EMAIL">
+					<button id="recuperation-password-btn" type="submit"><i class="icon-line-awesome-mail-forward"></i></button>
+				</form>
+			</div>
+		</div>
+	</div>
+  })
+})

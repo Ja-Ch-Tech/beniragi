@@ -642,6 +642,7 @@ router.post('/users/toggleVisibility', (req, res) => {
          })
 })
 
+//Recherche
 router.post('/megaSearch/:id_viewer', (req, res) => {
     var data = {
         "job" : req.body.job,
@@ -655,5 +656,38 @@ router.post('/megaSearch/:id_viewer', (req, res) => {
             res.status(500).send(err)
          })
 })
+
+//Envoi du mail pour la recuperation du mot de passe
+router.post('/password/sendMail', (req, res) => {
+    var data = {
+        "email" : req.body.email
+    };
+    axios.post(`${API}/users/forgotPassword`, data)
+         .then(response => {
+            res.status(200).send(response.data)
+         })
+         .catch(err => {
+            res.status(500).send(err)
+         })
+});
+
+//Modification du mot de passe
+router.post('/password/change', (req, res) => {
+    var data = {
+        "token" : req.body.token,
+        "newPassword" : req.body.password
+    };
+    axios.post(`${API}/users/resetPassword`, data)
+         .then(user => {
+            req.session.id_user_beni = user.data.getObjet.id_user;
+            req.session.id_type_user_beni = user.data.getObjet.id_type;
+            req.session.isEmployer = user.data.getObjet.isEmployer;
+
+            res.status(200).send(user.data)
+         })
+         .catch(err => {
+            res.status(500).send(err)
+         })
+});
 
 module.exports = router;

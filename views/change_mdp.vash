@@ -1,0 +1,43 @@
+@html.extend('layout', function(model) {
+  @html.block('content', function(model) {
+	<div id="titlebar" class="gradient">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+
+					<h2 class="color_white">Modification du mot de passe </h2>
+					
+					<!-- Breadcrumbs -->
+					<nav id="breadcrumbs" class="dark">
+						<ul>
+							<li><a href="/">Accueil</a></li>
+							<li><a href="#">Modification</a></li>
+						</ul>
+					</nav>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-xl-4">
+				<center>
+					<img src="/images/svg/undraw_Security_on_ff2u.svg">
+				</center>
+				
+			</div>
+			<div class="col-xl-5">
+				<p style="font-size: 19px;color: #888;" class="color_white">
+					Maintenant inserez votre nouveau mot de passe !
+				</p>
+				<form action="#" method="post" id="update-password-form" class="newsletter">
+					<input type="password" id="password_recovery" name="password" placeholder="MOT DE PASSE">
+					<button id="update-password-btn" type="submit"><i class="icon-line-awesome-mail-forward"></i></button>
+				</form>
+			</div>
+		</div>
+	</div>
+  })
+})

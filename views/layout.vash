@@ -265,17 +265,17 @@
 						<i class="icon-material-outline-lock"></i>
 						<input style="background-color:#fff;border-color:#ccc;"  type="password" class="input-text with-border" name="password" id="password" placeholder="Mot de passe" required/>
 					</div>
-					<a href="#" class="forgot-password">Mot de passe oublié ?</a>
+					<a href="/recuperation/mdp" class="forgot-password">Mot de passe oublié ?</a>
 				</form>
 				<!-- Button -->
 				<button id="login-button" class="button full-width button-sliding-icon ripple-effect" type="submit" form="login-form">Se connecter <i class="icon-material-outline-arrow-right-alt"></i></button>
 				
-				<!-- Social Login -->
+				<!-- Social Login 
 				<div class="social-login-separator"><span>or</span></div>
 				<div class="social-login-buttons">
 					<button class="facebook-login ripple-effect"><i class="icon-brand-facebook-f"></i> Se connecter via Facebook</button>
 					<button class="google-login ripple-effect"><i class="icon-brand-google-plus-g"></i> Se connecter via Google+</button>
-				</div>
+				</div>-->
 
 			</div>
 
@@ -313,12 +313,12 @@
 				<!-- Button -->
 				<button id="register-button" class="margin-top-10 button full-width button-sliding-icon ripple-effect" type="submit" form="register-account-form">Terminer <i class="icon-material-outline-arrow-right-alt"></i></button>
 				
-				<!-- Social Login -->
+				<!-- Social Login 
 				<div class="social-login-separator"><span>or</span></div>
 				<div class="social-login-buttons">
 					<button class="facebook-login ripple-effect"><i class="icon-brand-facebook-f"></i> S'inscrire via Facebook</button>
 					<button class="google-login ripple-effect"><i class="icon-brand-google-plus-g"></i> S'inscrire via Google+</button>
-				</div>
+				</div> -->
 
 			</div>
 

@@ -23,6 +23,23 @@ router.get("/logout", (req, res) => {
     }
 
     res.redirect("/");
-})
+});
 
+/* Recuperation du mot de passe */
+router.get('/recuperation/mdp', function(req, res, next) {
+  res.render('recuperation_mdp', { 
+    title: 'Recuperation mot de passe',
+    classWrapper: '',
+    classHeader: ''
+  });
+});
+
+/* Formulaire de modification du mot de passe */
+router.get('/activation', function(req, res, next) {
+  res.render('change_mdp', { 
+    title: 'Nouveau mot de passe',
+    classWrapper: '',
+    classHeader: ''
+  });
+});
 module.exports = router;

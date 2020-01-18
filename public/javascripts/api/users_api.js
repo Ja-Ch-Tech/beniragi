@@ -1,4 +1,4 @@
-import { getAllTypesUser, getUserId, NoEmpty, getHostApi, getAllTowns, starRating, getAllJob, dateFeedBack, setFavoris, removeItem, isInArray} from './init.js';
+import { getAllTypesUser, getUserId, NoEmpty, getHostApi,getHostWeb, getAllTowns, starRating, getAllJob, dateFeedBack, setFavoris, removeItem, isInArray} from './init.js';
 import { newMessage } from './notification.js';
 
 //Permet de connecter un utilisateur
@@ -2697,7 +2697,147 @@ const visibility = (callback) => {
     });
 }
 
+/**
+ * Permettant de faire la recuperation d'un compte
+ */
+const recouveryAccount = () => {
+    $("#recuperation-password-form").on('submit', (e) => {
+        e.preventDefault();
+        var objData = {
+            "email" : $("#email_recovery").val()
+        };
 
+        if (NoEmpty(objData)) {
+            $.ajax({
+                type: 'POST',
+                url: "/api/password/sendMail",
+                dataType: "json",
+                data : objData,
+                beforeSend : function () {
+                    $("#recuperation-password-btn").html(`<div style="margin-left:15px;" class="sbl-circ"></div>`);
+                },
+                success: function (data) {
+                    $("#recuperation-password-btn").html(`<i class="icon-line-awesome-mail-forward"></i>`);
+                    if (data.getEtat) {
+                        Snackbar.show({
+                            text: "Le lien de recuperation du mot de passe est envoyé sur votre boite mail",
+                            pos: 'top-center',
+                            showAction: false,
+                            duration: 3000,
+                            textColor: '#fff',
+                            backgroundColor: '#3696f5'
+                        });
+                    } else {
+                        Snackbar.show({
+                            text: "Cette adresse email nous est inconnus",
+                            pos: 'top-center',
+                            showAction: true,
+                            actionText: "Fermer",
+                            duration: 5000,
+                            textColor: '#fff',
+                            backgroundColor: '#ad344b'
+                        });
+                    }
+                },
+                error: function (err) {
+                    Snackbar.show({
+                        text: "Une erreur est survenue, verifiez votre connexion internet",
+                        pos: 'top-center',
+                        showAction: true,
+                        actionText: "Fermer",
+                        duration: 5000,
+                        textColor: '#fff',
+                        backgroundColor: '#ad344b'
+                    });
+                }
+            });
+        } else {
+            Snackbar.show({
+                text: "Veuillez renseigner votre adresse email !",
+                pos: 'top-center',
+                showAction: true,
+                actionText: "Fermer",
+                duration: 5000,
+                textColor: '#fff',
+                backgroundColor: '#ad344b'
+            });
+        }
+        
+    })
+}
 
+/**
+ * Permettant de faire la modification du mot de passe
+ */
+ const changePassword = () => {
+    $("#update-password-form").on('submit', (e) => {
+        e.preventDefault();
+        var token = window.location.search.split("=")[1],
+            objData = {
+                "password" : $("#password_recovery").val(),
+                "token" : token
+            };
 
-export { login, register, getStatsUsers, getNav, activeAccount, statsInDashboard, topFreelancer, getDropAnfooterJobs, getDropAnfooterTown, sidebar, detailsUser, dropNav}
+        if (NoEmpty(objData)) {
+            $.ajax({
+                type: 'POST',
+                url: "/api/password/change",
+                dataType: "json",
+                data : objData,
+                beforeSend : function () {
+                    $("#update-password-btn").html(`<div style="margin-left:15px;" class="sbl-circ"></div>`);
+                },
+                success: function (data) {
+                    $("#update-password-btn").html(`<i class="icon-line-awesome-mail-forward"></i>`);
+                    if (data.getEtat) {
+                        Snackbar.show({
+                            text: "La modification de votre mot de passe à reussi",
+                            pos: 'top-center',
+                            showAction: false,
+                            duration: 3000,
+                            textColor: '#fff',
+                            backgroundColor: '#3696f5'
+                        });
+                        //Redirection
+                        window.location.href = getHostWeb();
+                    } else {
+                        Snackbar.show({
+                            text: data.getMessage,
+                            pos: 'top-center',
+                            showAction: true,
+                            actionText: "Fermer",
+                            duration: 5000,
+                            textColor: '#fff',
+                            backgroundColor: '#ad344b'
+                        });
+                    }
+                },
+                error: function (err) {
+                    $("#update-password-btn").html(`<i class="icon-line-awesome-mail-forward"></i>`);
+                    console.log(err);
+                    Snackbar.show({
+                        text: "Une erreur est survenue, verifiez votre connexion internet",
+                        pos: 'top-center',
+                        showAction: true,
+                        actionText: "Fermer",
+                        duration: 5000,
+                        textColor: '#fff',
+                        backgroundColor: '#ad344b'
+                    });
+                }
+            });
+        } else {
+            Snackbar.show({
+                text: "Renseignez un mot de passe",
+                pos: 'top-center',
+                showAction: true,
+                actionText: "Fermer",
+                duration: 5000,
+                textColor: '#fff',
+                backgroundColor: '#ad344b'
+            });
+        }
+    })
+ }
+
+export { login, register, getStatsUsers, getNav, activeAccount, statsInDashboard, topFreelancer, getDropAnfooterJobs, getDropAnfooterTown, sidebar, detailsUser, dropNav, recouveryAccount,changePassword}

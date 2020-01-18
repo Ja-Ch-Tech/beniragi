@@ -1,5 +1,5 @@
 import { getHostApi, getUserId, storageKeys, megaSearch } from './init.js';
-import { login, register, getStatsUsers as statsUsers, getNav, activeAccount, sidebar, statsInDashboard as miniStats, topFreelancer, getDropAnfooterJobs, getDropAnfooterTown, detailsUser } from './users_api.js';
+import { login, register, getStatsUsers as statsUsers, getNav, activeAccount, sidebar, statsInDashboard as miniStats, topFreelancer, getDropAnfooterJobs, getDropAnfooterTown, detailsUser, recouveryAccount,changePassword } from './users_api.js';
 import { getJobs } from './jobs.js';
 import { graph } from './view.js';
 import { messageList } from './offer.js';
@@ -60,6 +60,18 @@ import { messageList } from './offer.js';
                     megaSearch();
                 });
             }
+        }
+    //#endregion
+
+    //#region Recuperation mot de passe
+        if (/recuperation/i.test(pathName.split("/")[1])) {
+            if (/mdp/i.test(pathName.split("/")[2])) {
+                recouveryAccount();
+            }
+        }
+
+        if (/activation/i.test(pathName.split("/")[1])) {
+            changePassword();
         }
     //#endregion
     
