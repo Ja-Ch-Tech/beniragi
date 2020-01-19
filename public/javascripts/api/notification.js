@@ -24,7 +24,7 @@ const newMessage = (limit) => {
                         <div class="header-notifications-dropdown">
 
                             <div class="header-notifications-headline">
-                                <h4>Messages</h4>
+                                <h4 style="color: #333;">Messages</h4>
                                 <button class="mark-as-read ripple-effect-dark" id="setReadMessage" title="Marquer tout comme lu" data-tippy-placement="left">
                                     <i class="icon-feather-check-square"></i>
                                 </button>
@@ -126,7 +126,7 @@ const newOffer = (limit) => {
                         <div class="header-notifications-dropdown">
 
                             <div class="header-notifications-headline">
-                                <h4>Notifications</h4>
+                                <h4 style="color: #333;">Notifications</h4>
                                 <button class="mark-as-read ripple-effect-dark" id="setReadOffer" title="Marquer tout comme lue" data-tippy-placement="left">
                                     <i class="icon-feather-check-square"></i>
                                 </button>

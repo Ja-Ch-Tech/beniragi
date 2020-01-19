@@ -2376,12 +2376,12 @@ const getFreelancersForOffer = (state, session) => {
                                                     <ul>
                                                         <li>Localisation <strong style="color: #fff;"> ${freelancer.infos.town ? `<i class="icon-material-outline-location-on"></i> ${freelancer.infos.town}` : `---`}</strong></li>
                                                         <li>Taux <strong style="color: #fff;">$${freelancer.infos.hourly ? freelancer.infos.hourly.rate : "0"} / hr</strong></li>
-                                                        <li>A temps <strong style="color: #fff;">95%</strong></li>
+                                                        <li>A temps <strong style="color: #fff;">${freelancer.infos.inTime}%</strong></li>
                                                         <li>Nb. offres <strong style="color: #fff;">${freelancer.nbreOffer ? `${freelancer.nbreOffer}` : `---`}</strong></li>
                                                     </ul>
                                                 </center>
                                             </div>
-                                            <a data-user="${freelancer.infos._id}" data-feedback='${JSON.stringify(freelancer.infos.thisFeedBack)}' data-name="${name()}" href="#small-dialog-2" class="popup-with-zoom-anim button button-sliding-icon ripple-effect leave-review-btn">Laissez votre appreciation 
+                                            <a data-user="${freelancer.infos._id}" data-feedback='${freelancer.infos.thisFeedBack ? JSON.stringify(freelancer.infos.thisFeedBack) : JSON.stringify(null)}' data-name="${name()}" href="#small-dialog-2" class="popup-with-zoom-anim button button-sliding-icon ripple-effect leave-review-btn">Laissez votre appreciation 
                                             <i class="icon-material-outline-arrow-right-alt"></i></a>
                                         </center>
                                     </div>
@@ -2441,16 +2441,19 @@ const getFreelancersForOffer = (state, session) => {
                                     $("#nameFreelancer").html(`Noter <a id="${id_user}" href="#">${name}</a> par rapport à sa facon de travailler`);
 
                                     var check = () => {
-                                        if (feedBack.evaluation.inTime == 1) {
-                                            document.querySelector("input[name=intime]#radio-3").setAttribute("checked", "checked")
-                                        } else {
-                                            document.querySelector("input[name=intime]#radio-4").setAttribute("checked", "checked")
+                                        if (feedBack != null) {
+                                            if (feedBack.evaluation.inTime == 1) {
+                                                document.querySelector("input[name=intime]#radio-3").setAttribute("checked", "checked")
+                                            } else {
+                                                document.querySelector("input[name=intime]#radio-4").setAttribute("checked", "checked")
+                                            }
                                         }
+                                        
                                     }
 
                                     check();
 
-                                    $("#commentaiire").text(feedBack.evaluation.message);
+                                    $("#commentaiire").text(feedBack != null ? feedBack.evaluation.message : ``);
                                     
                                         
                                 });
