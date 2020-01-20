@@ -436,7 +436,7 @@ const megaSearch = () => {
                                         ${favorite()}
                                         <!-- Avatar -->
                                         <div class="freelancer-avatar">
-                                            <div class="verified-badge"></div>
+                                            ${element.certificate && element.certificate.certified == true ? `<div class="verified-badge"></div>` : ''}
                                             <a href="/candidats/12/profile"><img src="/images/user-avatar-big-01.jpg" alt=""></a>
                                         </div>
 
