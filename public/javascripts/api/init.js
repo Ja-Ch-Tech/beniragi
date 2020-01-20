@@ -5,7 +5,6 @@ const getHostApi = () => {
 
 const getHostWeb = () => {
     //return "http://localhost:3000/"; //Local
-
     return "https://beniragi-service.herokuapp.com/"; //Online
 }
 

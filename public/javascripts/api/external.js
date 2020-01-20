@@ -5,7 +5,6 @@
  * @param {String} identity Le proprio de la file en question
  */
 function activeMessage(userConnected, id, identity, flag) {
-    console.log(flag);
     
     window.localStorage.setItem("currentList", id);
 

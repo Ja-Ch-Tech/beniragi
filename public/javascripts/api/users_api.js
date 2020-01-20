@@ -1383,6 +1383,8 @@ const topFreelancer = (limit) => {
                         var outFreelancer = 0;
 
                     data.getObjet.map((freelancer, item, tab) => {
+                        console.log(freelancer);
+                        
                         var name = () => {
                             if (freelancer.identity) {
                                 return `${freelancer.identity.lastName} ${freelancer.identity.name.toUpperCase()}`
@@ -1425,7 +1427,7 @@ const topFreelancer = (limit) => {
 										
 										<!-- Avatar -->
 										<div class="freelancer-avatar">
-											<div class="verified-badge"></div>
+											${freelancer.certificate && freelancer.certificate.certified == true ? `<div class="verified-badge"></div>` : ''}
 											<a href="/candidats/${freelancer._id}/profile"><img src="images/user-avatar-big-01.jpg" alt=""></a>
 										</div>
 
@@ -1712,7 +1714,7 @@ const detailsUser = (id) => {
                                                                 <li>
                                                                     <div class="star-rating" data-rating="${freelancer.average}"></div>
                                                                 </li>
-                                                                <li><div class="verified-badge-with-title">Certifié</div></li>
+                                                                ${freelancer.certificate && freelancer.certificate.certified == true ? `<li><div class="verified-badge-with-title">Certifié</div></li>` : ''}
                                                                 <li style="text-transform: capitalize">
                                                                     ${freelancer.town ? `${freelancer.town}&nbsp;&nbsp;<img class="flag" src="/images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top">` : ""}
                                                                 </li>
@@ -2351,7 +2353,7 @@ const getFreelancersForOffer = (state, session) => {
                                             
                                             <!-- Avatar -->
                                             <div class="freelancer-avatar">
-                                                <div class="verified-badge"></div>
+                                                ${freelancer.certificate && freelancer.certificate.certified == true ? `<div class="verified-badge"></div>` : ''}
                                                 <a href="/candidats/${freelancer.infos._id}/profile"><img src="/images/user-avatar-big-01.jpg" alt=""></a>
                                             </div>
 
