@@ -5,7 +5,6 @@ const getHostApi = () => {
 
 const getHostWeb = () => {
     //return "http://localhost:3000/"; //Local
-
     return "https://beniragi-service.herokuapp.com/"; //Online
 }
 
@@ -179,7 +178,7 @@ const removeItem = (arr, item, callback) => {
 
 //Verifie l'existence d'un element dans un tableau
 function isInArray(value, array) {
-  return array.indexOf(value) > -1;
+    return array.indexOf(value) > -1;
 }
 /**
  * Mise en favoris d'un freelancer
@@ -190,14 +189,14 @@ const setFavoris = (dataFavoris, element, callback) => {
             type: 'POST',
             url: "/api/setFavoris",
             dataType: "json",
-            data : dataFavoris,
-            beforeSend : function () {
-                element.style.display = "none";  
-                element.nextElementSibling.style.display = "block";  
+            data: dataFavoris,
+            beforeSend: function() {
+                element.style.display = "none";
+                element.nextElementSibling.style.display = "block";
             },
             success: function(data) {
-                element.nextElementSibling.style.display = "none"; 
-                element.style.display = "block";  
+                element.nextElementSibling.style.display = "none";
+                element.style.display = "block";
                 if (data.getMessage) {
 
                     if (element.getAttribute("data-favoris") == "true") {
@@ -219,7 +218,7 @@ const setFavoris = (dataFavoris, element, callback) => {
                         backgroundColor: '#ad344b'
                     });
                     callback(true);
-                }else{
+                } else {
                     Snackbar.show({
                         text: data.getMessage,
                         pos: 'top-center',
@@ -242,7 +241,7 @@ const setFavoris = (dataFavoris, element, callback) => {
                 });
             }
         });
-    }else{
+    } else {
         Snackbar.show({
             text: "Cette operation n'a pas reussie car certaines informations manque",
             pos: 'top-center',
@@ -338,7 +337,7 @@ function getMonth(month) {
  * @param {Function} callback La fonction de retour
  */
 const storageKeys = (id, callback) => {
-   $("#" + id).on('submit', function (e) {
+    $("#" + id).on('submit', function(e) {
         e.preventDefault();
 
         var inputs = e.target.elements,
@@ -354,33 +353,33 @@ const storageKeys = (id, callback) => {
                 callback(true);
             }
         }
-    }) 
+    })
 }
 
- /**
+/**
  * Permet de faire la recherche
  * @param {Function} callback La fonction de retour
  */
 const megaSearch = () => {
-    getUserId(function (state, session) {
-        var job = sessionStorage.getItem('metier__search_item') ? sessionStorage.getItem('metier__search_item') : null,
-            town = sessionStorage.getItem('location__search_item') ? sessionStorage.getItem('location__search_item') : null,
-            objData = {
-                "job" : job,
-                "town" : town
-            },
-        user_id = state ? session.user_id : null;
-        //Gestion inputs
-        $("#location__search_item").val(town);
-        $("#metier__search_item").val(job);
-        
-        $.ajax({
-            type: 'POST',
-            url: "/api/megaSearch/" + user_id,
-            dataType: "json",
-            data : objData,
-            beforeSend : function () {
-                $("#resultat-recherche").html(`<center>
+        getUserId(function(state, session) {
+                    var job = sessionStorage.getItem('metier__search_item') ? sessionStorage.getItem('metier__search_item') : null,
+                        town = sessionStorage.getItem('location__search_item') ? sessionStorage.getItem('location__search_item') : null,
+                        objData = {
+                            "job": job,
+                            "town": town
+                        },
+                        user_id = state ? session.user_id : null;
+                    //Gestion inputs
+                    $("#location__search_item").val(town);
+                    $("#metier__search_item").val(job);
+
+                    $.ajax({
+                                type: 'POST',
+                                url: "/api/megaSearch/" + user_id,
+                                dataType: "json",
+                                data: objData,
+                                beforeSend: function() {
+                                    $("#resultat-recherche").html(`<center>
                       <div style="margin:13% 0%;" class="lds-spinner">
                         <div></div>
                         <div></div>
@@ -394,41 +393,41 @@ const megaSearch = () => {
                       </div>
                     </center>
                 `);
-            },
-            success: function(data) {
-                var content,
-                    sortieRecherche = 0;
-                if (data.getEtat) {
-                    content = `<h3 class="page-title">Resultats trouvés (${data.getObjet.length})</h3>
+                                },
+                                success: function(data) {
+                                        var content,
+                                            sortieRecherche = 0;
+                                        if (data.getEtat) {
+                                            content = `<h3 class="page-title">Resultats trouvés (${data.getObjet.length})</h3>
                                <div id="freelancer__list" class="freelancers-container freelancers-list-layout compact-list margin-top-35 margin-bottom-35">
 
                                </div>`;
-                    $("#resultat-recherche").html(content);
-                    data.getObjet.map(element => {
-                        console.log(element)
-                        sortieRecherche++;
-                        var name = () => {
-                            if (element.identity) {
-                                return `${element.identity.lastName} ${element.identity.name.toUpperCase()}`
-                            } else {
-                                return element.email;
-                            }
-                        },
-                        favorite = () => {
-                            if (state && session.isEmployer) {
-                                if (element.isThisInFavorite) {
-                                    return `<span data-tippy-placement="bottom" title="Retirer de mes favoris" data-favoris="true" data-user="${element._id}" class="bookmark-icon bookmarked"></span>
+                                            $("#resultat-recherche").html(content);
+                                            data.getObjet.map(element => {
+                                                        console.log(element)
+                                                        sortieRecherche++;
+                                                        var name = () => {
+                                                                if (element.identity) {
+                                                                    return `${element.identity.lastName} ${element.identity.name.toUpperCase()}`
+                                                                } else {
+                                                                    return element.email;
+                                                                }
+                                                            },
+                                                            favorite = () => {
+                                                                if (state && session.isEmployer) {
+                                                                    if (element.isThisInFavorite) {
+                                                                        return `<span data-tippy-placement="bottom" title="Retirer de mes favoris" data-favoris="true" data-user="${element._id}" class="bookmark-icon bookmarked"></span>
                                         <div class="sbl-circ" style="right:40px;top:20px;position: absolute;display: none;"></div>`;
-                                } else {
-                                    return `<span data-tippy-placement="bottom" title="Ajouter aux favoris" data-favoris="false" data-user="${element._id}" class="bookmark-icon"></span>
+                                                                    } else {
+                                                                        return `<span data-tippy-placement="bottom" title="Ajouter aux favoris" data-favoris="false" data-user="${element._id}" class="bookmark-icon"></span>
                                         <div class="sbl-circ" style="right:40px;top:20px;position: absolute;display: none;"></div>`
-                                }
-                            }else{
-                                return ``;
-                            }
-                            
-                        },
-                        contentElement = `<!--Freelancer -->
+                                                                    }
+                                                                } else {
+                                                                    return ``;
+                                                                }
+
+                                                            },
+                                                            contentElement = `<!--Freelancer -->
                             <div class="freelancer">
                                 <!-- Overview -->
                                 <div class="freelancer-overview">
@@ -437,8 +436,10 @@ const megaSearch = () => {
                                         ${favorite()}
                                         <!-- Avatar -->
                                         <div class="freelancer-avatar">
-                                            <div class="verified-badge"></div>
+                                        ${element.certificate && element.certificate.certified == true ? `<li><div class="verified-badge-with-title">Certifié</div></li>` : ''}
                                             <a href="/candidats/${element._id}/profile"><img src="/images/user-avatar-big-01.jpg" alt=""></a>
+                                            ${element.certificate && element.certificate.certified == true ? `<div class="verified-badge"></div>` : ''}
+                                            <a href="/candidats/12/profile"><img src="/images/user-avatar-big-01.jpg" alt=""></a>
                                         </div>
 
                                         <!-- Name -->

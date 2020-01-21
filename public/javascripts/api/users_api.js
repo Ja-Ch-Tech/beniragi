@@ -1,4 +1,4 @@
-import { getAllTypesUser, getUserId, NoEmpty, getHostApi,getHostWeb, getAllTowns, starRating, getAllJob, dateFeedBack, setFavoris, removeItem, isInArray,funFacts} from './init.js';
+import { getAllTypesUser, getUserId, NoEmpty, getHostApi, getHostWeb, getAllTowns, starRating, getAllJob, dateFeedBack, setFavoris, removeItem, isInArray, funFacts } from './init.js';
 import { newMessage } from './notification.js';
 
 //Permet de connecter un utilisateur
@@ -195,7 +195,7 @@ function toggleVisibility() {
     });
 
     $('.status-switch label.user-online').on('click', function() {
-        
+
         visibility((flag) => {
             if (flag) {
                 $('.status-indicator').removeClass('right');
@@ -1394,7 +1394,6 @@ const topFreelancer = (limit) => {
                         var outFreelancer = 0;
 
                     data.getObjet.map((freelancer, item, tab) => {
-                        console.log(freelancer)
                         var name = () => {
                             if (freelancer.identity) {
                                 return `${freelancer.identity.lastName} ${freelancer.identity.name.toUpperCase()}`
@@ -1437,7 +1436,7 @@ const topFreelancer = (limit) => {
 										
 										<!-- Avatar -->
 										<div class="freelancer-avatar">
-											<div class="verified-badge"></div>
+											${freelancer.certificate && freelancer.certificate.certified == true ? `<div class="verified-badge"></div>` : ''}
 											<a href="/candidats/${freelancer._id}/profile"><img src="images/user-avatar-big-01.jpg" alt=""></a>
 										</div>
 
@@ -1724,7 +1723,7 @@ const detailsUser = (id) => {
                                                                 <li>
                                                                     <div class="star-rating" data-rating="${freelancer.average}"></div>
                                                                 </li>
-                                                                <li><div class="verified-badge-with-title">Certifié</div></li>
+                                                                ${freelancer.certificate && freelancer.certificate.certified == true ? `<li><div class="verified-badge-with-title">Certifié</div></li>` : ''}
                                                                 <li style="text-transform: capitalize">
                                                                     ${freelancer.town ? `${freelancer.town}&nbsp;&nbsp;<img class="flag" src="/images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top">` : ""}
                                                                 </li>
@@ -2170,7 +2169,7 @@ const getFavourites = (state, session) => {
                                             
                                             <!-- Avatar -->
                                             <div class="freelancer-avatar">
-                                                <div class="verified-badge"></div>
+                                                ${freelancer.certificate && freelancer.certificate.certified == true ? `<li><div class="verified-badge-with-title">Certifié</div></li>` : ''}
                                                 <a href="/candidats/${freelancer._id}/profile"><img src="/images/user-avatar-big-01.jpg" alt=""></a>
                                             </div>
 
@@ -2364,7 +2363,7 @@ const getFreelancersForOffer = (state, session) => {
                                             
                                             <!-- Avatar -->
                                             <div class="freelancer-avatar">
-                                                <div class="verified-badge"></div>
+                                                ${freelancer.certificate && freelancer.certificate.certified == true ? `<div class="verified-badge"></div>` : ''}
                                                 <a href="/candidats/${freelancer.infos._id}/profile"><img src="/images/user-avatar-big-01.jpg" alt=""></a>
                                             </div>
 
@@ -2389,12 +2388,12 @@ const getFreelancersForOffer = (state, session) => {
                                                     <ul>
                                                         <li>Localisation <strong style="color: #fff;"> ${freelancer.infos.town ? `<i class="icon-material-outline-location-on"></i> ${freelancer.infos.town}` : `---`}</strong></li>
                                                         <li>Taux <strong style="color: #fff;">$${freelancer.infos.hourly ? freelancer.infos.hourly.rate : "0"} / hr</strong></li>
-                                                        <li>A temps <strong style="color: #fff;">95%</strong></li>
+                                                        <li>A temps <strong style="color: #fff;">${freelancer.infos.inTime}%</strong></li>
                                                         <li>Nb. offres <strong style="color: #fff;">${freelancer.nbreOffer ? `${freelancer.nbreOffer}` : `---`}</strong></li>
                                                     </ul>
                                                 </center>
                                             </div>
-                                            <a data-user="${freelancer.infos._id}" data-feedback='${JSON.stringify(freelancer.infos.thisFeedBack)}' data-name="${name()}" href="#small-dialog-2" class="popup-with-zoom-anim button button-sliding-icon ripple-effect leave-review-btn">Laissez votre appreciation 
+                                            <a data-user="${freelancer.infos._id}" data-feedback='${freelancer.infos.thisFeedBack ? JSON.stringify(freelancer.infos.thisFeedBack) : JSON.stringify(null)}' data-name="${name()}" href="#small-dialog-2" class="popup-with-zoom-anim button button-sliding-icon ripple-effect leave-review-btn">Laissez votre appreciation 
                                             <i class="icon-material-outline-arrow-right-alt"></i></a>
                                         </center>
                                     </div>
@@ -2454,16 +2453,19 @@ const getFreelancersForOffer = (state, session) => {
                                     $("#nameFreelancer").html(`Noter <a id="${id_user}" href="#">${name}</a> par rapport à sa facon de travailler`);
 
                                     var check = () => {
-                                        if (feedBack.evaluation.inTime == 1) {
-                                            document.querySelector("input[name=intime]#radio-3").setAttribute("checked", "checked")
-                                        } else {
-                                            document.querySelector("input[name=intime]#radio-4").setAttribute("checked", "checked")
+                                        if (feedBack != null) {
+                                            if (feedBack.evaluation.inTime == 1) {
+                                                document.querySelector("input[name=intime]#radio-3").setAttribute("checked", "checked")
+                                            } else {
+                                                document.querySelector("input[name=intime]#radio-4").setAttribute("checked", "checked")
+                                            }
                                         }
+                                        
                                     }
 
                                     check();
 
-                                    $("#commentaiire").text(feedBack.evaluation.message);
+                                    $("#commentaiire").text(feedBack != null ? feedBack.evaluation.message : ``);
                                     
                                         
                                 });

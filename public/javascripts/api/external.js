@@ -5,7 +5,6 @@
  * @param {String} identity Le proprio de la file en question
  */
 function activeMessage(userConnected, id, identity, flag) {
-    console.log(flag);
     
     window.localStorage.setItem("currentList", id);
 
@@ -131,7 +130,7 @@ function sendMessage() {
                         });
                     } else {
                         Snackbar.show({
-                            text: data.getMessage + "...",
+                            text: "L'offre est bloqué...",
                             pos: 'top-center',
                             showAction: false,
                             duration: 3000,
@@ -201,24 +200,10 @@ function toggleOffer(id) {
         success: function (data) {
             if (data.getEtat) {
                 if (data.getObjet.flag == true) {
-                    Snackbar.show({
-                        text: "L'offre a été bloqué",
-                        pos: 'bottom-center',
-                        duration: 3000,
-                        textColor: '#fff',
-                        backgroundColor: '#3696f5'
-                    });
 
                     $("#flagMessage").html(`<i class="icon-material-outline-lock-open"></i> Relancer l'offre`);
 
                 } else {
-                    Snackbar.show({
-                        text: "L'offre a été relancé",
-                        pos: 'bottom-center',
-                        textColor: '#fff',
-                        backgroundColor: '#3696f5'
-                    });
-
                     $("#flagMessage").html(`<i class="icon-material-outline-lock"></i> Bloquer l'ofrre</span>`);
                 }
             }
