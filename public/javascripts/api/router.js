@@ -3,6 +3,7 @@ import { login, register, getStatsUsers as statsUsers, getNav, activeAccount, si
 import { getJobs } from './jobs.js';
 import { graph } from './view.js';
 import { messageList } from './offer.js';
+import { getVIPFreelancers as VIP } from './vip.js';
 
 
 (() => {
@@ -17,6 +18,7 @@ import { messageList } from './offer.js';
             statsUsers();
             getJobs(8);
             topFreelancer(15);
+            VIP(20);
             storageKeys("mega-search-home", (response) => {
                 window.location.href = "candidats/liste";
             });

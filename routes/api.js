@@ -705,4 +705,15 @@ router.post('/password/change', (req, res) => {
          })
 });
 
+//Récupéreration des comptes sponsorisé
+router.get('/vip/:limit', (req, res) => {
+    axios.get(`${API}/vip/${req.params.limit}`)
+         .then(response => {
+            res.status(200).send(response.data)
+         })
+         .catch(err => {
+             res.status(500).send(err)
+         })
+});
+
 module.exports = router;
