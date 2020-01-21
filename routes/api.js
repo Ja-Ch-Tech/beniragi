@@ -154,7 +154,22 @@ router.post('/users/setIdentity', (req, res) => {
     } else {
         res.send({ getEtat: false, getMessage: "Veuillez renseignez tous les champs importants" })
     }
-})
+});
+
+//Met a jour le salaire horaire du user
+router.post('/users/setHourly', (req, res) => {
+    var data = {
+        "rate" : req.body.montant,
+        "id_user" : req.session.id_user_beni
+    };
+    axios.post(`${API}/users/setHourly`, data)
+         .then(response => {
+            res.status(200).send(response.data)
+         })
+         .catch(err => {
+            res.status(500).send(err)
+         })
+});
 
 //Recupere les types des utilisateurs
 router.get('/users/getAllTypes', (req, res) => {

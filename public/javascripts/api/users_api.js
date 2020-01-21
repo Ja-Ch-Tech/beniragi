@@ -1,4 +1,4 @@
-import { getAllTypesUser, getUserId, NoEmpty, getHostApi,getHostWeb, getAllTowns, starRating, getAllJob, dateFeedBack, setFavoris, removeItem, isInArray} from './init.js';
+import { getAllTypesUser, getUserId, NoEmpty, getHostApi,getHostWeb, getAllTowns, starRating, getAllJob, dateFeedBack, setFavoris, removeItem, isInArray,funFacts} from './init.js';
 import { newMessage } from './notification.js';
 
 //Permet de connecter un utilisateur
@@ -299,7 +299,12 @@ const getNav = () => {
                         getReview(state, user);
                     }
         
-        
+                    //Dynamisation du nom de la personne connectée
+                    if (/profile/i.test(pathName.split("/")[1]) && /dashboard/i.test(pathName.split("/")[2])) {
+                        var name = infos.getObjet.identity ? infos.getObjet.identity.lastName + " " + infos.getObjet.identity.name : infos.getObjet.email;
+                        $("#begin-text").html(`<h3>Salut, ${name} !</h3>
+                                            <span></span>`);
+                    }
                 } else {
                     navContent = `<!-- Lien vers l'activation d'un compte -->
                     <div class="header-widget hide-on-mobile">
@@ -405,7 +410,7 @@ const userParameters = (user, details) => {
                     <div class="submit-field">
                     <h5>Metier</h5>
                     <select id="inputJob" class="selectpicker with-border" data-size="7" title="Selectionnez un metier" data-live-search="true">
-                        <option  value="">Selectionnez un metier</option>
+                        <option value="" selected>${details.getObjet.job ? details.getObjet.job.name : "Selectionnez un metier"}</option>
                     </select>
                     <div id="jobLoader"></div>
                     </div>
@@ -433,6 +438,42 @@ const userParameters = (user, details) => {
                 </div>
             </div>
         </li>`;
+        }
+    },
+    hourlyContent = () => {
+        if (user.isEmployer) {
+            return ``;
+        } else {
+            return `<div class="col-md-12">
+              <div id="test1" class="dashboard-box">
+                <form id="form-add-hourly">
+                    <!-- Headline -->
+                    <div class="headline">
+                      <h3><i class="icon-line-awesome-money"></i> Gain</h3>
+                    </div>
+
+                    <div class="content with-padding">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="submit-field">
+                            <h5>Combien souhaitez-vous gagner par heure (en $) ?</h5>
+                            <input value="${details.getObjet.hourly ? details.getObjet.hourly.rate : ""}" id="form-add-hourly-input" onkeyup="$('#hourlyBtn').slideDown()" type="number" class="with-border" placeholder="Taux horaire">
+                          </div>
+                        </div>
+                      </div>
+                      <div  class="row">
+                          <!-- Button -->
+                          <div id="hourlyBtn" style="display:none;" class="col-md-12">
+                              <center>
+                                <button form="form-add-hourly" id="btn-add-hourly" type="submit" class="button ripple-effect big margin-top-30 float-right"><i class="icon-line-awesome-save"></i> Enregistrer</button>
+                              </center>
+                          </div>
+                        </div>
+                    </div>
+
+                </form>
+              </div>
+            </div>`;
         }
     },
     skills = () => {
@@ -600,48 +641,7 @@ const userParameters = (user, details) => {
     </div>
 
     <!-- Dashboard Box -->
-    <div class="col-md-12">
-      <div id="test1" class="dashboard-box">
-
-        <!-- Headline -->
-        <div class="headline">
-          <h3><i class="icon-material-outline-lock"></i> Mot de passe et securité</h3>
-        </div>
-
-        <div class="content with-padding">
-          <div class="row">
-            <div class="col-md-4">
-              <div class="submit-field">
-                <h5>Mot de passe actuel</h5>
-                <input type="password" class="with-border">
-              </div>
-            </div>
-
-            <div class="col-md-4">
-              <div class="submit-field">
-                <h5>Nouveau mot de passe</h5>
-                <input type="password" class="with-border">
-              </div>
-            </div>
-
-            <div class="col-md-4">
-              <div class="submit-field">
-                <h5>Retapez le nouveau mot de passe</h5>
-                <input type="password" class="with-border">
-              </div>
-            </div>
-          </div>
-          <div class="row">
-              <!-- Button -->
-              <div class="col-md-12">
-                  <center>
-                    <a href="#" class="button ripple-effect big margin-top-30 float-right"><i class="icon-line-awesome-save"></i> Enregistrer</a>
-                  </center>
-              </div>
-            </div>
-        </div>
-      </div>
-    </div>`;
+    ${hourlyContent()}`;
     $("#parametersContent").html(content);
 
     avatarSwitcher();
@@ -665,7 +665,7 @@ const userParameters = (user, details) => {
 
     skills();
     updateAccount();
-
+    setHourly();
     $('select').selectpicker();
     boostrapSelect();
     submitSelect(user, function (state) {
@@ -1282,6 +1282,11 @@ const sidebar = (user) => {
                     <li class="${active("/profile/parametres")}"><a href="/profile/parametres"><i class="icon-material-outline-settings"></i> Parametres</a></li>
                     <li><a href="/logout"><i class="icon-material-outline-power-settings-new"></i> Deconnexion</a></li>
                 </ul>`;
+    if (!user.isEmployer) {
+        content += `</ul><ul data-submenu-title="VIP">
+                    <li class="${active("/profile/boost")}"><a href="/profile/boost"><i class="icon-line-awesome-buysellads"></i> Booster mon profile</a></li>
+                </ul>`;
+    }
     $("#sidebarContent").html(content);
 }
 
@@ -1316,6 +1321,8 @@ const statsInDashboard = () => {
                                     <h4>${data.getObjet.nbreFeedBack}</h4>
                                 </div>
                                 <div class="fun-fact-icon"><i class="icon-material-outline-feedback"></i></div>
+                            </div>
+                            <div class="fun-fact" data-fun-fact-color="">
                             </div>`;
 
                     $("#miniStats").html(content);
@@ -1340,9 +1347,13 @@ const statsInDashboard = () => {
                                         <h4>${data.getObjet.nbreFeedBack}</h4>
                                         </div>
                                         <div class="fun-fact-icon"><i class="icon-material-outline-feedback"></i></div>
+                                    </div>
+                                    <div class="fun-fact" data-fun-fact-color="">
                                     </div>`;
                     $("#miniStats").html(content)
                 }
+
+                funFacts();
 
             },
             error: function (err) {
@@ -1383,6 +1394,7 @@ const topFreelancer = (limit) => {
                         var outFreelancer = 0;
 
                     data.getObjet.map((freelancer, item, tab) => {
+                        console.log(freelancer)
                         var name = () => {
                             if (freelancer.identity) {
                                 return `${freelancer.identity.lastName} ${freelancer.identity.name.toUpperCase()}`
@@ -2139,11 +2151,11 @@ const getFavourites = (state, session) => {
                                     }
                                     
                                 },
-                                skills = () => {
-                                    if (freelancer.skills && freelancer.skills.length > 0) {
-                                        return `<span>${freelancer.skills[0]} ${freelancer.skills.length > 1 ? ` + ${freelancer.skills[1]}` : ""}</span>`;
+                                job = () => {
+                                    if (freelancer.job && freelancer.job.name) {
+                                        return `<span style="font-size: .9em"><i class="${freelancer.job.icon}" style="font-size: 1.2em"></i>&nbsp;${freelancer.job.name}</span>`;
                                     } else {
-                                        return `<span>---</span>`;
+                                        return `<br/>`;
                                     }
                                 },
                                 content = `<!--Freelancer -->
@@ -2165,7 +2177,7 @@ const getFavourites = (state, session) => {
                                             <!-- Name -->
                                             <div class="freelancer-name">
                                                 <h4><a style="color: #fff;" href="/candidats/${freelancer._id}/profile">${name()}<br/><img class="flag" src="/images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top"></a></h4>
-                                                ${skills()}
+                                                ${job()}
                                             </div>
 
                                             <!-- Rating -->
@@ -2267,7 +2279,8 @@ const getFavourites = (state, session) => {
                         <div class="row">
                             <div class="col-md-12">
                                 <center>
-                                    <div style="margin:2% 0%;"><span style="font-size:150px;" class="icon-line-awesome-star-o"></span><br/><br/><br/>
+                                    <div style="margin:2% 0%;">
+                                        <img height=250 src="/images/svg/undraw_begin_chat_c6pj.svg" /><br/><br/>
                                         <p style="font-size:25px;">La liste de vos favoris est vide</p>
                                         <p style="font-size:18px;">Ajouter des profiles dans votre liste de favoris de sauvergader certains profiles interessant pour un contact ulterieur</p>
                                         <a href="/candidats/liste" class="button button-sliding-icon ripple-effect">Trouvez de profiles interessant ICI! 
@@ -2332,11 +2345,11 @@ const getFreelancersForOffer = (state, session) => {
                                     }
                                     
                                 },
-                                skills = () => {
-                                    if (freelancer.infos.skills && freelancer.infos.skills.length > 0) {
-                                        return `<span>${freelancer.infos.skills[0]} ${freelancer.infos.skills.length > 1 ? ` + ${freelancer.infos.skills[1]}` : ""}</span>`;
+                                job = () => {
+                                    if (freelancer.job && freelancer.job.name) {
+                                        return `<span style="font-size: .9em"><i class="${freelancer.job.icon}" style="font-size: 1.2em"></i>&nbsp;${freelancer.job.name}</span>`;
                                     } else {
-                                        return `<span>---</span>`;
+                                        return `<br/>`;
                                     }
                                 },
                                 content = `<!--Freelancer -->
@@ -2358,7 +2371,7 @@ const getFreelancersForOffer = (state, session) => {
                                             <!-- Name -->
                                             <div class="freelancer-name">
                                                 <h4><a style="color: #fff;" href="/candidats/${freelancer.infos._id}/profile">${name()}<br/><img class="flag" src="/images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top"></a></h4>
-                                                ${skills()}
+                                                ${job()}
                                             </div>
 
                                             <!-- Rating -->
@@ -2503,7 +2516,8 @@ const getFreelancersForOffer = (state, session) => {
                     $("#freelancerInfavoris").html(`
                         <div class="row">
                             <div class="col-md-12">
-                                <div style="margin:13% 0%;"><span style="font-size:150px;" class="icon-material-outline-assignment"></span><br/><br/><br/>
+                                <div style="margin:13% 0%;">
+                                    <img height=250 src="/images/svg/undraw_personal_text_vkd8.svg" /><br><br>
                                     <p style="font-size:25px;">La liste de vos contacts est vide</p>
                                     <p>Ici nous listons tous les profiles à qui vous avez envoyer une offre, cela pour vous de rester en contact à n'importe quel moment</p>
                                     <a href="/candidats/liste" class="button button-sliding-icon ripple-effect">Trouvez de profiles interessant ICI! 
@@ -2651,7 +2665,8 @@ const getReview = (state, user) => {
                         $("#listReview").html(`
                             <div class="col-md-12">
                                 <center>
-                                    <div style="margin:7% 0%;"><span style="font-size:150px;" class="icon-line-awesome-comments-o"></span><br/><br/><br/>
+                                    <div style="margin:7% 0%;">
+                                        <img height=250 src="/images/svg/undraw_QA_engineers_dg5p.svg" /><br/><br/>
                                         <p style="font-size:25px;">Aucun feedback n'est emit sur vous </p>
                                         <p>Ici nous listons tout ce que les gens qui vous ont contacter pense de vous, par rapport a votre facon de travailler</p><br/>
                                     </div>
@@ -2663,7 +2678,8 @@ const getReview = (state, user) => {
                     $("#listReview").html(`
                         <div class="col-md-12">
                             <center>
-                                <div style="margin:7% 0%;"><span style="font-size:150px;" class="icon-line-awesome-comments-o"></span><br/><br/><br/>
+                                <div style="margin:7% 0%;">
+                                    <img height=250 src="/images/svg/undraw_QA_engineers_dg5p.svg" /><br/><br/>
                                     <p style="font-size:25px;">Aucun feedback n'est emit sur vous </p>
                                     <p>Ici nous listons tout ce que les gens qui vous ont contacter pense de vous, par rapport a votre facon de travailler</p><br/>
                                 </div>
@@ -2840,4 +2856,71 @@ const recouveryAccount = () => {
     })
  }
 
+ /**
+ * Permettant de faire la modification du taux horaire
+ */
+const setHourly = () => {
+    $("#form-add-hourly").on('submit', (e) => {
+        e.preventDefault();
+        var montant = $("#form-add-hourly-input").val();
+        if (montant !== "") {
+            $.ajax({
+                type: 'POST',
+                url: "/api/users/setHourly",
+                dataType: "json",
+                data : {
+                    montant : montant
+                },
+                beforeSend : function () {
+                    $("#btn-add-hourly").html(`<div class="sbl-circ"></div>`);
+                },
+                success: function (data) {
+                    $("#btn-add-hourly").html(`<i class="icon-line-awesome-save"></i> Enregistrer`);
+                    if (data.getEtat) {
+                        Snackbar.show({
+                            text: "Votre taux horaire a été mis a jour avec success",
+                            pos: 'top-center',
+                            showAction: false,
+                            duration: 3000,
+                            textColor: '#fff',
+                            backgroundColor: '#3696f5'
+                        });
+                    } else {
+                        Snackbar.show({
+                            text: data.getMessage,
+                            pos: 'top-center',
+                            showAction: true,
+                            actionText: "Fermer",
+                            duration: 5000,
+                            textColor: '#fff',
+                            backgroundColor: '#ad344b'
+                        });
+                    }
+                },
+                error: function (err) {
+                    $("#btn-add-hourly").html(`<i class="icon-line-awesome-save"></i> Enregistrer`);
+                    Snackbar.show({
+                        text: "Une erreur est survenue, verifiez votre connexion internet",
+                        pos: 'top-center',
+                        showAction: true,
+                        actionText: "Fermer",
+                        duration: 5000,
+                        textColor: '#fff',
+                        backgroundColor: '#ad344b'
+                    });
+                }
+            });
+        } else {
+            Snackbar.show({
+                text: "Veuillez renseigner un montant",
+                pos: 'top-center',
+                showAction: true,
+                actionText: "Fermer",
+                duration: 5000,
+                textColor: '#fff',
+                backgroundColor: '#ad344b'
+            });
+        }
+    })
+}
 export { login, register, getStatsUsers, getNav, activeAccount, statsInDashboard, topFreelancer, getDropAnfooterJobs, getDropAnfooterTown, sidebar, detailsUser, dropNav, recouveryAccount,changePassword}

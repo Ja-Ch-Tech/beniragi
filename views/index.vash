@@ -59,7 +59,102 @@
 
 			</div>
 		</div>
+		<!-- VIP profils -->
+		<div class="section padding-top-65 padding-bottom-70 full-width-carousel-fix">
+			<div class="container">
+				<div class="row">
 
+					<div class="col-xl-12">
+						<!-- Section Headline -->
+						<div class="section-headline margin-top-0 margin-bottom-25">
+							<h3>Comptes sponsorisé</h3>
+							<a href="freelancers-grid-layout.html" class="headline-link">Voir tous les profiles</a>
+						</div>
+					</div>
+
+					<div class="col-xl-12">
+						<div class="vip-slick-carousel freelancers-container freelancers-grid-layout">
+
+							<!--Freelancer -->
+							<div style="background-color: transparent;" class="freelancer">
+								<a href="jobs-list-layout-1.html" class="photo-box" data-background-image="images/avatar/35.jpg">
+									<div class="photo-box-content">
+										<h3>Joel MBIYE</h3>
+										<span>Informatique</span>
+										<span><i class="icon-material-outline-location-on"></i>&nbsp;Lubumbashi</span>
+									</div>
+								</a>
+							</div>
+							<!-- Freelancer / End -->
+
+							<!--Freelancer -->
+							<div style="background-color: transparent;" class="freelancer">
+								<a href="jobs-list-layout-1.html" class="photo-box" data-background-image="images/avatar/35.jpg">
+									<div class="photo-box-content">
+										<h3>Joel MBIYE</h3>
+										<span>Informatique</span>
+										<span><i class="icon-material-outline-location-on"></i>&nbsp;Lubumbashi</span>
+									</div>
+								</a>
+							</div>
+							<!-- Freelancer / End -->
+
+							<!--Freelancer -->
+							<div style="background-color: transparent;" class="freelancer">
+								<a href="jobs-list-layout-1.html" class="photo-box" data-background-image="images/avatar/35.jpg">
+									<div class="photo-box-content">
+										<h3>Joel MBIYE</h3>
+										<span>Informatique</span>
+										<span><i class="icon-material-outline-location-on"></i>&nbsp;Lubumbashi</span>
+									</div>
+								</a>
+							</div>
+							<!-- Freelancer / End -->
+
+							<!--Freelancer -->
+							<div style="background-color: transparent;" class="freelancer">
+								<a href="jobs-list-layout-1.html" class="photo-box" data-background-image="images/avatar/35.jpg">
+									<div class="photo-box-content">
+										<h3>Joel MBIYE</h3>
+										<span>Informatique</span>
+										<span><i class="icon-material-outline-location-on"></i>&nbsp;Lubumbashi</span>
+									</div>
+								</a>
+							</div>
+							<!-- Freelancer / End -->
+							
+							<!--Freelancer -->
+							<div style="background-color: transparent;" class="freelancer">
+								<a href="jobs-list-layout-1.html" class="photo-box" data-background-image="images/avatar/35.jpg">
+									<div class="photo-box-content">
+										<h3>Joel MBIYE</h3>
+										<span>Informatique</span>
+										<span><i class="icon-material-outline-location-on"></i>&nbsp;Lubumbashi</span>
+									</div>
+								</a>
+							</div>
+							<!-- Freelancer / End -->
+										
+							<!--Freelancer -->
+							<div style="background-color: transparent;" class="freelancer">
+								<a href="jobs-list-layout-1.html" class="photo-box" data-background-image="images/avatar/35.jpg">
+									<div class="photo-box-content">
+										<h3>Joel MBIYE</h3>
+										<span>Informatique</span>
+										<span><i class="icon-material-outline-location-on"></i>&nbsp;Lubumbashi</span>
+									</div>
+								</a>
+							</div>
+							<!-- Freelancer / End -->
+
+
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		
 		<div class="section margin-top-65 co_noir__principal">
 			<div class="container">
 				<div class="row" id="listJobs">

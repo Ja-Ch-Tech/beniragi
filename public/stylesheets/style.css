@@ -9097,9 +9097,9 @@ screen and (-ms-high-contrast: none) {
     position: relative;
     background-size: cover;
     background-position: 100%;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    /*box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);*/
     transition: 0.4s;
-    margin: 0 0 25px 0;
+    margin: 0 0 0 0;
 }
 
 .photo-box:before {
@@ -9149,7 +9149,7 @@ screen and (-ms-high-contrast: none) {
 
 .photo-box:hover:before {
     background: #66676b;
-    opacity: 0.95;
+    opacity: 0.5;
 }
 
 

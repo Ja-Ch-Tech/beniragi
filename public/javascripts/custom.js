@@ -309,30 +309,7 @@ $(document).ready(function(){
 	});
 
 	// Fun Facts
-	function funFacts() {
-		/*jslint bitwise: true */
-		function hexToRgbA(hex){
-		    var c;
-		    if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
-		        c= hex.substring(1).split('');
-		        if(c.length== 3){
-		            c= [c[0], c[0], c[1], c[1], c[2], c[2]];
-		        }
-		        c= '0x'+c.join('');
-		        return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',0.07)';
-		    }
-		}
-
-		$(".fun-fact").each(function() {
-			var factColor = $(this).attr('data-fun-fact-color');
-
-	        if(factColor !== undefined) {
-	        	$(this).find(".fun-fact-icon").css('background-color', hexToRgbA(factColor));
-	            $(this).find("i").css('color', factColor);
-	        }
-		});
-
-	} funFacts();
+	
 
 
 	// Notes & Messages Scrollbar
@@ -963,7 +940,41 @@ $(document).ready(function(){
 	}
 
 
-  	
+  	$('.vip-slick-carousel').slick({
+        infinite: false,
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        dots: true,
+        arrows: true,
+        adaptiveHeight: true,
+        responsive: [
+            {
+                breakpoint: 1292,
+                settings: {
+                    dots: true,
+                    arrows: false
+                }
+            },
+            {
+                breakpoint: 993,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2,
+                    dots: true,
+                    arrows: false
+                }
+            },
+            {
+                breakpoint: 769,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    dots: true,
+                    arrows: false
+                }
+            }
+        ]
+    });
 
 
 	$('.testimonial-carousel').slick({

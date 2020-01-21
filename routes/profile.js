@@ -22,6 +22,7 @@ router.get('/dashboard', function(req, res, next) {
       title: 'Votre tableau de bord',
       classWrapper: '',
       classHeader: '',
+      isEmployer : req.session.isEmployer,
       footer: 'hide' 
     });
   } else {
@@ -96,6 +97,21 @@ router.get('/contacts', function(req, res, next) {
   if (req.session.id_user_beni) {
     res.render('profile/contacts', { 
       title: 'contacts',
+      classWrapper: '',
+      classHeader: '',
+      footer: 'hide' 
+    });
+  } else {
+    res.render('error');
+  }
+  
+});
+
+/*Booster*/
+router.get('/boost', function(req, res, next) {
+  if (req.session.id_user_beni) {
+    res.render('profile/boostprofile', { 
+      title: 'Booster votre compte',
       classWrapper: '',
       classHeader: '',
       footer: 'hide' 

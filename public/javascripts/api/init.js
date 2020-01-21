@@ -438,12 +438,12 @@ const megaSearch = () => {
                                         <!-- Avatar -->
                                         <div class="freelancer-avatar">
                                             <div class="verified-badge"></div>
-                                            <a href="/candidats/12/profile"><img src="/images/user-avatar-big-01.jpg" alt=""></a>
+                                            <a href="/candidats/${element._id}/profile"><img src="/images/user-avatar-big-01.jpg" alt=""></a>
                                         </div>
 
                                         <!-- Name -->
                                         <div class="freelancer-name">
-                                            <h4><a href="/candidats/12/profile">${name()}<img class="flag" src="/images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top"></a></h4>
+                                            <h4><a href="/candidats/${element._id}/profile">${name()}<img class="flag" src="/images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top"></a></h4>
                                             <span>${element.job ? element.job.name : `---`}</span>
                                             <!-- Rating -->
                                             <div class="freelancer-rating">
@@ -458,11 +458,11 @@ const megaSearch = () => {
                                     <div class="freelancer-details-list">
                                         <ul>
                                             <li>Localisation <strong><i class="icon-material-outline-location-on"></i> ${element.town ? element.town : `---`}</strong></li>
-                                            <li>Taux horaire <strong>$60 / hr</strong></li>
+                                            <li>Taux horaire <strong>$${element.hourly ? element.hourly.rate : "0"} / hr</strong></li>
                                             <li>A temps <strong>${element.inTime ? element.inTime + '%' : `---`}</strong></li>
                                         </ul>
                                     </div>
-                                    <a href="/candidats/12/profile" class="button button-sliding-icon ripple-effect">Voir le profile <i class="icon-material-outline-arrow-right-alt"></i></a>
+                                    <a href="/candidats/${element._id}/profile" class="button button-sliding-icon ripple-effect">Voir le profile <i class="icon-material-outline-arrow-right-alt"></i></a>
 
                                 </div>
                             </div>
@@ -550,4 +550,32 @@ const megaSearch = () => {
     })
 }
 
-export { getHostApi, customDate, getAllTypesUser, getUserId, getHostWeb, NoEmpty, getAllTowns, starRating, getAllJob, customDateForFeedBack as dateFeedBack, setFavoris, removeItem, isInArray, storageKeys,megaSearch }
+ /**
+ * Permet de gerer les funfacts
+ */
+const funFacts = () => {
+        /*jslint bitwise: true */
+        function hexToRgbA(hex){
+            var c;
+            if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
+                c= hex.substring(1).split('');
+                if(c.length== 3){
+                    c= [c[0], c[0], c[1], c[1], c[2], c[2]];
+                }
+                c= '0x'+c.join('');
+                return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',0.07)';
+            }
+        }
+
+        $(".fun-fact").each(function() {
+            var factColor = $(this).attr('data-fun-fact-color');
+
+            if(factColor !== undefined) {
+                $(this).find(".fun-fact-icon").css('background-color', hexToRgbA(factColor));
+                $(this).find("i").css('color', factColor);
+            }
+        });
+
+    } 
+
+export { getHostApi, customDate, getAllTypesUser, getUserId, getHostWeb, NoEmpty, getAllTowns, starRating, getAllJob, customDateForFeedBack as dateFeedBack, setFavoris, removeItem, isInArray, storageKeys,megaSearch,funFacts }
