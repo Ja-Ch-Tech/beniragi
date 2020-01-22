@@ -1305,6 +1305,8 @@ const statsInDashboard = () => {
             dataType: "json",
             success: function (data) {
                 if (!user.isEmployer) {
+                    console.log(data.getObjet);
+                    
                     var content = `<div class="fun-fact" data-fun-fact-color="#36bd78">
                                 <div class="fun-fact-text">
                                     <span>Note moyenne</span>
@@ -1739,7 +1741,8 @@ const detailsUser = (id) => {
                                         </div>
                                     </div>`,
                         biographie = `${bio()}`;
-
+                    console.log(freelancer);
+                    
                     if (freelancer.feedBacks && freelancer.feedBacks.length > 0) {
                         freelancer.feedBacks.map((feedBack, item, tab) => {
                             var content = `<li>
