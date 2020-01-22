@@ -716,4 +716,19 @@ router.get('/vip/:limit', (req, res) => {
          })
 });
 
+//Route permettant de d'envoyer la demande de VIP
+router.post('/vip/become', (req, res) => {
+    var data = {
+        "id_freelancer": req.session.id_user_beni
+    };
+
+    axios.post(`${API}/vip/become`, data)
+         .then(response => {
+             res.status(200).send(response.data)
+         })
+         .catch(err => {
+             res.status(500).send(err)
+         })
+})
+
 module.exports = router;

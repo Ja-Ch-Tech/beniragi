@@ -117,4 +117,23 @@ const getVIPFreelancers = (limit) => {
     });
 }
 
-export { getVIPFreelancers }
+const boost = () => {
+    $("#boostAccount").on("click", (e) => {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: `/api/vip/become`,
+            dataType: "json",
+            success: function (data) {
+                if (data.getEtat) {
+                    window.location.href = '/profile/dashboard';                    
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    })
+}
+
+export { getVIPFreelancers, boost }

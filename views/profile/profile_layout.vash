@@ -46,8 +46,8 @@
             <div class="dashboard-footer-spacer"></div>
             <div class="small-footer margin-top-15">
               <div class="small-footer-copyrights">
-                <p>
-                    Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Designed by <a href="#" style="color: blue" target="_blank">Ja'Ch Tech</a>
+                <p style="font-size: .8em;">
+                    Copyright &copy;&nbsp;<script>document.write(new Date().getFullYear());</script> Tous droits reservés | Designed by <a href="#" style="color: #ad344b" target="_blank">Ja'Ch Technologies</a>
                </p>
               </div>
               <ul class="footer-social-links">

@@ -3,7 +3,7 @@ import { newMessage } from './notification.js';
 
 //Permet de connecter un utilisateur
 const login = () => {
-    $("#login-form").on('submit', function(e) {
+    $("#login-form").on('submit', function (e) {
         e.preventDefault();
         var inputs = e.target.elements,
             objData = {};
@@ -18,10 +18,10 @@ const login = () => {
             type: 'POST',
             dataType: "json",
             data: objData,
-            beforeSend: function() {
+            beforeSend: function () {
                 $("#login-button").text("Verification ...");
             },
-            success: function(infos) {
+            success: function (infos) {
                 console.log(infos);
                 $("#login-button").html(`Se connecter <i class="icon-material-outline-arrow-right-alt"></i>`);
                 if (infos.getEtat) {
@@ -51,7 +51,7 @@ const login = () => {
                     $("#errorLogin p")[0].innerHTML = infos.getMessage;
                 }
             },
-            error: function(err) {
+            error: function (err) {
                 console.log(err);
             }
         })
@@ -62,18 +62,18 @@ const login = () => {
 //Permet d'enregistrer un utilisateur
 const register = () => {
     //Dynamisation des types users
-    getAllTypesUser(function(types) {
+    getAllTypesUser(function (types) {
         if (types) {
             var sortieType = 0;
             types.map(type => {
                 sortieType++;
-                var typeChecked = function() {
-                        if (sortieType == 1) {
-                            return 'checked = "checked"';
-                        } else {
-                            return '';
-                        }
-                    },
+                var typeChecked = function () {
+                    if (sortieType == 1) {
+                        return 'checked = "checked"';
+                    } else {
+                        return '';
+                    }
+                },
                     type = `<div>
 						<input type="radio" name="id_type" id="${type.intitule}-radio" class="account-type-radio" ${typeChecked()} value="${type._id}" />
 						<label for="${type.intitule}-radio" class="ripple-effect-dark">${type.intitule}</label>
@@ -112,10 +112,10 @@ const register = () => {
             type: 'POST',
             dataType: "json",
             data: objData,
-            beforeSend: function() {
+            beforeSend: function () {
                 $("#register-button").html("Veuillez patienter ...");
             },
-            success: function(data) {
+            success: function (data) {
                 console.log(data)
                 $("#register-button").html(`Terminer <i class="icon-material-outline-arrow-right-alt"></i>`);
                 if (data.getEtat) {
@@ -126,7 +126,7 @@ const register = () => {
                     $("#errorRegister p")[0].innerHTML = data.getMessage;
                 }
             },
-            error: function(err) {
+            error: function (err) {
                 console.log(err);
             }
         })
@@ -142,7 +142,7 @@ const getStatsUsers = () => {
         type: 'GET',
         url: "/api/users/numberUserByType",
         dataType: "json",
-        success: function(data) {
+        success: function (data) {
             if (data.getEtat) {
                 data.getObjet.map(value => {
                     var content = `<li>
@@ -154,7 +154,7 @@ const getStatsUsers = () => {
                 })
             }
         },
-        error: function(err) {
+        error: function (err) {
             console.log(err)
         }
     });
@@ -168,10 +168,10 @@ const getUserInfos = (user_id, callback) => {
         type: 'GET',
         url: "/api/getUserInfos/" + user_id,
         dataType: "json",
-        success: function(data) {
+        success: function (data) {
             callback(data);
         },
-        error: function(err) {
+        error: function (err) {
             callback(err);
         }
     });
@@ -183,7 +183,7 @@ function toggleVisibility() {
         $('.status-indicator').addClass('right');
     }
 
-    $('.status-switch label.user-invisible').on('click', function() {
+    $('.status-switch label.user-invisible').on('click', function () {
 
         visibility((flag) => {
             if (flag) {
@@ -194,7 +194,7 @@ function toggleVisibility() {
         })
     });
 
-    $('.status-switch label.user-online').on('click', function() {
+    $('.status-switch label.user-online').on('click', function () {
 
         visibility((flag) => {
             if (flag) {
@@ -211,14 +211,15 @@ function toggleVisibility() {
  */
 const getNav = () => {
 
-        getUserId(function(state, user) {
-                    var navContent,
-                        pathName = window.location.pathname;
-                    if (state) {
-                        //Recuperation des informations du user
-                        getUserInfos(user.user_id, function(infos) {
-                                    if (infos.getObjet.flag) {
-                                        navContent = `
+    getUserId(function (state, user) {
+        var navContent,
+            pathName = window.location.pathname;
+        if (state) {
+            //Recuperation des informations du user
+            getUserInfos(user.user_id, function (infos) {
+
+                if (infos.getObjet.flag) {
+                    navContent = `
 
                                 <!--  User Notifications -->
                                 <div class="header-widget hide-on-mobile" id="containerMessage">
@@ -298,11 +299,11 @@ const getNav = () => {
                     if (/profile/i.test(pathName.split("/")[1]) && /feedback/i.test(pathName.split("/")[2])) {
                         getReview(state, user);
                     }
-        
+
                     //Dynamisation du nom de la personne connectée
                     if (/profile/i.test(pathName.split("/")[1]) && /dashboard/i.test(pathName.split("/")[2])) {
-                        var name = infos.getObjet.identity ? infos.getObjet.identity.lastName + " " + infos.getObjet.identity.name : infos.getObjet.email;
-                        $("#begin-text").html(`<h3>Salut, ${name} !</h3>
+                        var name = infos.getObjet.identity ? infos.getObjet.identity.lastName : infos.getObjet.email;
+                        $("#begin-text").html(`<h3>Bon retour, ${name} !</h3>
                                             <span></span>`);
                     }
                 } else {
@@ -312,13 +313,13 @@ const getNav = () => {
                     </div>`;
                     $("#navMenu").html(navContent);
                 }
+
+                //Dynamisation de la sidebar
+                if (/profile/i.test(pathName.split("/")[1])) {
+                    sidebar(user, infos.getObjet.isBoost);
+                }
             });
 
-
-            //Dynamisation de la sidebar
-            if (/profile/i.test(pathName.split("/")[1])) {
-                sidebar(user);
-            }
         } else {
 
             navContent = `<!-- USER NON CONNECTER -->
@@ -352,7 +353,7 @@ const dropNav = (dif) => {
     /*  Notification Dropdowns
     /*--------------------------------------------------*/
     $(`.header-notifications.${dif}`).each(function () {
-        var userMenu = $(this);        
+        var userMenu = $(this);
         var userMenuTrigger = $(this).find('.header-notifications-trigger a');
 
         $(userMenuTrigger).on('click', function (event) {
@@ -399,11 +400,11 @@ const dropNav = (dif) => {
  */
 
 const userParameters = (user, details) => {
-    localStorage.setItem("verrou",details.getObjet.jobs ? true : false);
+    localStorage.setItem("verrou", details.getObjet.jobs ? true : false);
     var jobAndSkillsInput = () => {
         if (user.isEmployer) {
             return ``;
-        }else{
+        } else {
             return `<li>
             <div class="row">
                 <div class="col-md-4">
@@ -440,11 +441,11 @@ const userParameters = (user, details) => {
         </li>`;
         }
     },
-    hourlyContent = () => {
-        if (user.isEmployer) {
-            return ``;
-        } else {
-            return `<div class="col-md-12">
+        hourlyContent = () => {
+            if (user.isEmployer) {
+                return ``;
+            } else {
+                return `<div class="col-md-12">
               <div id="test1" class="dashboard-box">
                 <form id="form-add-hourly">
                     <!-- Headline -->
@@ -474,33 +475,33 @@ const userParameters = (user, details) => {
                 </form>
               </div>
             </div>`;
-        }
-    },
-    skills = () => {
-        if (details.getObjet.skills) {
-            if (details.getObjet.skills.length > 0) {
-                for (var i = 0; i < details.getObjet.skills.length; i++) {
-                    var skill = `<span data-index="${i}" class="keyword"><span class="keyword-remove skills"></span><span class="keyword-text">${details.getObjet.skills[i]}</span></span>`;
-                    $("#listSkills").append(skill);
-                }
-                
             }
-        }else{
-            return ``;
-        }
-    },
-    bio = () => {
-        if (details.getObjet.bio) {
-            if (details.getObjet.bio.bio != null) {
-                return details.getObjet.bio.bio;
-            }else{
+        },
+        skills = () => {
+            if (details.getObjet.skills) {
+                if (details.getObjet.skills.length > 0) {
+                    for (var i = 0; i < details.getObjet.skills.length; i++) {
+                        var skill = `<span data-index="${i}" class="keyword"><span class="keyword-remove skills"></span><span class="keyword-text">${details.getObjet.skills[i]}</span></span>`;
+                        $("#listSkills").append(skill);
+                    }
+
+                }
+            } else {
                 return ``;
             }
-        }else{
-            return ``;
-        }
-    },
-    content = `<!-- Dashboard Box -->
+        },
+        bio = () => {
+            if (details.getObjet.bio) {
+                if (details.getObjet.bio.bio != null) {
+                    return details.getObjet.bio.bio;
+                } else {
+                    return ``;
+                }
+            } else {
+                return ``;
+            }
+        },
+        content = `<!-- Dashboard Box -->
     <div class="col-xl-12">
       <div class="dashboard-box margin-top-0">
 
@@ -669,7 +670,7 @@ const userParameters = (user, details) => {
     $('select').selectpicker();
     boostrapSelect();
     submitSelect(user, function (state) {
-        if (state) {localStorage.setItem("verrou",true)} else {localStorage.setItem("verrou",false)}
+        if (state) { localStorage.setItem("verrou", true) } else { localStorage.setItem("verrou", false) }
     });
 
     //Si on veut supprimer un element des skills
@@ -697,7 +698,7 @@ const submitSkills = (user, id_job, details) => {
         listSkills = $("#listSkills"),
         autocomplete = $("#autocomplete-container"),
         skills = details.getObjet.skills ? details.getObjet.skills : new Array();
-    
+
 
     input.on('keyup', function (e) {
         e.preventDefault();
@@ -708,8 +709,8 @@ const submitSkills = (user, id_job, details) => {
                     url: `/api/searchSkills`,
                     dataType: "json",
                     data: {
-                        id_freelancer : user.user_id,
-                        name : input.val()
+                        id_freelancer: user.user_id,
+                        name: input.val()
                     },
                     success: function (data) {
                         if (data.getEtat) {
@@ -722,29 +723,29 @@ const submitSkills = (user, id_job, details) => {
                             })
                         } else {
                             if (input.val().trim() != null && input.val().trim() != "") {
-                               autocomplete.html(`<div>Ajouter "<span>${input.val()}</span>" comme specialité</div>`);
-                               autocomplete.fadeIn(); 
+                                autocomplete.html(`<div>Ajouter "<span>${input.val()}</span>" comme specialité</div>`);
+                                autocomplete.fadeIn();
                             }
-                            
+
                         }
 
-                        
+
                         //Lorsqu'on clique sur une div
                         $("#autocomplete-container div").on('click', function (e) {
                             e.preventDefault();
-                            
+
                             var skillValue = e.currentTarget.getElementsByTagName('span')[0].innerHTML;
                             //AJoute l'item dans le tab skills
                             if (!isInArray(skillValue, skills)) {
                                 skills.push(skillValue);
                                 //Ajoute le skills dans le HTML
                                 listSkills.append(`<span class="keyword"><span class="keyword-remove skills"></span><span class="keyword-text">${skillValue}</span></span>`);
-                            
+
                                 autocomplete.html(``);
                                 autocomplete.fadeOut();
                                 input.val(``);
                                 $("#btnAddSkills").fadeIn();
-                            }else{
+                            } else {
                                 Snackbar.show({
                                     text: "Vous ne pouvez pas ajouter une meme specialité plusieurs fois",
                                     pos: 'bottom-right',
@@ -769,7 +770,7 @@ const submitSkills = (user, id_job, details) => {
                             })
                         });
 
-                        
+
                     },
                     error: function (err) {
                         Snackbar.show({
@@ -794,11 +795,11 @@ const submitSkills = (user, id_job, details) => {
                     backgroundColor: '#ad344b'
                 });
             }
-        }else{
+        } else {
             autocomplete.html(``);
             autocomplete.fadeOut();
         }
-        
+
     });
 
     //Lorsqu'on clique sur le bouton permettant de valider l'envoi des skills
@@ -813,8 +814,8 @@ const submitSkills = (user, id_job, details) => {
                 url: `/api/setSkills`,
                 dataType: "json",
                 data: {
-                    id_user : user.user_id,
-                    skills : skills
+                    id_user: user.user_id,
+                    skills: skills
                 },
                 success: function (data) {
                     if (data.getEtat) {
@@ -827,7 +828,7 @@ const submitSkills = (user, id_job, details) => {
                             textColor: '#fff',
                             backgroundColor: '#3696f5'
                         });
-                    }else{
+                    } else {
                         Snackbar.show({
                             text: data.getMessage,
                             pos: 'bottom-right',
@@ -851,7 +852,7 @@ const submitSkills = (user, id_job, details) => {
                     });
                 }
             });
-        }else{
+        } else {
             Snackbar.show({
                 text: "La liste de vos specialités ne peut etre vide",
                 pos: 'bottom-right',
@@ -867,7 +868,7 @@ const submitSkills = (user, id_job, details) => {
 /**
  * Effectue la soumission des inputs select (Mise a jour d'un job, d'une ville)
  */
-const submitSelect = (user,callback) => {
+const submitSelect = (user, callback) => {
     $('select').on('change', function (e) {
         var select = e.currentTarget,
             value = select.options[select.selectedIndex].value;
@@ -1257,7 +1258,8 @@ const activeAccount = (user_id) => {
 /**
 * Module permettant de dynamiser la sidebar du profile
 */
-const sidebar = (user) => {
+const sidebar = (user, isBoost) => {
+    
     var content,
         active = (url) => {
 
@@ -1283,9 +1285,11 @@ const sidebar = (user) => {
                     <li><a href="/logout"><i class="icon-material-outline-power-settings-new"></i> Deconnexion</a></li>
                 </ul>`;
     if (!user.isEmployer) {
-        content += `</ul><ul data-submenu-title="VIP">
+        if (!isBoost) {
+            content += `</ul><ul data-submenu-title="VIP">
                     <li class="${active("/profile/boost")}"><a href="/profile/boost"><i class="icon-line-awesome-buysellads"></i> Booster mon profile</a></li>
                 </ul>`;
+        }
     }
     $("#sidebarContent").html(content);
 }
@@ -1393,38 +1397,38 @@ const topFreelancer = (limit) => {
 
                         var outFreelancer = 0;
 
-                    data.getObjet.map((freelancer, item, tab) => {
-                        var name = () => {
-                            if (freelancer.identity) {
-                                return `${freelancer.identity.lastName} ${freelancer.identity.name.toUpperCase()}`
-                            } else {
-                                return freelancer.email;
-                            }
-                        },
-                            favorite = () => {
-                                if (state && session.isEmployer) {
-                                    if (freelancer.isThisInFavorite) {
-                                        return `<span data-tippy-placement="top" title="Retirer de mes favoris" data-favoris="true" data-user="${freelancer._id}" class="bookmark-icon favoris bookmarked"></span>
+                        data.getObjet.map((freelancer, item, tab) => {
+                            var name = () => {
+                                if (freelancer.identity) {
+                                    return `${freelancer.identity.lastName} ${freelancer.identity.name.toUpperCase()}`
+                                } else {
+                                    return freelancer.email;
+                                }
+                            },
+                                favorite = () => {
+                                    if (state && session.isEmployer) {
+                                        if (freelancer.isThisInFavorite) {
+                                            return `<span data-tippy-placement="top" title="Retirer de mes favoris" data-favoris="true" data-user="${freelancer._id}" class="bookmark-icon favoris bookmarked"></span>
                                             <div class="sbl-circ loader-favoris"></div>
                                         `;
-                                    } else {
-                                        return `<span data-tippy-placement="top" title="Ajouter aux favoris" data-favoris="false" data-user="${freelancer._id}" class="bookmark-icon favoris"></span>
+                                        } else {
+                                            return `<span data-tippy-placement="top" title="Ajouter aux favoris" data-favoris="false" data-user="${freelancer._id}" class="bookmark-icon favoris"></span>
                                             <div class="sbl-circ loader-favoris"></div>
                                         `
+                                        }
+                                    } else {
+                                        return ``;
                                     }
-                                } else {
-                                    return ``;
-                                }
 
-                            },
-                            job = () => {
-                                if (freelancer.job && freelancer.job.name) {
-                                    return `<span style="font-size: .9em"><i class="${freelancer.job.icon}" style="font-size: 1.2em"></i>&nbsp;${freelancer.job.name}</span>`;
-                                } else {
-                                    return `<br/>`;
-                                }
-                            },
-                            content = `<!--Freelancer -->
+                                },
+                                job = () => {
+                                    if (freelancer.job && freelancer.job.name) {
+                                        return `<span style="font-size: .9em"><i class="${freelancer.job.icon}" style="font-size: 1.2em"></i>&nbsp;${freelancer.job.name}</span>`;
+                                    } else {
+                                        return `<br/>`;
+                                    }
+                                },
+                                content = `<!--Freelancer -->
 							<div style="background-color: #2c2b2b" class="freelancer">
 
 								<!-- Overview -->
@@ -1467,104 +1471,104 @@ const topFreelancer = (limit) => {
 							</div>
                             <!-- Freelancer / End -->`;
 
-                        outFreelancer++;
+                            outFreelancer++;
 
-                        $("#freelancerInTop").append(content);
+                            $("#freelancerInTop").append(content);
 
-                        if (outFreelancer == tab.length) {
+                            if (outFreelancer == tab.length) {
 
-                            //Système étoile
-                            starRating('.star-rating');
+                                //Système étoile
+                                starRating('.star-rating');
 
-                            //Tooltip
-                            tippy('[data-tippy-placement]', {
-                                delay: 100,
-                                arrow: true,
-                                arrowType: 'sharp',
-                                size: 'regular',
-                                duration: 200,
+                                //Tooltip
+                                tippy('[data-tippy-placement]', {
+                                    delay: 100,
+                                    arrow: true,
+                                    arrowType: 'sharp',
+                                    size: 'regular',
+                                    duration: 200,
 
-                                // 'shift-toward', 'fade', 'scale', 'perspective'
-                                animation: 'scale',
+                                    // 'shift-toward', 'fade', 'scale', 'perspective'
+                                    animation: 'scale',
 
-                                animateFill: true,
-                                theme: 'dark',
+                                    animateFill: true,
+                                    theme: 'dark',
 
-                                // How far the tooltip is from its reference element in pixels 
-                                distance: 10
+                                    // How far the tooltip is from its reference element in pixels 
+                                    distance: 10
 
-                            });
-
-                            //Caroussel
-                            $('.default-slick-carousel').slick({
-                                infinite: false,
-                                slidesToShow: 3,
-                                slidesToScroll: 1,
-                                dots: false,
-                                arrows: true,
-                                adaptiveHeight: true,
-                                responsive: [
-                                    {
-                                        breakpoint: 1292,
-                                        settings: {
-                                            dots: true,
-                                            arrows: false
-                                        }
-                                    },
-                                    {
-                                        breakpoint: 993,
-                                        settings: {
-                                            slidesToShow: 2,
-                                            slidesToScroll: 2,
-                                            dots: true,
-                                            arrows: false
-                                        }
-                                    },
-                                    {
-                                        breakpoint: 769,
-                                        settings: {
-                                            slidesToShow: 1,
-                                            slidesToScroll: 1,
-                                            dots: true,
-                                            arrows: false
-                                        }
-                                    }
-                                ]
-                            });
-
-                            //Gestion favoris, ajout
-                            $(".freelancer-overview .bookmark-icon").on('click', function (e) {
-                                e.preventDefault();
-                                var element = e.currentTarget,
-                                    dataFavoris = {
-                                        user_id : element.getAttribute("data-user"),
-                                        state : element.getAttribute("data-favoris"),
-                                        employer : session.user_id
-                                    };
-
-                                setFavoris(dataFavoris, element, function (data) {
-                                    if (data) {
-                                        tippy('[data-tippy-placement]', {
-                                            delay: 100,
-                                            arrow: true,
-                                            arrowType: 'sharp',
-                                            size: 'regular',
-                                            duration: 200,
-
-                                            // 'shift-toward', 'fade', 'scale', 'perspective'
-                                            animation: 'scale',
-
-                                            animateFill: true,
-                                            theme: 'dark',
-
-                                            // How far the tooltip is from its reference element in pixels 
-                                            distance: 10,
-
-                                        });
-                                    }
                                 });
-                                
-                            })
+
+                                //Caroussel
+                                $('.default-slick-carousel').slick({
+                                    infinite: false,
+                                    slidesToShow: 3,
+                                    slidesToScroll: 1,
+                                    dots: false,
+                                    arrows: true,
+                                    adaptiveHeight: true,
+                                    responsive: [
+                                        {
+                                            breakpoint: 1292,
+                                            settings: {
+                                                dots: true,
+                                                arrows: false
+                                            }
+                                        },
+                                        {
+                                            breakpoint: 993,
+                                            settings: {
+                                                slidesToShow: 2,
+                                                slidesToScroll: 2,
+                                                dots: true,
+                                                arrows: false
+                                            }
+                                        },
+                                        {
+                                            breakpoint: 769,
+                                            settings: {
+                                                slidesToShow: 1,
+                                                slidesToScroll: 1,
+                                                dots: true,
+                                                arrows: false
+                                            }
+                                        }
+                                    ]
+                                });
+
+                                //Gestion favoris, ajout
+                                $(".freelancer-overview .bookmark-icon").on('click', function (e) {
+                                    e.preventDefault();
+                                    var element = e.currentTarget,
+                                        dataFavoris = {
+                                            user_id: element.getAttribute("data-user"),
+                                            state: element.getAttribute("data-favoris"),
+                                            employer: session.user_id
+                                        };
+
+                                    setFavoris(dataFavoris, element, function (data) {
+                                        if (data) {
+                                            tippy('[data-tippy-placement]', {
+                                                delay: 100,
+                                                arrow: true,
+                                                arrowType: 'sharp',
+                                                size: 'regular',
+                                                duration: 200,
+
+                                                // 'shift-toward', 'fade', 'scale', 'perspective'
+                                                animation: 'scale',
+
+                                                animateFill: true,
+                                                theme: 'dark',
+
+                                                // How far the tooltip is from its reference element in pixels 
+                                                distance: 10,
+
+                                            });
+                                        }
+                                    });
+
+                                })
 
                             }
 
@@ -1584,7 +1588,7 @@ const topFreelancer = (limit) => {
         });
     });
 
-    
+
 }
 
 
@@ -1705,10 +1709,10 @@ const detailsUser = (id) => {
                                             <span class="bookmarked-text">Ajouter aux favoris</span>
                                             `;
                                 }
-                            }else{
+                            } else {
                                 return ``;
                             }
-                            
+
                         },
                         firstSection = `<div class="container">
                                         <div class="row">
@@ -1735,7 +1739,7 @@ const detailsUser = (id) => {
                                         </div>
                                     </div>`,
                         biographie = `${bio()}`;
-                        
+
                     if (freelancer.feedBacks && freelancer.feedBacks.length > 0) {
                         freelancer.feedBacks.map((feedBack, item, tab) => {
                             var content = `<li>
@@ -1780,24 +1784,24 @@ const detailsUser = (id) => {
                     }
 
                     var judgement = () => {
-                            if (freelancer.inTime == 100) {
-                                return "Super-Flash au boulot !"
-                            }else if (freelancer.inTime >= 75) {
-                                return "Flash au boulot !"
-                            }else if (freelancer.inTime > 50) {
-                                return "Rapide au boulot !"
-                            }else if (freelancer.inTime == 50) {
-                                return "Vitesse normale"
-                            }else if (freelancer.inTime >= 40) {
-                                return "Assez rapide, mais plus lent !"
-                            }else if (freelancer.inTime >= 20) {
-                                return "Lent !"
-                            }else if (freelancer.inTime > 0) {
-                                return "Trop lent, trop lent..."
-                            }else if (freelancer.inTime == 0) {
-                                return "Pas encore côté"
-                            }
-                        },
+                        if (freelancer.inTime == 100) {
+                            return "Super-Flash au boulot !"
+                        } else if (freelancer.inTime >= 75) {
+                            return "Flash au boulot !"
+                        } else if (freelancer.inTime > 50) {
+                            return "Rapide au boulot !"
+                        } else if (freelancer.inTime == 50) {
+                            return "Vitesse normale"
+                        } else if (freelancer.inTime >= 40) {
+                            return "Assez rapide, mais plus lent !"
+                        } else if (freelancer.inTime >= 20) {
+                            return "Lent !"
+                        } else if (freelancer.inTime > 0) {
+                            return "Trop lent, trop lent..."
+                        } else if (freelancer.inTime == 0) {
+                            return "Pas encore côté"
+                        }
+                    },
                         indicatorsTime = `<div class="indicator">
                                             <strong>${freelancer.inTime}%</strong>
                                             <div class="indicator-bar" data-indicator-percentage="${freelancer.inTime}"><span></span></div>
@@ -1910,14 +1914,14 @@ const detailsUser = (id) => {
                     $("#favoriteDetails").on('click', function (e) {
                         var element = e.currentTarget,
                             dataFavoris = {
-                                user_id : element.getAttribute("data-user"),
-                                state : element.getAttribute("data-favoris"),
-                                employer : user.user_id
+                                user_id: element.getAttribute("data-user"),
+                                state: element.getAttribute("data-favoris"),
+                                employer: user.user_id
                             };
                         setFavoris(dataFavoris, element, function (data) {
                             return true;
                         });
-                        
+
                     })
                 }
             },
@@ -2115,7 +2119,7 @@ const getFavourites = (state, session) => {
             type: 'GET',
             url: "/api/getFavorites/" + session.user_id,
             dataType: "json",
-            success: function(data) {
+            success: function (data) {
                 if (data.getEtat) {
                     const contentHead = `<div id="freelancerList" class="freelancers-container freelancers-grid-layout margin-top-35">
                                         </di>`;
@@ -2145,10 +2149,10 @@ const getFavourites = (state, session) => {
                                             return `<span data-favoris="false" data-user="${freelancer._id}" class="bookmark-icon"></span>
                                                 <div class="sbl-circ loader-favoris"></div>`
                                         }
-                                    }else{
+                                    } else {
                                         return ``;
                                     }
-                                    
+
                                 },
                                 job = () => {
                                     if (freelancer.job && freelancer.job.name) {
@@ -2237,9 +2241,9 @@ const getFavourites = (state, session) => {
                                     e.preventDefault();
                                     var element = e.currentTarget,
                                         dataFavoris = {
-                                            user_id : element.getAttribute("data-user"),
-                                            state : element.getAttribute("data-favoris"),
-                                            employer : session.user_id
+                                            user_id: element.getAttribute("data-user"),
+                                            state: element.getAttribute("data-favoris"),
+                                            employer: session.user_id
                                         };
 
                                     setFavoris(dataFavoris, element, function (data) {
@@ -2266,14 +2270,14 @@ const getFavourites = (state, session) => {
                                             //element.parentNode.parentNode.parentNode.remove();
                                         }
                                     });
-                                    
+
                                 })
 
                             }
 
                         })
                     }
-                }else{
+                } else {
                     $("#freelancerInfavoris").html(`
                         <div class="row">
                             <div class="col-md-12">
@@ -2293,12 +2297,12 @@ const getFavourites = (state, session) => {
                     `);
                 }
             },
-            error: function(err) {
+            error: function (err) {
                 console.log(err);
             }
         });
-    } else {}
-    
+    } else { }
+
 }
 
 /**
@@ -2310,7 +2314,7 @@ const getFreelancersForOffer = (state, session) => {
             type: 'GET',
             url: "/api/getFreelancersForOffer/" + session.user_id,
             dataType: "json",
-            success: function(data) {
+            success: function (data) {
                 if (data.getEtat) {
                     const contentHead = `<div id="freelancerList" class="freelancers-container freelancers-grid-layout margin-top-35">
                                         </di>`;
@@ -2339,10 +2343,10 @@ const getFreelancersForOffer = (state, session) => {
                                             return `<span data-tippy-placement="bottom" title="Ajouter aux favoris" data-favoris="false" data-user="${freelancer.infos._id}" class="bookmark-icon"></span>
                                                 <div class="sbl-circ loader-favoris"></div>`
                                         }
-                                    }else{
+                                    } else {
                                         return ``;
                                     }
-                                    
+
                                 },
                                 job = () => {
                                     if (freelancer.job && freelancer.job.name) {
@@ -2427,7 +2431,7 @@ const getFreelancersForOffer = (state, session) => {
                                     distance: 10,
 
                                 });
-                                
+
                                 //chargement du popup de connexion et inscription
                                 $('.popup-with-zoom-anim').magnificPopup({
                                     type: 'inline',
@@ -2449,7 +2453,7 @@ const getFreelancersForOffer = (state, session) => {
                                     var name = e.currentTarget.getAttribute("data-name"),
                                         id_user = e.currentTarget.getAttribute("data-user"),
                                         feedBack = JSON.parse(e.currentTarget.getAttribute("data-feedback"));
-  
+
                                     $("#nameFreelancer").html(`Noter <a id="${id_user}" href="#">${name}</a> par rapport à sa facon de travailler`);
 
                                     var check = () => {
@@ -2460,14 +2464,14 @@ const getFreelancersForOffer = (state, session) => {
                                                 document.querySelector("input[name=intime]#radio-4").setAttribute("checked", "checked")
                                             }
                                         }
-                                        
+
                                     }
 
                                     check();
 
                                     $("#commentaiire").text(feedBack != null ? feedBack.evaluation.message : ``);
-                                    
-                                        
+
+
                                 });
 
                                 //Gestion favoris, ajout
@@ -2475,9 +2479,9 @@ const getFreelancersForOffer = (state, session) => {
                                     e.preventDefault();
                                     var element = e.currentTarget,
                                         dataFavoris = {
-                                            user_id : element.getAttribute("data-user"),
-                                            state : element.getAttribute("data-favoris"),
-                                            employer : session.user_id
+                                            user_id: element.getAttribute("data-user"),
+                                            state: element.getAttribute("data-favoris"),
+                                            employer: session.user_id
                                         };
 
                                     setFavoris(dataFavoris, element, function (data) {
@@ -2504,7 +2508,7 @@ const getFreelancersForOffer = (state, session) => {
                                             //element.parentNode.parentNode.parentNode.remove();
                                         }
                                     });
-                                    
+
                                 });
 
                                 //send feedback
@@ -2514,7 +2518,7 @@ const getFreelancersForOffer = (state, session) => {
 
                         })
                     }
-                }else{
+                } else {
                     $("#freelancerInfavoris").html(`
                         <div class="row">
                             <div class="col-md-12">
@@ -2531,7 +2535,7 @@ const getFreelancersForOffer = (state, session) => {
                     `);
                 }
             },
-            error: function(err) {
+            error: function (err) {
                 console.log(err);
             }
         });
@@ -2568,11 +2572,11 @@ const sendReview = (session) => {
                 type: 'POST',
                 url: "/api/setReview",
                 dataType: "json",
-                data : objData,
-                beforeSend : function () {
+                data: objData,
+                beforeSend: function () {
                     $("#btn-leave-review").html("Envoi en cours...");
                 },
-                success: function(data) {
+                success: function (data) {
                     $("#btn-leave-review").html(`Valider <i class="icon-material-outline-arrow-right-alt"></i>`);
                     if (data.getEtat) {
                         Snackbar.show({
@@ -2594,7 +2598,7 @@ const sendReview = (session) => {
                         });
                     }
                 },
-                error: function(err) {
+                error: function (err) {
                     Snackbar.show({
                         text: "Une erreur est survenue, verifiez votre connexion internet",
                         pos: 'top-center',
@@ -2605,7 +2609,7 @@ const sendReview = (session) => {
                     });
                 }
             });
-        }else{
+        } else {
             Snackbar.show({
                 text: "Veuillez renseigner tous les champs",
                 pos: 'top-center',
@@ -2625,11 +2629,11 @@ const getReview = (state, user) => {
             type: 'GET',
             url: "/api/getFeedBacks/" + user.user_id,
             dataType: "json",
-            success: function(data) {
+            success: function (data) {
                 if (data.getEtat) {
                     if (data.getObjet.feedBacks.length > 0) {
                         $("#listReview").html(``);
-                        var outfeedback=0;
+                        var outfeedback = 0;
                         data.getObjet.feedBacks.map(review => {
 
                             outfeedback++;
@@ -2640,7 +2644,7 @@ const getReview = (state, user) => {
                                     return review.identity_employeur.email;
                                 }
                             },
-                            contentFeedback = `<li>
+                                contentFeedback = `<li>
                                 <div class="boxed-list-item">
                                     <!-- Content -->
                                     <div class="item-content">
@@ -2663,7 +2667,7 @@ const getReview = (state, user) => {
                                 starRating('.star-rating');
                             }
                         });
-                    }else{
+                    } else {
                         $("#listReview").html(`
                             <div class="col-md-12">
                                 <center>
@@ -2690,7 +2694,7 @@ const getReview = (state, user) => {
                     `);
                 }
             },
-            error: function(err) {
+            error: function (err) {
                 console.log(err);
             }
         });
@@ -2722,7 +2726,7 @@ const recouveryAccount = () => {
     $("#recuperation-password-form").on('submit', (e) => {
         e.preventDefault();
         var objData = {
-            "email" : $("#email_recovery").val()
+            "email": $("#email_recovery").val()
         };
 
         if (NoEmpty(objData)) {
@@ -2730,8 +2734,8 @@ const recouveryAccount = () => {
                 type: 'POST',
                 url: "/api/password/sendMail",
                 dataType: "json",
-                data : objData,
-                beforeSend : function () {
+                data: objData,
+                beforeSend: function () {
                     $("#recuperation-password-btn").html(`<div style="margin-left:15px;" class="sbl-circ"></div>`);
                 },
                 success: function (data) {
@@ -2780,20 +2784,20 @@ const recouveryAccount = () => {
                 backgroundColor: '#ad344b'
             });
         }
-        
+
     })
 }
 
 /**
  * Permettant de faire la modification du mot de passe
  */
- const changePassword = () => {
+const changePassword = () => {
     $("#update-password-form").on('submit', (e) => {
         e.preventDefault();
         var token = window.location.search.split("=")[1],
             objData = {
-                "password" : $("#password_recovery").val(),
-                "token" : token
+                "password": $("#password_recovery").val(),
+                "token": token
             };
 
         if (NoEmpty(objData)) {
@@ -2801,8 +2805,8 @@ const recouveryAccount = () => {
                 type: 'POST',
                 url: "/api/password/change",
                 dataType: "json",
-                data : objData,
-                beforeSend : function () {
+                data: objData,
+                beforeSend: function () {
                     $("#update-password-btn").html(`<div style="margin-left:15px;" class="sbl-circ"></div>`);
                 },
                 success: function (data) {
@@ -2856,11 +2860,11 @@ const recouveryAccount = () => {
             });
         }
     })
- }
+}
 
- /**
- * Permettant de faire la modification du taux horaire
- */
+/**
+* Permettant de faire la modification du taux horaire
+*/
 const setHourly = () => {
     $("#form-add-hourly").on('submit', (e) => {
         e.preventDefault();
@@ -2870,10 +2874,10 @@ const setHourly = () => {
                 type: 'POST',
                 url: "/api/users/setHourly",
                 dataType: "json",
-                data : {
-                    montant : montant
+                data: {
+                    montant: montant
                 },
-                beforeSend : function () {
+                beforeSend: function () {
                     $("#btn-add-hourly").html(`<div class="sbl-circ"></div>`);
                 },
                 success: function (data) {
@@ -2925,4 +2929,4 @@ const setHourly = () => {
         }
     })
 }
-export { login, register, getStatsUsers, getNav, activeAccount, statsInDashboard, topFreelancer, getDropAnfooterJobs, getDropAnfooterTown, sidebar, detailsUser, dropNav, recouveryAccount,changePassword}
+export { login, register, getStatsUsers, getNav, activeAccount, statsInDashboard, topFreelancer, getDropAnfooterJobs, getDropAnfooterTown, sidebar, detailsUser, dropNav, recouveryAccount, changePassword }

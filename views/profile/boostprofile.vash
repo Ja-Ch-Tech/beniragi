@@ -19,7 +19,7 @@
             <center>
                 <img height="200" src="/images/svg/undraw_finance_0bdk.svg">*
                 <p>Booster votre compte vous permet d'etre plus visible aux yeux des employeurs selon une durée bien determinée, et surtout que votre profile sera affiché sur la page d'accueil, c'est juste 20$ pour une durée de 30 jours !</p>
-                <a href="#" class="button button-sliding-icon ripple-effect">Cliquez ici
+                <a href="#" class="button button-sliding-icon ripple-effect" id="boostAccount">Cliquez ici
                 <i class="icon-material-outline-arrow-right-alt"></i></a>
             </center>
           </div>

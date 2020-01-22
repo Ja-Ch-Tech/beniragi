@@ -3,7 +3,7 @@ import { login, register, getStatsUsers as statsUsers, getNav, activeAccount, si
 import { getJobs } from './jobs.js';
 import { graph } from './view.js';
 import { messageList } from './offer.js';
-import { getVIPFreelancers as VIP } from './vip.js';
+import { getVIPFreelancers as VIP, boost } from './vip.js';
 
 
 (() => {
@@ -42,6 +42,10 @@ import { getVIPFreelancers as VIP } from './vip.js';
 
             if (/messages/i.test(pathName.split("/")[pathName.split("/").length - 1])) {
                 messageList();
+            }
+
+            if (/boost/i.test(pathName.split("/")[pathName.split("/").length - 1])) {
+                boost();
             }
             
         }
