@@ -316,6 +316,7 @@ const getNav = () => {
 
                 //Dynamisation de la sidebar
                 if (/profile/i.test(pathName.split("/")[1])) {
+                    console.log(infos.getObjet);
                     sidebar(user, infos.getObjet.isBoost);
                 }
             });

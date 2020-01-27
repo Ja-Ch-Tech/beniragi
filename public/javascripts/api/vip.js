@@ -4,6 +4,8 @@ const getVIPFreelancers = (limit) => {
         url: `/api/vip/${limit}`,
         dataType: "json",
         success: function (data) {
+            console.log(data);
+            
             if (data.getEtat) {
                 var contentHead = `<div class="container">
                                     <div class="row">
