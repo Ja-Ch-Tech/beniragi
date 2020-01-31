@@ -380,28 +380,28 @@ const megaSearch = () => {
                                 data: objData,
                                 beforeSend: function() {
                                     $("#resultat-recherche").html(`<center>
-                      <div style="margin:13% 0%;" class="lds-spinner">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                      </div>
-                    </center>
-                `);
+                                      <div style="margin:13% 0%;" class="lds-spinner">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                      </div>
+                                    </center>
+                                `);
                                 },
                                 success: function(data) {
                                         var content,
                                             sortieRecherche = 0;
                                         if (data.getEtat) {
                                             content = `<h3 class="page-title">Resultats trouvés (${data.getObjet.length})</h3>
-                               <div id="freelancer__list" class="freelancers-container freelancers-list-layout compact-list margin-top-35 margin-bottom-35">
+                                           <div id="freelancer__list" class="freelancers-container freelancers-list-layout compact-list margin-top-35 margin-bottom-35">
 
-                               </div>`;
+                                           </div>`;
                                             $("#resultat-recherche").html(content);
                                             data.getObjet.map(element => {
                                                         console.log(element)
@@ -417,57 +417,56 @@ const megaSearch = () => {
                                                                 if (state && session.isEmployer) {
                                                                     if (element.isThisInFavorite) {
                                                                         return `<span data-tippy-placement="bottom" title="Retirer de mes favoris" data-favoris="true" data-user="${element._id}" class="bookmark-icon bookmarked"></span>
-                                        <div class="sbl-circ" style="right:40px;top:20px;position: absolute;display: none;"></div>`;
+                                                                            <div class="sbl-circ" style="right:40px;top:20px;position: absolute;display: none;"></div>`;
                                                                     } else {
                                                                         return `<span data-tippy-placement="bottom" title="Ajouter aux favoris" data-favoris="false" data-user="${element._id}" class="bookmark-icon"></span>
-                                        <div class="sbl-circ" style="right:40px;top:20px;position: absolute;display: none;"></div>`
+                                                                            <div class="sbl-circ" style="right:40px;top:20px;position: absolute;display: none;"></div>`
                                                                     }
                                                                 } else {
                                                                     return ``;
                                                                 }
 
                                                             },
-                                                            contentElement = `<!--Freelancer -->
-                            <div class="freelancer">
-                                <!-- Overview -->
-                                <div class="freelancer-overview">
-                                    <div class="freelancer-overview-inner">
-                                        <!-- Bookmark Icon -->
-                                        ${favorite()}
-                                        <!-- Avatar -->
-                                        <div class="freelancer-avatar">
-                                        ${element.certificate && element.certificate.certified == true ? `<li><div class="verified-badge-with-title">Certifié</div></li>` : ''}
-                                            <a href="/candidats/${element._id}/profile"><img src="/images/user-avatar-big-01.jpg" alt=""></a>
-                                            ${element.certificate && element.certificate.certified == true ? `<div class="verified-badge"></div>` : ''}
-                                            <a href="/candidats/12/profile"><img src="/images/user-avatar-big-01.jpg" alt=""></a>
-                                        </div>
+                                                            contentElement = `
+                                                            <!--Freelancer -->
+                                                            <div class="freelancer">
+                                                                <!-- Overview -->
+                                                                <div class="freelancer-overview">
+                                                                    <div class="freelancer-overview-inner">
+                                                                        <!-- Bookmark Icon -->
+                                                                        ${favorite()}
+                                                                        <!-- Avatar -->
+                                                                        <div class="freelancer-avatar">
+                                                                            ${element.certificate && element.certificate.certified == true ? `<div class="verified-badge"></div>` : ''}
+                                                                            <a href="/candidats/${element._id}/profile"><img src="/images/user-avatar-big-01.jpg" alt=""></a>
+                                                                        </div>
 
-                                        <!-- Name -->
-                                        <div class="freelancer-name">
-                                            <h4><a href="/candidats/${element._id}/profile">${name()}<img class="flag" src="/images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top"></a></h4>
-                                            <span>${element.job ? element.job.name : `---`}</span>
-                                            <!-- Rating -->
-                                            <div class="freelancer-rating">
-                                                <div class="star-rating" data-rating="${element.average}"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Details -->
-                                <div class="freelancer-details">
-                                    <div class="freelancer-details-list">
-                                        <ul>
-                                            <li>Localisation <strong><i class="icon-material-outline-location-on"></i> ${element.town ? element.town : `---`}</strong></li>
-                                            <li>Taux horaire <strong>$${element.hourly ? element.hourly.rate : "0"} / hr</strong></li>
-                                            <li>A temps <strong>${element.inTime ? element.inTime + '%' : `---`}</strong></li>
-                                        </ul>
-                                    </div>
-                                    <a href="/candidats/${element._id}/profile" class="button button-sliding-icon ripple-effect">Voir le profile <i class="icon-material-outline-arrow-right-alt"></i></a>
+                                                                        <!-- Name -->
+                                                                        <div class="freelancer-name">
+                                                                            <h4><a href="/candidats/${element._id}/profile">${name()}<img class="flag" src="/images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top"></a></h4>
+                                                                            <span>${element.job ? element.job.name : `---`}</span>
+                                                                            <!-- Rating -->
+                                                                            <div class="freelancer-rating">
+                                                                                <div class="star-rating" data-rating="${element.average}"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                <!-- Details -->
+                                                                <div class="freelancer-details">
+                                                                    <div class="freelancer-details-list">
+                                                                        <ul>
+                                                                            <li>Localisation <strong><i class="icon-material-outline-location-on"></i> ${element.town ? element.town : `---`}</strong></li>
+                                                                            <li>Taux horaire <strong>$${element.hourly ? element.hourly.rate : "0"} / hr</strong></li>
+                                                                            <li>A temps <strong>${element.inTime ? element.inTime + '%' : `---`}</strong></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                    <a href="/candidats/${element._id}/profile" class="button button-sliding-icon ripple-effect">Voir le profile <i class="icon-material-outline-arrow-right-alt"></i></a>
 
-                                </div>
-                            </div>
-                            <!-- Freelancer / End -->`;
+                                                                </div>
+                                                            </div>
+                                                            <!-- Freelancer / End -->`;
 
                         $("#freelancer__list").append(contentElement);
 
