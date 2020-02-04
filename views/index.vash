@@ -9,9 +9,10 @@
 					<div class="col-md-12">
 						<div class="banner-headline">
 							<h3>
-								<strong>Hire experts or be hired for any job, any time.</strong>
+								<strong>Embaucher des experts ou être embauché pour n'importe quel travail, à tout moment.</strong>
 								<br>
-								<span>Thousands of small businesses use <strong class="color">Hireo</strong> to turn their ideas into reality.</span>
+								<span>Des milliers de petites entreprises utilisent <strong class="color">Beniragi Services</strong> pour transformer leurs idées en réalité.</span><br>
+								<strong class="color">les services de votre choix à votre portée !</strong>
 							</h3>
 						</div>
 					</div>
@@ -109,7 +110,7 @@
 									<center>
 										<h2>
 											<i style="font-size: 80px;color: #fff" class="icon-material-outline-business-center"></i><br>
-											<b style="color: #fff;">Start as company</b>
+											<b style="color: #fff;">Entreprise</b>
 										</h2><br>
 										<p style="color: #888;">
 											Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -125,7 +126,7 @@
 									<center>
 										<h2>
 											<i style="font-size: 80px;color: #fff" class="icon-feather-user"></i><br>
-											<b style="color: #fff;">Start as freelancer</b>
+											<b style="color: #fff;">Prestataire de service</b>
 										</h2><br>
 										<p style="color: #888;">
 											Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod

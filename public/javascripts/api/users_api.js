@@ -217,7 +217,7 @@ const getNav = () => {
         if (state) {
             //Recuperation des informations du user
             getUserInfos(user.user_id, function (infos) {
-
+                console.log(infos)
                 if (infos.getObjet.flag) {
                     navContent = `
 
@@ -1278,7 +1278,7 @@ const sidebar = (user, isBoost) => {
         <li class="${active("/profile/contacts")}"><a href="/profile/contacts"><i class="icon-feather-users"></i> Contacts</a></li>
         `;
     } else {
-        content += `<li class="${active("/profile/feedback")}"><a href="/profile/feedback"><i class="icon-material-outline-feedback"></i> Feedback</a></li>`;
+        content += `<li class="${active("/profile/feedback")}"><a href="/profile/feedback"><i class="icon-material-outline-feedback"></i> Avis</a></li>`;
     }
 
     content += `</ul><ul data-submenu-title="COMPTE">
@@ -2677,7 +2677,7 @@ const getReview = (state, user) => {
                                 <center>
                                     <div style="margin:7% 0%;">
                                         <img height=250 src="/images/svg/undraw_QA_engineers_dg5p.svg" /><br/><br/>
-                                        <p style="font-size:25px;">Aucun feedback n'est emit sur vous </p>
+                                        <p style="font-size:25px;">Aucun avis n'est emit sur vous </p>
                                         <p>Ici nous listons tout ce que les gens qui vous ont contacter pense de vous, par rapport a votre facon de travailler</p><br/>
                                     </div>
                                 </center>
@@ -2690,7 +2690,7 @@ const getReview = (state, user) => {
                             <center>
                                 <div style="margin:7% 0%;">
                                     <img height=250 src="/images/svg/undraw_QA_engineers_dg5p.svg" /><br/><br/>
-                                    <p style="font-size:25px;">Aucun feedback n'est emit sur vous </p>
+                                    <p style="font-size:25px;">Aucun avis n'est emit sur vous </p>
                                     <p>Ici nous listons tout ce que les gens qui vous ont contacter pense de vous, par rapport a votre facon de travailler</p><br/>
                                 </div>
                             </center>
