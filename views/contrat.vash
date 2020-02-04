@@ -1,0 +1,154 @@
+@html.extend('layout', function(model) {
+  @html.block('content', function(model) {
+	<div id="titlebar" class="gradient">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+
+					<h2 class="">Termes et conditions</h2>
+
+					<!-- Breadcrumbs -->
+					<nav id="breadcrumbs" class="dark">
+						<ul>
+							<li><a href="/">Accueil</a></li>
+							<li><a href="/contrat">Contrat</a></li>
+						</ul>
+					</nav>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-xl-12">
+				<p class="">Ce service est fourni par beniragiservices.com pour faciliter la réservation de tous types de services en ligne et à trouver des prestataires de services adéquats. Pour utiliser et recevoir le Service (y compris l'accès à ce site Web et / ou à toute application mobile, collectivement «Site»), vous devez d'abord accepter et respecter les conditions générales suivantes (les «Conditions d'utilisation») et les conditions de notre Politique de confidentialité. Le Site est détenu, exploité et géré par Beniragi Services et partout où le terme Beniragi / Nous / Notre et une expression similaire sont utilisés, il fait référence à Beniragi Services, ses dirigeants, administrateurs, employés et représentants, selon le cas.</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xl-12">
+				<h4 class="color_red">LE SERVICE QUE NOUS OFFRONS : </h4>
+				<p class="">Le service est conçu pour développer une communauté d’échange de services fiables et se base sur la simplification du quotidien en toute confiance, tout en favorisant l’économie ou le gain du temps. Les éléments suivants du Service sont disponibles pour les résidents: </p>
+				<ul>
+					<li style="list-style-type: none;">
+						<span class="color_red">A. Accès au site:</span> 
+						<ul>
+							<li style="list-style-type: none;">
+								<span class="">Veuillez noter qu'un seul nom d'utilisateur et mot de passe doit être créé par utilisateur. Le nom d'utilisateur est le numéro contact/ email id fourni par l'utilisateur. Nous nous réservons le droit de vérifier ces informations avant d'activer un compte. Le compte peut être rejeté ou désactivé s'il s'avère qu'il s'agit d'un compte malveillant ou pour toute autre raison que Beniragi juge appropriée et qu'il n'est pas tenu d'indiquer ou de justifier. </span>
+							</li>
+
+							<li style="list-style-type: none;">
+								<span class="">Vous êtes responsable du maintien de la confidentialité de votre mot de passe et de votre compte, et êtes entièrement responsable de toutes les activités qui se produisent sous votre mot de passe ou votre compte, avec ou à votre insu. Si vous donnez sciemment vos informations de connexion et de mot de passe à une autre personne, nous pouvons suspendre ou résilier votre compte, en plus de tout autre recours à notre disposition. Vous devez nous informer immédiatement si vous prenez connaissance d'une utilisation non autorisée de votre mot de passe ou de votre compte ou de toute autre violation de la sécurité. Nous ne pouvons être tenus responsables de toute perte ou dommage résultant de votre non-respect de ce paragraphe.  </span>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul>
+					<li style="list-style-type: none;">
+						<span class="color_red">B. Informations d'enregistrement:</span> 
+						<ul>
+							<li style="list-style-type: none;">
+								<span class="">Lorsque vous soumettez vos données pour vous inscrire, nous vous demanderons de fournir les détails de votre nom, compétences professionnelles, CV, adresse e-mail, numéro de contact et mot de passe de votre choix. Comme mentionné ci-dessus, votre adresse e-mail / numéro de contact sera utilisé comme nom d'utilisateur à des fins de connexion.  </span>
+							</li>
+
+							<li style="list-style-type: none;">
+								<span class="">Toutes les informations d'enregistrement que vous fournissez doivent être vraies, exactes, à jour et complètes. Nous afficherions ces informations sur le site Web pour que les autres utilisateurs puissent y accéder. </span>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul>
+					<li style="list-style-type: none;">
+						<span class="color_red">C. Informations sur le profil:</span> 
+						<ul>
+							<li style="list-style-type: none;">
+								<span class="">Votre profil Beniragiservices.com ne peut inclure aucun des contenus suivants: toute photographie contenant de la nudité, des propos grossiers ou obscènes, excessivement violents, harcelants, sexuellement explicites ou autrement répréhensibles. Malgré cette interdiction, il est possible que les informations fournies par d'autres utilisateurs de Beniragiservices.com (par exemple, dans leur profil) puissent contenir du matériel, des produits ou des services inexacts, inappropriés, offensants ou sexuellement explicites en violation de ces conditions d'utilisation. Beniragiservices.com n'assume aucune responsabilité pour ce matériel. Nous vous encourageons cependant à nous aider à garder le site propre en nous contactant si vous constatez une mauvaise utilisation du Service.</span>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul>
+					<li style="list-style-type: none;">
+						<span class="color_red">D. Mises à jour par courrier électronique:</span> 
+						<ul>
+							<li style="list-style-type: none;">
+								<span class="">Dans le cadre du Service, il se peut que nous devions communiquer avec vous par e-mail (consultez notre Politique de confidentialité pour en savoir plus sur les communications). Vous acceptez de recevoir des e-mails spécifiques à votre compte et nécessaires au fonctionnement normal du Service, y compris un ou plusieurs e-mails de bienvenue qui aident à informer les nouveaux utilisateurs des différentes fonctionnalités du Service.</span>
+							</li>
+							<li style="list-style-type: none;">
+								<span class="">Nous pouvons également envoyer aux utilisateurs des bulletins électroniques occasionnels, sauf si ces utilisateurs ont choisi de ne pas recevoir ces e-mails. Ces e-mails peuvent également contenir des informations, des conseils et suggestions ou toute autre offre fournie par un tiers. Vous pouvez à tout moment vous désinscrire de ces e-mails en envoyant un mail à <a href="mailto:contact@beniragiservices.com">contact@beniragiservices.com</a> </span>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul>
+					<li style="list-style-type: none;">
+						<span class="color_red">G. Informations pour les prestataires de services </span> 
+						<ul>
+							<li style="list-style-type: none;">
+								<span class="">Étant donné que le site est conçu de façon à ce que les informations du prestataire de service soient visibles lors de la recherche afin de vous permettre de contacter directement ceux-ci. Vous pouvez parcourir certaines sections du site, même si vous n'êtes pas encore inscrit. Cependant, vous ne pourrez contacter le prestataire de service adéquat que si vous vous êtes connecté sur la plateforme. </span>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<div class="col-xl-12">
+				<h4 class="color_red">VOS INFORMATIONS; POLITIQUE DE CONFIDENTIALITE:</h4>
+				<ul>
+					<li style="list-style-type: none;">
+						<span class="color_red">A. Politique de confidentialité: </span> 
+						<ul>
+							<li style="list-style-type: none;">
+								<span class="">Notre utilisation de vos informations est soumise aux termes de notre politique de confidentialité. Vous devez accepter la politique de confidentialité avant de pouvoir accéder au site.  </span>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul>
+					<li style="list-style-type: none;">
+						<span class="color_red">B. Vos informations d'inscription:</span> 
+						<ul>
+							<li style="list-style-type: none;">
+								<span class="">Pour vous donner accès au site, nous vous demanderons de fournir le nom et les coordonnées décrits ci-dessus, et nous pouvons également vous demander de mettre à jour ou de vérifier ces informations de temps à autre. En utilisant le Site, vous acceptez de fournir des informations précises et de coopérer avec tout personnel de Beniragiservices.com. </span>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul>
+					<li style="list-style-type: none;">
+						<span class="color_red">C. Autres informations que vous fournissez: </span> 
+						<ul>
+							<li style="list-style-type: none;">
+								<p class="">(i) Ce que vous pouvez fournir: </p>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul>
+					<li style="list-style-type: none;">
+						<span class="color_red">D. Mises à jour par courrier électronique:</span> 
+						<ul>
+							<li style="list-style-type: none;">
+								<span class="">Dans le cadre du Service, il se peut que nous devions communiquer avec vous par e-mail (consultez notre Politique de confidentialité pour en savoir plus sur les communications). Vous acceptez de recevoir des e-mails spécifiques à votre compte et nécessaires au fonctionnement normal du Service, y compris un ou plusieurs e-mails de bienvenue qui aident à informer les nouveaux utilisateurs des différentes fonctionnalités du Service.</span>
+							</li>
+							<li style="list-style-type: none;">
+								<span class="">Nous pouvons également envoyer aux utilisateurs des bulletins électroniques occasionnels, sauf si ces utilisateurs ont choisi de ne pas recevoir ces e-mails. Ces e-mails peuvent également contenir des informations, des conseils et suggestions ou toute autre offre fournie par un tiers. Vous pouvez à tout moment vous désinscrire de ces e-mails en envoyant un mail à <a href="mailto:contact@beniragiservices.com">contact@beniragiservices.com</a> </span>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul>
+					<li style="list-style-type: none;">
+						<span class="color_red">G. Informations pour les prestataires de services </span> 
+						<ul>
+							<li style="list-style-type: none;">
+								<span class="">Étant donné que le site est conçu de façon à ce que les informations du prestataire de service soient visibles lors de la recherche afin de vous permettre de contacter directement ceux-ci. Vous pouvez parcourir certaines sections du site, même si vous n'êtes pas encore inscrit. Cependant, vous ne pourrez contacter le prestataire de service adéquat que si vous vous êtes connecté sur la plateforme. </span>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+  })
+})
