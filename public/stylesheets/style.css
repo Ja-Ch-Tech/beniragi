@@ -2969,7 +2969,7 @@ body #backtotop a {
 }
 
 #backtotop a:after {
-    content: "юд";
+    content: "";
     font-family: "Feather-Icons";
     position: relative;
     display: block;
