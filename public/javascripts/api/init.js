@@ -1,11 +1,11 @@
 const getHostApi = () => {
-    //return "http://localhost:3456/";
-    return "https://api-beniragi-service.herokuapp.com/";
+    return "http://localhost:3456/";
+    //return "https://api-beniragi-service.herokuapp.com/";
 }
 
 const getHostWeb = () => {
-    //return "http://localhost:3000/"; //Local
-    return "https://beniragi-service.herokuapp.com/"; //Online
+    return "http://localhost:3000/"; //Local
+    //return "https://beniragi-service.herokuapp.com/"; //Online
 }
 
 //fonction de modélisation de la date
