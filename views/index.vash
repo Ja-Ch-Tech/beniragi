@@ -41,7 +41,7 @@
 
 								<!-- Button -->
 								<div class="intro-search-button">
-									<button class="button ripple-effect" type="submit" form="mega-search-home">Recherche</button>
+									<button class="button ripple-effect poppins-font" type="submit" form="mega-search-home">Recherche</button>
 								</div>
 							</div>
 						</form>
@@ -60,13 +60,13 @@
 			</div>
 		</div>
 		<!-- VIP profils -->
-		<div class="section padding-top-65 padding-bottom-70 full-width-carousel-fix" id="sectionVIP">
+		<div class="section padding-top-50 mb-0 full-width-carousel-fix" id="sectionVIP">
 			<!-- Dynamic content -->
 		</div>
 		
-		<div class="section margin-top-65 co_noir__principal">
+		<div class="section margin-top-45 co_noir__principal">
 			<div class="container">
-				<div class="row" id="listJobs">
+				<div class="row" id="listJobs" style="margin-bottom: 20px">
 					<!-- Dynamic content -->
 					<div class="col-md-12">
 						<center>
@@ -95,7 +95,7 @@
 					<div class="col-xl-12">
 						<!-- Section Headline -->
 						<div class="section-headline centered margin-top-0 margin-bottom-35">
-							<h3>CREER VOTRE COMPTE</h3>
+							<h3 class="poppins-font-uppercase">CREER VOTRE COMPTE</h3>
 							<p>C'est gratuit!</p>
 						</div>
 					</div>
@@ -109,7 +109,7 @@
 									<center>
 										<h2>
 											<i style="font-size: 80px;color: #fff" class="icon-material-outline-business-center"></i><br>
-											<b style="color: #fff;">Start as company</b>
+											<b style="color: #fff;" class="poppins-font">Start as company</b>
 										</h2><br>
 										<p style="color: #888;">
 											Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -125,7 +125,7 @@
 									<center>
 										<h2>
 											<i style="font-size: 80px;color: #fff" class="icon-feather-user"></i><br>
-											<b style="color: #fff;">Start as freelancer</b>
+											<b style="color: #fff;" class="poppins-font">Start as freelancer</b>
 										</h2><br>
 										<p style="color: #888;">
 											Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod

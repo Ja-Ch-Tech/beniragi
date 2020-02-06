@@ -327,3 +327,11 @@
     color: #fff;
 }
 
+.poppins-font-uppercase{
+    font-family: "Poppins", "Segoe UI Black", sans-serif;
+    text-transform: uppercase;
+}
+
+.poppins-font{
+    font-family: "Poppins", "Segoe UI Black", sans-serif;
+}

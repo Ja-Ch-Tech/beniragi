@@ -43,14 +43,14 @@
 			<div class="col-xl-12">
 				<div class="dashboard-box main-box-in-row">
 					<div class="headline">
-						<h3><i class="icon-feather-bar-chart-2"></i> Visite de votre profile</h3>
-						<div class="sort-by">
+						<h3><i class="icon-feather-bar-chart-2 poppins-font-uppercase"></i> VISITE DE VOTRE PROFILE</h3>
+						<!--<div class="sort-by">
 							<select class="selectpicker hide-tick">
 								<option>6 mois passé</option>
 								<option>Cet année</option>
 								<option>Ce mois</option>
 							</select>
-						</div>
+						</div>-->
 					</div>
 					<div class="content">
 						<div class="chart">

@@ -11,14 +11,6 @@ const getVIPFreelancers = (limit) => {
                                     <div class="row">
 
                                         <div class="col-xl-12">
-                                            <!-- Section Headline -->
-                                            <div class="section-headline margin-top-0 margin-bottom-25">
-                                                <h3>Comptes sponsorisé</h3>
-                                                <a href="/candidats/liste" class="headline-link">Voir tous les profiles</a>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-xl-12">
                                             <div class="vip-slick-carousel freelancers-container freelancers-grid-layout" id="vipFreelancers">
                                             </div>
                                         </div>

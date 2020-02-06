@@ -80,7 +80,7 @@ const newMessage = (limit) => {
                                                     <a href="#" onclick="setRead($(this), '${message._id}')">
                                                         <span class="notification-avatar status-online"><img src="/images/user-avatar-small-03.jpg" alt=""></span>
                                                         <div class="notification-text">
-                                                            <strong>${name()}</strong>
+                                                            <strong class="poppins-font">${name()}</strong>
                                                             <p style="display: block;" class="notification-msg-text">${message.message}</p>
                                                             <span style="font-size: .8em" class="color">${customDate(message.send_at)}</span>
                                                         </div>
@@ -157,7 +157,7 @@ const newOffer = (limit) => {
                                     <a href="#" onclick="setRead($(this), '${notification._id}')">
                                         <span class="notification-icon"><i class="icon-material-outline-group"></i></span>
                                         <span class="notification-text">
-                                            <strong>${name()}</strong> vous a fait une offre de travail.
+                                            <strong class="poppins-font">${name()}</strong> vous a fait une offre de travail.
                                         </span>
                                     </a>
                                 </li>`;

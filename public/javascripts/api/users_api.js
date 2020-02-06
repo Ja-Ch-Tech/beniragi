@@ -146,8 +146,8 @@ const getStatsUsers = () => {
             if (data.getEtat) {
                 data.getObjet.map(value => {
                     var content = `<li>
-										<strong class="counter">${value.count}</strong>
-										<span>${value.typeUser}</span>
+										<strong class="counter poppins-font">${value.count}</strong>
+										<span style="font-family: calibri">${value.typeUser}</span>
 									</li>`;
 
                     $("#statsUser").append(content);
@@ -244,8 +244,8 @@ const getNav = () => {
                                             <!-- User Name / Avatar -->
                                             <div class="user-details">
                                                 <div class="user-avatar status-online"><img src="/images/user-avatar-small-01.jpg" alt=""></div>
-                                                <div class="user-name">
-                                                    ${infos.getObjet.identity ? infos.getObjet.identity.lastName + " " + infos.getObjet.identity.name : infos.getObjet.email} <span>${infos.getObjet.typeUser}</span>
+                                                <div class="user-name poppins-font">
+                                                    ${infos.getObjet.identity ? infos.getObjet.identity.lastName + " " + infos.getObjet.identity.name : infos.getObjet.email} <span style="font-family: calibri">${infos.getObjet.typeUser}</span>
                                                 </div>
                                             </div>
                                             
@@ -303,7 +303,7 @@ const getNav = () => {
                     //Dynamisation du nom de la personne connectée
                     if (/profile/i.test(pathName.split("/")[1]) && /dashboard/i.test(pathName.split("/")[2])) {
                         var name = infos.getObjet.identity ? infos.getObjet.identity.lastName : infos.getObjet.email;
-                        $("#begin-text").html(`<h3>Bon retour, ${name} !</h3>
+                        $("#begin-text").html(`<h3 class="poppins-font">Bon retour, ${name} !</h3>
                                             <span></span>`);
                     }
                 } else {
@@ -316,7 +316,6 @@ const getNav = () => {
 
                 //Dynamisation de la sidebar
                 if (/profile/i.test(pathName.split("/")[1])) {
-                    console.log(infos.getObjet);
                     sidebar(user, infos.getObjet.isBoost);
                 }
             });
@@ -1386,7 +1385,7 @@ const topFreelancer = (limit) => {
                 if (data.getEtat) {
                     const contentHead = `<div class="col-xl-12">
                                             <div class="section-headline margin-top-0 margin-bottom-25">
-                                                <h3>Top Freelancer</h3>
+                                                <h3 class="poppins-font-uppercase">Top Freelancer</h3>
                                                 <a href="/candidats/liste" class="headline-link color_blue candidat-all-liste">Voir tous nos candidats</a>
                                             </div>
                                         </div>
@@ -1449,7 +1448,7 @@ const topFreelancer = (limit) => {
 
 										<!-- Name -->
 										<div class="freelancer-name">
-											<h4><a style="color: #fff;" href="/candidats/${freelancer._id}/profile">${name()}<br/><img class="flag" src="/images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top"></a></h4>
+											<h4><a style="color: #fff;" href="/candidats/${freelancer._id}/profile"><font class="poppins-font">${name()}</font><br/><img class="flag" src="/images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top"></a></h4>
 											${job()}
 										</div>
 
@@ -2183,7 +2182,7 @@ const getFavourites = (state, session) => {
 
                                             <!-- Name -->
                                             <div class="freelancer-name">
-                                                <h4><a style="color: #fff;" href="/candidats/${freelancer._id}/profile">${name()}<br/><img class="flag" src="/images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top"></a></h4>
+                                                <h4><a style="color: #fff;" href="/candidats/${freelancer._id}/profile"><font class="poppins-font">${name()}</font><br/><img class="flag" src="/images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top"></a></h4>
                                                 ${job()}
                                             </div>
 
@@ -2377,7 +2376,7 @@ const getFreelancersForOffer = (state, session) => {
 
                                             <!-- Name -->
                                             <div class="freelancer-name">
-                                                <h4><a style="color: #fff;" href="/candidats/${freelancer.infos._id}/profile">${name()}<br/><img class="flag" src="/images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top"></a></h4>
+                                                <h4><a style="color: #fff;" href="/candidats/${freelancer.infos._id}/profile"><font class="poppins-font">${name()}</font><br/><img class="flag" src="/images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top"></a></h4>
                                                 ${job()}
                                             </div>
 
@@ -2661,7 +2660,7 @@ const getReview = (state, user) => {
                                         </div>
                                     </div>
                                     </div>
-                                    <a class="button gray pull-right ripple-effect margin-top-5 margin-bottom-10"><i class="icon-feather-user"></i>
+                                    <a class="button gray pull-right ripple-effect margin-top-5 margin-bottom-10 poppins-font"><i class="icon-feather-user"></i>
                                     ${name()}
                                     </a>
                                 </li>`;
@@ -2933,4 +2932,5 @@ const setHourly = () => {
         }
     })
 }
+
 export { login, register, getStatsUsers, getNav, activeAccount, statsInDashboard, topFreelancer, getDropAnfooterJobs, getDropAnfooterTown, sidebar, detailsUser, dropNav, recouveryAccount, changePassword }

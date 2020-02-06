@@ -40,7 +40,7 @@ const getMessagesList = () => {
 
                                                 <div class="message-by">
                                                 <div class="message-by-headline">
-                                                    <h5>${info.identity ? `${info.identity.lastName} ${info.identity.name}` : `${info.email}`}</h5>
+                                                    <h5 class="poppins-font">${info.identity ? `${info.identity.lastName} ${info.identity.name}` : `${info.email}`}</h5>
                                                     <span style="font-size: .6em">${customDate(contact.messages[0].messages[contact.messages[0].messages.length - 1].send_at)}</span>
                                                 </div>
                                                 <p>${contact.messages[0].messages[contact.messages[0].messages.length - 1].message}</p>

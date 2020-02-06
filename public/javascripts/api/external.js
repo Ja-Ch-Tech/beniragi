@@ -36,7 +36,7 @@ function autoResize() {
         var offset = this.offsetHeight - this.clientHeight;
 
         var resizeTextarea = function (el) {
-            jQuery(el).css('height', 'auto').css('height', el.scrollHeight + offset);
+            jQuery(el).css('height', 'auto').css('height', el.scrollHeight + offset).css('font-family', 'Poppins');
         };
         jQuery(this).on('keyup input', function () { resizeTextarea(this); }).removeAttr('data-autoresize');
     });
