@@ -9,7 +9,7 @@ function activeMessage(userConnected, id, identity, flag) {
     window.localStorage.setItem("currentList", id);
 
     var content = `<div class="messages-headline">
-                  <h4 style="color: #ccc; text-transform: uppercase">${identity}</h4>
+                  <h4 style="color: #ccc;" class="poppins-font-uppercase">${identity}</h4>
                     ${flag == "true" ? `<span class="message-action" id="flagMessage" style="cursor: pointer" onclick="toggleOffer('${id}')"><i class="icon-material-outline-lock"></i> Bloquer l'ofrre</span>` : `<span style="cursor: pointer" class="message-action" id="flagMessage" onclick="toggleOffer('${id}')"><i class="icon-material-outline-lock-open"></i> Relancer l'ofrre</span>`}
                 </div>
                 
