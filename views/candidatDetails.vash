@@ -39,7 +39,7 @@
 					<!-- Boxed List -->
 					<div class="boxed-list margin-bottom-60" >
 						<div class="boxed-list-headline">
-							<h3><i class="icon-material-outline-thumb-up"></i>Feedbacks</h3>
+							<h3><i class="icon-material-outline-thumb-up"></i>Avis</h3>
 						</div>
 						<ul class="boxed-list-ul" id="feedbackDetails">
 							<!-- Dynamic content -->
@@ -90,7 +90,7 @@
 		
 						<!-- Widget -->
 						<div class="sidebar-widget">
-							<h3>Social Profiles</h3>
+							<h3>Profils réseaux sociaux</h3>
 							<div class="freelancer-socials margin-top-25">
 								<ul>
 									<li><a href="#" title="Dribbble" data-tippy-placement="top"><i
@@ -115,8 +115,8 @@
 						<div class="sidebar-widget">
 							<h3>Fichiers</h3>
 							<div class="attachments-container">
-								<a href="#" class="attachment-box ripple-effect"><span>Cover Letter</span><i>PDF</i></a>
-								<a href="#" class="attachment-box ripple-effect"><span>Contract</span><i>DOCX</i></a>
+								<a href="#" class="attachment-box ripple-effect"><span>CV</span><i>PDF</i></a>
+								<a href="#" class="attachment-box ripple-effect"><span>Contrat</span><i>DOCX</i></a>
 							</div>
 						</div>
 		

@@ -2,14 +2,14 @@
     @html.append('blocuser', function(model){
         <!-- Dashboard Headline -->
         <div class="dashboard-headline">
-          <h3>Feedback emit sur vous</h3>
+          <h3>Avis emit sur vous</h3>
 
           <!-- Breadcrumbs -->
           <nav id="breadcrumbs" class="dark">
             <ul>
               <li><a href="#">Home</a></li>
               <li><a href="#">Dashboard</a></li>
-              <li>feedback</li>
+              <li>Avis</li>
             </ul>
           </nav>
         </div>

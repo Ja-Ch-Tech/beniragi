@@ -42,4 +42,14 @@ router.get('/activation', function(req, res, next) {
     classHeader: ''
   });
 });
+
+/* Contrat beniragi */
+router.get('/contrat', function(req, res, next) {
+  res.render('contrat', { 
+    title: 'Termes et contrat beniragi',
+    classWrapper: '',
+    classHeader: ''
+  });
+});
+
 module.exports = router;
