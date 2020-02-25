@@ -108,15 +108,15 @@ router.post('/login', (req, res) => {
 router.post('/users/setIdentity', (req, res) => {
 
     var data = {
-            nom: req.body.nom,
-            postnom: req.body.postnom,
-            prenom: req.body.prenom,
-            numero: req.body.numero,
-            id_user: req.session.id_user_beni
-        }, 
+        nom: req.body.nom,
+        postnom: req.body.postnom,
+        prenom: req.body.prenom,
+        numero: req.body.numero,
+        id_user: req.session.id_user_beni
+    },
         dataDescription = {
-            id_user : req.session.id_user_beni,
-            bio : req.body.bio
+            id_user: req.session.id_user_beni,
+            bio: req.body.bio
         };
 
     if (Empty(data)) {
@@ -139,10 +139,10 @@ router.post('/users/setIdentity', (req, res) => {
                             .catch(error => {
                                 res.send(error)
                             })
-                    }else{
+                    } else {
                         res.status(200).send(user.data);
                     }
-                    
+
 
                 } else {
                     res.status(200).send(user.data)
@@ -159,16 +159,16 @@ router.post('/users/setIdentity', (req, res) => {
 //Met a jour le salaire horaire du user
 router.post('/users/setHourly', (req, res) => {
     var data = {
-        "rate" : req.body.montant,
-        "id_user" : req.session.id_user_beni
+        "rate": req.body.montant,
+        "id_user": req.session.id_user_beni
     };
     axios.post(`${API}/users/setHourly`, data)
-         .then(response => {
+        .then(response => {
             res.status(200).send(response.data)
-         })
-         .catch(err => {
+        })
+        .catch(err => {
             res.status(500).send(err)
-         })
+        })
 });
 
 //Recupere les types des utilisateurs
@@ -530,7 +530,7 @@ router.post('/offer/message/send', (req, res) => {
                     send_at: new Date().toDateString()
                 };
 
-                res.status(200).send({getEtat: response.data.getEtat, getMessage: response.data.getMessage, getObjet: formatData});
+                res.status(200).send({ getEtat: response.data.getEtat, getMessage: response.data.getMessage, getObjet: formatData });
 
             })
             .catch(err => {
@@ -543,31 +543,31 @@ router.post('/offer/message/send', (req, res) => {
 
 //Route pour la récupération des nouveaux messages
 router.get('/notification/newMessage/:limit', (req, res) => {
-    
+
     if (req.session.id_user_beni && (req.session.id_user_beni != null || req.session.id_user_beni != "null")) {
         axios.get(`${API}/notification/getNewMessageNotRead/${req.session.id_user_beni}/${parseInt(req.params.limit)}`)
-             .then(response => {
-                 res.status(200).send(response.data)
-             })
-             .catch(err => {
-                 res.status(500).send(err)
-             })
+            .then(response => {
+                res.status(200).send(response.data)
+            })
+            .catch(err => {
+                res.status(500).send(err)
+            })
     } else {
-        res.status(202).send({getEtat: false, getMessage: "Vous n'êtes pas connecté"})
+        res.status(202).send({ getEtat: false, getMessage: "Vous n'êtes pas connecté" })
     }
 })
 
 //Route permettant de marquer une notification comme lu
 router.get('/notification/setRead/:id', (req, res) => {
     axios.get(`${API}/notification/setAlreadyRead/${req.params.id}`)
-         .then(response => {
+        .then(response => {
             res.status(200).send(response.data)
-         })
-         .catch(err => {
-             res.status(500).send(err)
-         })
+        })
+        .catch(err => {
+            res.status(500).send(err)
+        })
 })
-    
+
 //Recupere les freelancer contacter par un employeur
 router.get('/getFreelancersForOffer/:id_employer', (req, res) => {
     axios.get(`${API}/offer/getFreelancersForOffer/${req.params.id_employer}`)
@@ -584,9 +584,9 @@ router.post('/setReview', (req, res) => {
     var data = {
         id_employer: req.body.id_employeur,
         id_freelancer: req.body.id_freelancer,
-        note : parseInt(req.body.rating),
-        inTime : req.body.intime == "oui" ? true : false,
-        message : req.body.commentaiire
+        note: parseInt(req.body.rating),
+        inTime: req.body.intime == "oui" ? true : false,
+        message: req.body.commentaiire
     };
     axios.post(`${API}/evaluation`, data)
         .then(response => {
@@ -638,82 +638,82 @@ router.get('/notification/setAllRead/:type', (req, res) => {
 //Route permattant le blocage ou le relancement de l'offre
 router.post('/offer/toggle/:id_offer', (req, res) => {
     axios.post(`${API}/offer/toggle/${req.params.id_offer}/${req.session.id_user_beni}`)
-         .then(response => {
+        .then(response => {
             res.status(200).send(response.data)
-         })
-         .catch(err => {
+        })
+        .catch(err => {
             res.status(500).send(err)
-         })
+        })
 })
 
 //Passage de visible à invisible et vice-versa
 router.post('/users/toggleVisibility', (req, res) => {
     axios.post(`${API}/users/toggleVisibility/${req.session.id_user_beni}`)
-         .then(response => {
-             res.status(200).send(response.data)
-         })
-         .catch(err => {
-             res.status(500).send(err)
-         })
+        .then(response => {
+            res.status(200).send(response.data)
+        })
+        .catch(err => {
+            res.status(500).send(err)
+        })
 })
 
 //Recherche
 router.post('/megaSearch/:id_viewer', (req, res) => {
     var data = {
-        "job" : req.body.job,
-        "town" : req.body.town
+        "job": req.body.job,
+        "town": req.body.town
     };
     axios.post(`${API}/users/smartSearch/${req.params.id_viewer}`, data)
-         .then(response => {
+        .then(response => {
             res.status(200).send(response.data)
-         })
-         .catch(err => {
+        })
+        .catch(err => {
             res.status(500).send(err)
-         })
+        })
 })
 
 //Envoi du mail pour la recuperation du mot de passe
 router.post('/password/sendMail', (req, res) => {
     var data = {
-        "email" : req.body.email
+        "email": req.body.email
     };
     axios.post(`${API}/users/forgotPassword`, data)
-         .then(response => {
+        .then(response => {
             res.status(200).send(response.data)
-         })
-         .catch(err => {
+        })
+        .catch(err => {
             res.status(500).send(err)
-         })
+        })
 });
 
 //Modification du mot de passe
 router.post('/password/change', (req, res) => {
     var data = {
-        "token" : req.body.token,
-        "newPassword" : req.body.password
+        "token": req.body.token,
+        "newPassword": req.body.password
     };
     axios.post(`${API}/users/resetPassword`, data)
-         .then(user => {
+        .then(user => {
             req.session.id_user_beni = user.data.getObjet.id_user;
             req.session.id_type_user_beni = user.data.getObjet.id_type;
             req.session.isEmployer = user.data.getObjet.isEmployer;
 
             res.status(200).send(user.data)
-         })
-         .catch(err => {
+        })
+        .catch(err => {
             res.status(500).send(err)
-         })
+        })
 });
 
 //Récupéreration des comptes sponsorisé
 router.get('/vip/:limit', (req, res) => {
     axios.get(`${API}/vip/${req.params.limit}`)
-         .then(response => {
+        .then(response => {
             res.status(200).send(response.data)
-         })
-         .catch(err => {
-             res.status(500).send(err)
-         })
+        })
+        .catch(err => {
+            res.status(500).send(err)
+        })
 });
 
 //Route permettant de d'envoyer la demande de VIP
@@ -723,12 +723,33 @@ router.post('/vip/become', (req, res) => {
     };
 
     axios.post(`${API}/vip/become`, data)
-         .then(response => {
-             res.status(200).send(response.data)
-         })
-         .catch(err => {
-             res.status(500).send(err)
-         })
+        .then(response => {
+            res.status(200).send(response.data)
+        })
+        .catch(err => {
+            res.status(500).send(err)
+        })
+})
+
+//Définition de l'avatar d'un user
+router.post('/users/setAvatar', (req, res) => {
+
+    var data = {
+        "id_media": req.body.id_media,
+        "id_user": req.session.id_user_beni
+    };
+
+    if (Empty(data)) {
+        axios.post(`${API}/users/setAvatar`, data)
+            .then(response => {
+                res.status(200).send(response.data)
+            })
+            .catch(err => {
+                res.status(500).send(err)
+            })
+    } else {
+        res.status(202).send({ getEtat: false, getMessage: "Données manquants !" })
+    }
 })
 
 module.exports = router;

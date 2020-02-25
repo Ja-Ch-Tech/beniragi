@@ -217,7 +217,7 @@ const getNav = () => {
         if (state) {
             //Recuperation des informations du user
             getUserInfos(user.user_id, function (infos) {
-                console.log(infos)
+
                 if (infos.getObjet.flag) {
                     navContent = `
 
@@ -232,7 +232,7 @@ const getNav = () => {
                                 <!-- Messages -->
                                 <div id="ContentUserDropdown" class="header-notifications user-menu">
                                     <div class="header-notifications-trigger">
-                                        <a id="linkUser" href="#"><div class="user-avatar status-online"><img src="/images/user-avatar-small-01.jpg" alt=""></div></a>
+                                        <a id="linkUser" href="#"><div class="user-avatar status-online"><img src="${infos.getObjet.avatar && infos.getObjet.avatar.path ? infos.getObjet.avatar.path : `images/user-avatar-big-01.jpg`}" alt=""></div></a>
                                     </div>
 
                                     <!-- Dropdown -->
@@ -243,7 +243,7 @@ const getNav = () => {
 
                                             <!-- User Name / Avatar -->
                                             <div class="user-details">
-                                                <div class="user-avatar status-online"><img src="/images/user-avatar-small-01.jpg" alt=""></div>
+                                                <div class="user-avatar status-online"><img src="${infos.getObjet.avatar && infos.getObjet.avatar.path ? infos.getObjet.avatar.path : `images/user-avatar-big-01.jpg`}" alt=""></div>
                                                 <div class="user-name poppins-font">
                                                     ${infos.getObjet.identity ? infos.getObjet.identity.lastName + " " + infos.getObjet.identity.name : infos.getObjet.email} <span style="font-family: calibri">${infos.getObjet.typeUser}</span>
                                                 </div>
@@ -1174,6 +1174,30 @@ const avatarSwitcher = () => {
                 },
                 success: function (data) {
                     console.log(data);
+                    if (data.getEtat) {
+                        $.ajax({
+                            url: '/api/users/setAvatar',
+                            type: 'POST',
+                            data: {
+                                id_media: data.getObjet._id
+                            },
+                            success: function (dataSet) {
+                                console.log(dataSet);
+
+                                if (dataSet.getEtat) {
+                                    alert("Avatar modifié")
+                                } else {
+                                    alert("hummmm !")
+                                }
+                            },
+                            err: function (err) {
+                                console.log(err)
+                            }
+                        });
+                    } else {
+                        alert("Erreur upload")
+                    }
+
                 },
                 err: function (err) {
                     console.log(err)
@@ -1259,7 +1283,7 @@ const activeAccount = (user_id) => {
 * Module permettant de dynamiser la sidebar du profile
 */
 const sidebar = (user, isBoost) => {
-    
+
     var content,
         active = (url) => {
 
@@ -1306,7 +1330,7 @@ const statsInDashboard = () => {
             success: function (data) {
                 if (!user.isEmployer) {
                     console.log(data.getObjet);
-                    
+
                     var content = `<div class="fun-fact" data-fun-fact-color="#36bd78">
                                 <div class="fun-fact-text">
                                     <span>Note moyenne</span>
@@ -1400,6 +1424,8 @@ const topFreelancer = (limit) => {
                         var outFreelancer = 0;
 
                         data.getObjet.map((freelancer, item, tab) => {
+                            console.log(freelancer);
+
                             var name = () => {
                                 if (freelancer.identity) {
                                     return `${freelancer.identity.lastName} ${freelancer.identity.name.toUpperCase()}`
@@ -1443,7 +1469,7 @@ const topFreelancer = (limit) => {
 										<!-- Avatar -->
 										<div class="freelancer-avatar">
 											${freelancer.certificate && freelancer.certificate.certified == true ? `<div class="verified-badge"></div>` : ''}
-											<a href="/candidats/${freelancer._id}/profile"><img src="images/user-avatar-big-01.jpg" alt=""></a>
+											<a href="/candidats/${freelancer._id}/profile"><img src="${freelancer.avatar && freelancer.avatar.path ? freelancer.avatar.path : `images/user-avatar-big-01.jpg`}" alt=""></a>
 										</div>
 
 										<!-- Name -->
@@ -1721,7 +1747,7 @@ const detailsUser = (id) => {
                                             <div class="col-md-12">
                                                 <div class="single-page-header-inner">
                                                     <div class="left-side">
-                                                        <div class="header-image freelancer-avatar"><img src="/images/user-avatar-big-02.jpg" alt="">
+                                                        <div class="header-image freelancer-avatar"><img src="${freelancer.avatar && freelancer.avatar.path ? freelancer.avatar.path : `images/user-avatar-big-01.jpg`}" alt="">
                                                         </div>
                                                         <div class="header-details">
                                                             <h3 class="poppins-font-uppercase">${name()} </h3><span style="font-size: 1em; font-weight: 100; color: #ccc; display: block;">${freelancer.job && freelancer.job.icon ? `<i class="${freelancer.job.icon}" style="font-size: 1.6em"></i>&nbsp;` : ""}${freelancer.job ? freelancer.job.name : "---"}</span>
@@ -1742,7 +1768,7 @@ const detailsUser = (id) => {
                                     </div>`,
                         biographie = `${bio()}`;
                     console.log(freelancer);
-                    
+
                     if (freelancer.feedBacks && freelancer.feedBacks.length > 0) {
                         freelancer.feedBacks.map((feedBack, item, tab) => {
                             var content = `<li>
@@ -2046,6 +2072,7 @@ const setAttachment = () => {
                 complete: function () {
                 },
                 success: function (data) {
+                    console.log(data);
 
                     if (data.getEtat) {
 

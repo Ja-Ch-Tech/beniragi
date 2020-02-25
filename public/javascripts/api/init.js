@@ -11,11 +11,11 @@ const getHostWeb = () => {
 //fonction de modélisation de la date
 const customDate = (date) => {
     var myDate = new Date(date),
-        jour = function() {
+        jour = function () {
 
             return parseInt(myDate.getDate()) < 10 ? '0' + myDate.getDate() : myDate.getDate()
         },
-        mois = function() {
+        mois = function () {
 
             //return myDate.getMonth() + 1 < 10 ? '0' + (myDate.getMonth() + 1) : myDate.getMonth() + 1
             var month = myDate.getMonth() + 1;
@@ -63,12 +63,12 @@ const customDate = (date) => {
                     break;
             }
         },
-        heure = function() {
+        heure = function () {
 
             return myDate.getHours() < 10 ? '0' + myDate.getHours() : myDate.getHours()
 
         },
-        minute = function() {
+        minute = function () {
 
             return myDate.getMinutes() < 10 ? '0' + myDate.getMinutes() : myDate.getMinutes()
 
@@ -83,14 +83,14 @@ const getAllTypesUser = (callback) => {
         type: 'GET',
         url: "/api/users/getAllTypes",
         dataType: "json",
-        success: function(data) {
+        success: function (data) {
             if (data.getEtat) {
                 callback(data.getObjet);
             } else {
                 callback(null);
             }
         },
-        error: function(err) {
+        error: function (err) {
             callback(err)
         }
     });
@@ -102,14 +102,14 @@ const getAllTowns = (callback) => {
         type: 'GET',
         url: "/api/getAllTowns",
         dataType: "json",
-        success: function(data) {
+        success: function (data) {
             if (data.getEtat) {
                 callback(data);
             } else {
                 callback(data);
             }
         },
-        error: function(err) {
+        error: function (err) {
             callback(err);
         }
     });
@@ -121,10 +121,10 @@ const getAllJob = (limit, callback) => {
         type: 'GET',
         url: `/api/jobs/gets/${limit}`,
         dataType: "json",
-        success: function(data) {
+        success: function (data) {
             callback(data);
         },
-        error: function(err) {
+        error: function (err) {
             callback(err);
         }
     });
@@ -136,14 +136,14 @@ const getUserId = (callback) => {
         type: 'GET',
         url: "/api/getSessionUser",
         dataType: "json",
-        success: function(data) {
+        success: function (data) {
             if (data.user_id) {
                 callback(true, data);
             } else {
                 callback(false, null);
             }
         },
-        error: function(err) {
+        error: function (err) {
             callback(err);
         }
     });
@@ -190,11 +190,11 @@ const setFavoris = (dataFavoris, element, callback) => {
             url: "/api/setFavoris",
             dataType: "json",
             data: dataFavoris,
-            beforeSend: function() {
+            beforeSend: function () {
                 element.style.display = "none";
                 element.nextElementSibling.style.display = "block";
             },
-            success: function(data) {
+            success: function (data) {
                 element.nextElementSibling.style.display = "none";
                 element.style.display = "block";
                 if (data.getMessage) {
@@ -230,7 +230,7 @@ const setFavoris = (dataFavoris, element, callback) => {
                     callback(false);
                 }
             },
-            error: function(err) {
+            error: function (err) {
                 Snackbar.show({
                     text: "Une erreur est survenue, verifiez votre connexion internet",
                     pos: 'top-center',
@@ -256,7 +256,7 @@ const setFavoris = (dataFavoris, element, callback) => {
 //Start evaluation
 const starRating = (ratingElem) => {
 
-    $(ratingElem).each(function() {
+    $(ratingElem).each(function () {
 
         var dataRating = $(this).attr('data-rating');
 
@@ -337,7 +337,7 @@ function getMonth(month) {
  * @param {Function} callback La fonction de retour
  */
 const storageKeys = (id, callback) => {
-    $("#" + id).on('submit', function(e) {
+    $("#" + id).on('submit', function (e) {
         e.preventDefault();
 
         var inputs = e.target.elements,
@@ -361,25 +361,25 @@ const storageKeys = (id, callback) => {
  * @param {Function} callback La fonction de retour
  */
 const megaSearch = () => {
-        getUserId(function(state, session) {
-                    var job = sessionStorage.getItem('metier__search_item') ? sessionStorage.getItem('metier__search_item') : null,
-                        town = sessionStorage.getItem('location__search_item') ? sessionStorage.getItem('location__search_item') : null,
-                        objData = {
-                            "job": job,
-                            "town": town
-                        },
-                        user_id = state ? session.user_id : null;
-                    //Gestion inputs
-                    $("#location__search_item").val(town);
-                    $("#metier__search_item").val(job);
+    getUserId(function (state, session) {
+        var job = sessionStorage.getItem('metier__search_item') ? sessionStorage.getItem('metier__search_item') : null,
+            town = sessionStorage.getItem('location__search_item') ? sessionStorage.getItem('location__search_item') : null,
+            objData = {
+                "job": job,
+                "town": town
+            },
+            user_id = state ? session.user_id : null;
+        //Gestion inputs
+        $("#location__search_item").val(town);
+        $("#metier__search_item").val(job);
 
-                    $.ajax({
-                                type: 'POST',
-                                url: "/api/megaSearch/" + user_id,
-                                dataType: "json",
-                                data: objData,
-                                beforeSend: function() {
-                                    $("#resultat-recherche").html(`<center>
+        $.ajax({
+            type: 'POST',
+            url: "/api/megaSearch/" + user_id,
+            dataType: "json",
+            data: objData,
+            beforeSend: function () {
+                $("#resultat-recherche").html(`<center>
                                       <div style="margin:13% 0%;" class="lds-spinner">
                                         <div></div>
                                         <div></div>
@@ -393,41 +393,41 @@ const megaSearch = () => {
                                       </div>
                                     </center>
                                 `);
-                                },
-                                success: function(data) {
-                                        var content,
-                                            sortieRecherche = 0;
-                                        if (data.getEtat) {
-                                            content = `<h3 class="page-title">Resultats trouvés (${data.getObjet.length})</h3>
+            },
+            success: function (data) {
+                var content,
+                    sortieRecherche = 0;
+                if (data.getEtat) {
+                    content = `<h3 class="page-title">Resultats trouvés (${data.getObjet.length})</h3>
                                            <div id="freelancer__list" class="freelancers-container freelancers-list-layout compact-list margin-top-35 margin-bottom-35">
 
                                            </div>`;
-                                            $("#resultat-recherche").html(content);
-                                            data.getObjet.map(element => {
-                                                        console.log(element)
-                                                        sortieRecherche++;
-                                                        var name = () => {
-                                                                if (element.identity) {
-                                                                    return `${element.identity.lastName} ${element.identity.name.toUpperCase()}`
-                                                                } else {
-                                                                    return element.email;
-                                                                }
-                                                            },
-                                                            favorite = () => {
-                                                                if (state && session.isEmployer) {
-                                                                    if (element.isThisInFavorite) {
-                                                                        return `<span data-tippy-placement="bottom" title="Retirer de mes favoris" data-favoris="true" data-user="${element._id}" class="bookmark-icon bookmarked"></span>
+                    $("#resultat-recherche").html(content);
+                    data.getObjet.map(element => {
+                        console.log(element)
+                        sortieRecherche++;
+                        var name = () => {
+                            if (element.identity) {
+                                return `${element.identity.lastName} ${element.identity.name.toUpperCase()}`
+                            } else {
+                                return element.email;
+                            }
+                        },
+                            favorite = () => {
+                                if (state && session.isEmployer) {
+                                    if (element.isThisInFavorite) {
+                                        return `<span data-tippy-placement="bottom" title="Retirer de mes favoris" data-favoris="true" data-user="${element._id}" class="bookmark-icon bookmarked"></span>
                                                                             <div class="sbl-circ" style="right:40px;top:20px;position: absolute;display: none;"></div>`;
-                                                                    } else {
-                                                                        return `<span data-tippy-placement="bottom" title="Ajouter aux favoris" data-favoris="false" data-user="${element._id}" class="bookmark-icon"></span>
+                                    } else {
+                                        return `<span data-tippy-placement="bottom" title="Ajouter aux favoris" data-favoris="false" data-user="${element._id}" class="bookmark-icon"></span>
                                                                             <div class="sbl-circ" style="right:40px;top:20px;position: absolute;display: none;"></div>`
-                                                                    }
-                                                                } else {
-                                                                    return ``;
-                                                                }
+                                    }
+                                } else {
+                                    return ``;
+                                }
 
-                                                            },
-                                                            contentElement = `
+                            },
+                            contentElement = `
                                                             <!--Freelancer -->
                                                             <div class="freelancer">
                                                                 <!-- Overview -->
@@ -500,9 +500,9 @@ const megaSearch = () => {
                                 e.preventDefault();
                                 var element = e.currentTarget,
                                     dataFavoris = {
-                                        user_id : element.getAttribute("data-user"),
-                                        state : element.getAttribute("data-favoris"),
-                                        employer : session.user_id
+                                        user_id: element.getAttribute("data-user"),
+                                        state: element.getAttribute("data-favoris"),
+                                        employer: session.user_id
                                     };
 
                                 setFavoris(dataFavoris, element, function (data) {
@@ -529,7 +529,7 @@ const megaSearch = () => {
                                         //element.parentNode.parentNode.parentNode.remove();
                                     }
                                 });
-                                
+
                             });
                         }
                     });
@@ -543,39 +543,39 @@ const megaSearch = () => {
                     `);
                 }
             },
-            error: function(err) {
+            error: function (err) {
                 console.log(err)
             }
         });
     })
 }
 
- /**
- * Permet de gerer les funfacts
- */
+/**
+* Permet de gerer les funfacts
+*/
 const funFacts = () => {
-        /*jslint bitwise: true */
-        function hexToRgbA(hex){
-            var c;
-            if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
-                c= hex.substring(1).split('');
-                if(c.length== 3){
-                    c= [c[0], c[0], c[1], c[1], c[2], c[2]];
-                }
-                c= '0x'+c.join('');
-                return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',0.07)';
+    /*jslint bitwise: true */
+    function hexToRgbA(hex) {
+        var c;
+        if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+            c = hex.substring(1).split('');
+            if (c.length == 3) {
+                c = [c[0], c[0], c[1], c[1], c[2], c[2]];
             }
+            c = '0x' + c.join('');
+            return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',0.07)';
         }
+    }
 
-        $(".fun-fact").each(function() {
-            var factColor = $(this).attr('data-fun-fact-color');
+    $(".fun-fact").each(function () {
+        var factColor = $(this).attr('data-fun-fact-color');
 
-            if(factColor !== undefined) {
-                $(this).find(".fun-fact-icon").css('background-color', hexToRgbA(factColor));
-                $(this).find("i").css('color', factColor);
-            }
-        });
+        if (factColor !== undefined) {
+            $(this).find(".fun-fact-icon").css('background-color', hexToRgbA(factColor));
+            $(this).find("i").css('color', factColor);
+        }
+    });
 
-    } 
+}
 
-export { getHostApi, customDate, getAllTypesUser, getUserId, getHostWeb, NoEmpty, getAllTowns, starRating, getAllJob, customDateForFeedBack as dateFeedBack, setFavoris, removeItem, isInArray, storageKeys,megaSearch,funFacts }
+export { getHostApi, customDate, getAllTypesUser, getUserId, getHostWeb, NoEmpty, getAllTowns, starRating, getAllJob, customDateForFeedBack as dateFeedBack, setFavoris, removeItem, isInArray, storageKeys, megaSearch, funFacts }
