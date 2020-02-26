@@ -44,7 +44,7 @@ const newMessage = (limit) => {
 
             $("#containerMessage").html(content);
             //New offers
-            newOffer(5);
+            newOffer(3);
 
             if (data.getEtat) {
 
@@ -70,11 +70,11 @@ const newMessage = (limit) => {
 
                     var outMessages = 0;
                     data.getObjet.map((message, item, tab) => {
-                        
+
                         outMessages++;
                         var name = () => {
-                                return message.identity ? message.identity.lastName + " " + message.identity.name : message.email;    
-                            },
+                            return message.identity ? message.identity.lastName + " " + message.identity.name : message.email;
+                        },
                             contentMessage = `<!-- Notification -->
                                                 <li class="notifications-not-read">
                                                     <a href="#" onclick="setRead($(this), '${message._id}')">
@@ -93,7 +93,7 @@ const newMessage = (limit) => {
                             dropNav("message");
                             setAllRead("message", "setReadMessage");
                         }
-                        
+
                     })
                 }
             }
@@ -114,6 +114,7 @@ const newOffer = (limit) => {
         url: `/api/notification/getOffers/${limit}`,
         dataType: "json",
         success: function (data) {
+            console.log(data);
 
             var content = `
 
@@ -147,18 +148,21 @@ const newOffer = (limit) => {
                 var outNotification = 0;
 
                 data.getObjet.map((notification, item, tab) => {
-                    
+
                     outNotification++;
                     var name = () => {
                         return notification.identity ? notification.identity.lastName + " " + notification.identity.name : notification.email;
                     },
-                    content = `<!-- Notification -->
+                        content = `<!-- Notification -->
                                 <li class="notifications-not-read">
                                     <a href="#" onclick="setRead($(this), '${notification._id}')">
                                         <span class="notification-icon"><i class="icon-material-outline-group"></i></span>
                                         <span class="notification-text">
                                             <strong class="poppins-font">${name()}</strong> vous a fait une offre de travail.
-                                        </span>
+                                            ${notification.attachment && notification.attachment.path ? `<a href="${notification.attachment.path}" download style="font-size: .7em; margin-left: 20%; width: 42%; background-color: #ad344b; color: #fff; border-radius: 2px; padding: 2px 7px; margin-bottom: 8px; margin-top: -15px; display: inline-block;"><i class="icon-material-outline-attach-file"></i>&nbsp;Télécharger pièce jointe</a>` : ``}
+                                            </span>
+                                            
+                                            
                                     </a>
                                 </li>`;
 
@@ -220,7 +224,7 @@ function requestForSetRead(type) {
         url: `/api/notification/setAllRead/${type}`,
         dataType: "json",
         success: function (data) {
-            
+
             if (data.getEtat) {
                 window.location.reload();
             }

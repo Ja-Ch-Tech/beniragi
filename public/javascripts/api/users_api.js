@@ -1973,7 +1973,7 @@ const submitOffer = (id_freelancer, screenUser) => {
         var txt = e.target.elements["textarea"].value;
 
         if (txt && txt.trim(" ")) {
-            var attach = window.localStorage.getItem("images") ? window.localStorage.getItem("images") : null;
+            var attach = window.localStorage.getItem("id_images") ? window.localStorage.getItem("id_images") : null;
             $.ajax({
                 type: 'POST',
                 url: "/api/offer/make",
@@ -2027,7 +2027,7 @@ const submitOffer = (id_freelancer, screenUser) => {
 }
 
 /**
- * Upload des images
+ * Upload des images ou des documents utiles à un offre
  */
 const setAttachment = () => {
 
