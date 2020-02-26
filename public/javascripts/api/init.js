@@ -438,7 +438,7 @@ const megaSearch = () => {
                                                                         <!-- Avatar -->
                                                                         <div class="freelancer-avatar">
                                                                             ${element.certificate && element.certificate.certified == true ? `<div class="verified-badge"></div>` : ''}
-                                                                            <a href="/candidats/${element._id}/profile"><img src="${element.avatar && element.avatar.path ? element.avatar.path : `/images/svg/avatar-default.svg`}" alt=""></a>
+                                                                            <a href="/candidats/${element._id}/profile"><img src="${element.avatar && element.avatar.path ? element.avatar.path : `/images/svg/avatar-default.svg`}" style="width: 110px; height: 110px" alt=""></a>
                                                                         </div>
 
                                                                         <!-- Name -->
