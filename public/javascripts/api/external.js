@@ -4,8 +4,8 @@
  * @param {String} id L'identifiant de la file de message
  * @param {String} identity Le proprio de la file en question
  */
-function activeMessage(userConnected, id, identity, flag) {
-    
+function activeMessage(userConnected, id, identity, flag, avatar, otherAvatar) {
+
     window.localStorage.setItem("currentList", id);
 
     var content = `<div class="messages-headline">
@@ -24,8 +24,8 @@ function activeMessage(userConnected, id, identity, flag) {
 
     $("#messageSelect").html(content);
     autoResize();
-    getMessagesForOffer(userConnected, id);
-    sendMessage();
+    getMessagesForOffer(userConnected, id, avatar, otherAvatar);
+    sendMessage(otherAvatar);
 }
 
 /**
@@ -58,7 +58,7 @@ function getItem(tableau, id) {
  * @param {String} userConnected L'identifiant de l'utilisateur connecté
  * @param {String} id L'identifiant de l'offre
  */
-function getMessagesForOffer(userConnected, id) {
+function getMessagesForOffer(userConnected, id, avatar, otherAvatar) {
     var conversation = JSON.parse(window.localStorage.getItem("conversation")),
         threadMessage = getItem(conversation, id);
 
@@ -74,7 +74,7 @@ function getMessagesForOffer(userConnected, id) {
 
         var content = `<div class="message-bubble ${userConnected == message.id_sender ? `me` : ``}">
                         <div class="message-bubble-inner">
-                        <div class="message-avatar"><img src="/images/user-avatar-small-01.jpg" alt="" /></div>
+                        <div class="message-avatar"><img src="${userConnected == message.id_sender ? otherAvatar : avatar}" alt="" /></div>
                         <div class="message-text">
                             <p>${message.message}</p>
                         </div>
@@ -90,16 +90,16 @@ function getMessagesForOffer(userConnected, id) {
 /**
  * Envoi du message dans une offre
  */
-function sendMessage() {
-    
+function sendMessage(otherAvatar) {
+
     $("#submitMessage").on('submit', (e) => {
         e.preventDefault();
         var txt = e.target.elements["textarea"].value;
-        
+
         var objet = {
-                id_offer: window.localStorage.getItem("currentList"),
-                txt: txt
-            };
+            id_offer: window.localStorage.getItem("currentList"),
+            txt: txt
+        };
 
         if (NoEmpty(objet)) {
             $.ajax({
@@ -111,7 +111,7 @@ function sendMessage() {
                     if (data.getEtat) {
                         var newMessage = `<div class="message-bubble me">
                                             <div class="message-bubble-inner">
-                                            <div class="message-avatar"><img src="/images/user-avatar-small-01.jpg" alt="" /></div>
+                                            <div class="message-avatar"><img src="${otherAvatar}" alt="" /></div>
                                             <div class="message-text">
                                                 <p>${data.getObjet.message}</p>
                                             </div>
@@ -153,7 +153,7 @@ function sendMessage() {
                 backgroundColor: '#ad344b'
             });
         }
-        
+
     })
 }
 

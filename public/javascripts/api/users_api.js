@@ -22,7 +22,7 @@ const login = () => {
                 $("#login-button").text("Verification ...");
             },
             success: function (infos) {
-                console.log(infos);
+
                 $("#login-button").html(`Se connecter <i class="icon-material-outline-arrow-right-alt"></i>`);
                 if (infos.getEtat) {
 
@@ -116,7 +116,7 @@ const register = () => {
                 $("#register-button").html("Veuillez patienter ...");
             },
             success: function (data) {
-                console.log(data)
+
                 $("#register-button").html(`Terminer <i class="icon-material-outline-arrow-right-alt"></i>`);
                 if (data.getEtat) {
                     window.location.href = '/profile/activation';
@@ -680,7 +680,7 @@ const userParameters = (user, details) => {
         item = String(item);
         removeItem(details.getObjet.skills, item, function (array) {
             details.getObjet.skills = array;
-            console.log(array)
+
         });
         e.currentTarget.parentNode.remove();
         $("#btnAddSkills").fadeIn();
@@ -805,7 +805,6 @@ const submitSkills = (user, id_job, details) => {
     //Lorsqu'on clique sur le bouton permettant de valider l'envoi des skills
     $("#btnAddSkills").on('click', function (e) {
         e.preventDefault();
-        console.log(skills);
         if (skills.length > 0) {
             //Transformations de skills
             skills = JSON.stringify(skills);
@@ -872,7 +871,7 @@ const submitSelect = (user, callback) => {
     $('select').on('change', function (e) {
         var select = e.currentTarget,
             value = select.options[select.selectedIndex].value;
-        console.log(value)
+
         if (value != "") {
             //Pour l'input select dedie a la specification d'un metier 
             if (select.id == "inputJob") {
@@ -914,7 +913,7 @@ const submitSelect = (user, callback) => {
                             });
                             callback(false)
                         }
-                        console.log(data);
+
                     },
                     error: function (err) {
                         callback(err)
@@ -956,7 +955,7 @@ const submitSelect = (user, callback) => {
                                 backgroundColor: '#ad344b'
                             });
                         }
-                        console.log(data);
+
                     },
                     error: function (err) {
                         callback(err)
@@ -1055,7 +1054,7 @@ const updateAccount = () => {
         e.preventDefault();
         var inputs = e.target.elements,
             objData = {};
-        console.log(inputs);
+
         for (let index = 0; index < inputs.length; index++) {
             if (/input/i.test(e.target.elements[index].localName)) {
                 if (inputs[index].type != "email") {
@@ -1158,7 +1157,7 @@ const avatarSwitcher = () => {
         }
 
         if (sortie) {
-            console.log(file);
+
             formData.append('file-s3', file, file.name);
             formData.append('for', 'avatar');
             $.ajax({
@@ -1173,7 +1172,7 @@ const avatarSwitcher = () => {
                 complete: function () {
                 },
                 success: function (data) {
-                    console.log(data);
+
                     if (data.getEtat) {
                         $.ajax({
                             url: '/api/users/setAvatar',
@@ -1182,7 +1181,6 @@ const avatarSwitcher = () => {
                                 id_media: data.getObjet._id
                             },
                             success: function (dataSet) {
-                                console.log(dataSet);
 
                                 if (dataSet.getEtat) {
                                     alert("Avatar modifié")
@@ -1329,7 +1327,6 @@ const statsInDashboard = () => {
             dataType: "json",
             success: function (data) {
                 if (!user.isEmployer) {
-                    console.log(data.getObjet);
 
                     var content = `<div class="fun-fact" data-fun-fact-color="#36bd78">
                                 <div class="fun-fact-text">
@@ -1424,7 +1421,6 @@ const topFreelancer = (limit) => {
                         var outFreelancer = 0;
 
                         data.getObjet.map((freelancer, item, tab) => {
-                            console.log(freelancer);
 
                             var name = () => {
                                 if (freelancer.identity) {
@@ -1469,7 +1465,7 @@ const topFreelancer = (limit) => {
 										<!-- Avatar -->
 										<div class="freelancer-avatar">
 											${freelancer.certificate && freelancer.certificate.certified == true ? `<div class="verified-badge"></div>` : ''}
-											<a href="/candidats/${freelancer._id}/profile"><img src="${freelancer.avatar && freelancer.avatar.path ? freelancer.avatar.path : `images/user-avatar-big-01.jpg`}" alt=""></a>
+											<a href="/candidats/${freelancer._id}/profile"><img src="${freelancer.avatar && freelancer.avatar.path ? freelancer.avatar.path : `images/svg/avatar-default.svg`}" alt="" style="width: 110px; height: 110px"></a>
 										</div>
 
 										<!-- Name -->
@@ -1747,7 +1743,7 @@ const detailsUser = (id) => {
                                             <div class="col-md-12">
                                                 <div class="single-page-header-inner">
                                                     <div class="left-side">
-                                                        <div class="header-image freelancer-avatar"><img src="${freelancer.avatar && freelancer.avatar.path ? freelancer.avatar.path : `images/user-avatar-big-01.jpg`}" alt="">
+                                                        <div class="header-image freelancer-avatar"><img src="${freelancer.avatar && freelancer.avatar.path ? freelancer.avatar.path : `images/svg/avatar-default.svg`}" alt="">
                                                         </div>
                                                         <div class="header-details">
                                                             <h3 class="poppins-font-uppercase">${name()} </h3><span style="font-size: 1em; font-weight: 100; color: #ccc; display: block;">${freelancer.job && freelancer.job.icon ? `<i class="${freelancer.job.icon}" style="font-size: 1.6em"></i>&nbsp;` : ""}${freelancer.job ? freelancer.job.name : "---"}</span>
@@ -1767,7 +1763,6 @@ const detailsUser = (id) => {
                                         </div>
                                     </div>`,
                         biographie = `${bio()}`;
-                    console.log(freelancer);
 
                     if (freelancer.feedBacks && freelancer.feedBacks.length > 0) {
                         freelancer.feedBacks.map((feedBack, item, tab) => {
@@ -2072,7 +2067,6 @@ const setAttachment = () => {
                 complete: function () {
                 },
                 success: function (data) {
-                    console.log(data);
 
                     if (data.getEtat) {
 
@@ -2204,7 +2198,7 @@ const getFavourites = (state, session) => {
                                             <!-- Avatar -->
                                             <div class="freelancer-avatar">
                                                 ${freelancer.certificate && freelancer.certificate.certified == true ? `<li><div class="verified-badge-with-title">Certifié</div></li>` : ''}
-                                                <a href="/candidats/${freelancer._id}/profile"><img src="/images/user-avatar-big-01.jpg" alt=""></a>
+                                                <a href="/candidats/${freelancer._id}/profile"><img src="${freelancer.avatar && freelancer.avatar.path ? freelancer.avatar.path : `/images/svg/avatar-default.svg`}" alt=""></a>
                                             </div>
 
                                             <!-- Name -->
@@ -2355,7 +2349,6 @@ const getFreelancersForOffer = (state, session) => {
                         var outFreelancer = 0;
 
                         data.getObjet.map((freelancer, item, tab) => {
-                            console.log(freelancer);
 
                             var name = () => {
                                 if (freelancer.infos.identity) {
@@ -2398,7 +2391,7 @@ const getFreelancersForOffer = (state, session) => {
                                             <!-- Avatar -->
                                             <div class="freelancer-avatar">
                                                 ${freelancer.certificate && freelancer.certificate.certified == true ? `<div class="verified-badge"></div>` : ''}
-                                                <a href="/candidats/${freelancer.infos._id}/profile"><img src="/images/user-avatar-big-01.jpg" alt=""></a>
+                                                <a href="/candidats/${freelancer.infos._id}/profile"><img src="${freelancer.avatar && freelancer.avatar.path ? freelancer.avatar.path : `/images/svg/avatar-default.svg`}" alt=""></a>
                                             </div>
 
                                             <!-- Name -->
