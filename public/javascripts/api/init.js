@@ -404,7 +404,7 @@ const megaSearch = () => {
                                            </div>`;
                     $("#resultat-recherche").html(content);
                     data.getObjet.map(element => {
-                        console.log(element)
+
                         sortieRecherche++;
                         var name = () => {
                             if (element.identity) {
@@ -438,7 +438,7 @@ const megaSearch = () => {
                                                                         <!-- Avatar -->
                                                                         <div class="freelancer-avatar">
                                                                             ${element.certificate && element.certificate.certified == true ? `<div class="verified-badge"></div>` : ''}
-                                                                            <a href="/candidats/${element._id}/profile"><img src="/images/user-avatar-big-01.jpg" alt=""></a>
+                                                                            <a href="/candidats/${element._id}/profile"><img src="${element.avatar && element.avatar.path ? element.avatar.path : `/images/svg/avatar-default.svg`}" alt=""></a>
                                                                         </div>
 
                                                                         <!-- Name -->
