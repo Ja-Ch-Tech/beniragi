@@ -5,7 +5,7 @@ const getHostApi = () => {
 
 const getHostWeb = () => {
     //return "http://localhost:3000/"; //Local
-    return "https://beniragi-service.herokuapp.com/"; //Online
+    return "http://beniragiservices.com/"; //Online
 }
 
 //fonction de modélisation de la date
