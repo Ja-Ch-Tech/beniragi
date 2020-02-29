@@ -1,6 +1,12 @@
 @html.extend('profile/profile_layout', function(model){
     @html.append('blocuser', function(model){
       <!-- Dashboard Headline -->
+      <style>
+        .dropdown-menu{
+          max-height: 280px;
+          overflow: hidden;
+        }
+      </style>
       <div class="dashboard-headline">
         <h3>Parametres</h3>
         <p>Mettez a jour vos informations</p>

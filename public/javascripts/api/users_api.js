@@ -52,7 +52,6 @@ const login = () => {
                 }
             },
             error: function (err) {
-                console.log(err);
             }
         })
 
@@ -127,7 +126,6 @@ const register = () => {
                 }
             },
             error: function (err) {
-                console.log(err);
             }
         })
 
@@ -155,7 +153,6 @@ const getStatsUsers = () => {
             }
         },
         error: function (err) {
-            console.log(err)
         }
     });
 }
@@ -232,7 +229,7 @@ const getNav = () => {
                                 <!-- Messages -->
                                 <div id="ContentUserDropdown" class="header-notifications user-menu">
                                     <div class="header-notifications-trigger">
-                                        <a id="linkUser" href="#"><div class="user-avatar status-online"><img src="${infos.getObjet.avatar && infos.getObjet.avatar.path ? infos.getObjet.avatar.path : `images/user-avatar-big-01.jpg`}" alt=""></div></a>
+                                        <a id="linkUser" href="#"><div class="user-avatar status-online"><img src="${infos.getObjet.avatar && infos.getObjet.avatar.path ? infos.getObjet.avatar.path : `/images/svg/avatar-default.svg`}" alt=""></div></a>
                                     </div>
 
                                     <!-- Dropdown -->
@@ -243,7 +240,7 @@ const getNav = () => {
 
                                             <!-- User Name / Avatar -->
                                             <div class="user-details">
-                                                <div class="user-avatar status-online"><img src="${infos.getObjet.avatar && infos.getObjet.avatar.path ? infos.getObjet.avatar.path : `images/user-avatar-big-01.jpg`}" alt=""></div>
+                                                <div class="user-avatar status-online"><img src="${infos.getObjet.avatar && infos.getObjet.avatar.path ? infos.getObjet.avatar.path : `/images/svg/avatar-default.svg`}" alt=""></div>
                                                 <div class="user-name poppins-font">
                                                     ${infos.getObjet.identity ? infos.getObjet.identity.lastName + " " + infos.getObjet.identity.name : infos.getObjet.email} <span style="font-family: calibri">${infos.getObjet.typeUser}</span>
                                                 </div>
@@ -259,8 +256,8 @@ const getNav = () => {
                                     
                                     <ul class="user-menu-small-nav">
                                         <li><a href="/profile/dashboard"><i class="icon-material-outline-dashboard"></i> Dashboard</a></li>
-                                        <li><a href="/profile/parametres"><i class="icon-material-outline-settings"></i> Settings</a></li>
-                                        <li><a href="/logout"><i class="icon-material-outline-power-settings-new"></i> Logout</a></li>
+                                        <li><a href="/profile/parametres"><i class="icon-material-outline-settings"></i> Parametres</a></li>
+                                        <li><a href="/logout"><i class="icon-material-outline-power-settings-new"></i> Deconnexion</a></li>
                                     </ul>
 
                                     </div>
@@ -321,13 +318,25 @@ const getNav = () => {
             });
 
         } else {
-
+            var pathName = window.location.pathname;
             navContent = `<!-- USER NON CONNECTER -->
+                <div class="header-widget hide-on-mobile">
+                    <button id="ZoneAuthBtn" style="border-radius: 500px;" class="margin-top-18 button full-width button-sliding-icon ripple-effect">Commencez maintenant <i class="icon-line-awesome-user"></i></button>
+                </div>
                 <div class="header-widget">
+                    
                     <a href="#sign-in-dialog" class="popup-with-zoom-anim log-in-button"><i class="icon-feather-log-in"></i> <span>Connexion / Inscription</span></a>
                 </div>`;
             $("#navMenu").html(navContent);
+            $('#ZoneAuthBtn').on('click', function(){
 
+                if (pathName == "/") {
+                    //Recupere la position de l'element
+                    var account_section_position = $("#account_section")[0].offsetTop - 80;
+                    $('html, body').animate({scrollTop:account_section_position}, 500);
+                } else {window.location.assign('/')}
+                
+            });
             //chargement du popup de connexion et inscription
             $('.popup-with-zoom-anim').magnificPopup({
                 type: 'inline',
@@ -966,6 +975,7 @@ const submitSelect = (user, callback) => {
         }
     });
 };
+
 /**
  * Pre remplit les inputs bootstrapp select
  */
@@ -992,6 +1002,20 @@ const boostrapSelect = () => {
                     type: 'GET',
                     url: `/api/jobs/gets/` + null,
                     dataType: "json",
+                    beforeSend : function () {
+                        var div = document.createElement('div');
+                        div.innerHTML = `
+                            <center>
+                                <div class="loader">
+                                    <div class="loader-inner ball-clip-rotate">
+                                      <div></div>
+                                    </div>
+                                </div>
+                            </center>`;
+
+                        ulDrop.append(div);
+                        
+                    },
                     success: function (data) {
                         var option,
                             li,
@@ -1013,34 +1037,55 @@ const boostrapSelect = () => {
                         }
                     },
                     error: function (err) {
-                        console.log(err);
+                        
                     }
                 });
             }
 
         } else if (btnId == "inputTown") {
             if (!verrouTown) {
-                getAllTowns(function (data) {
-                    var option,
+                $.ajax({
+                    type: 'GET',
+                    url: "/api/getAllTowns",
+                    dataType: "json",
+                    beforeSend : function () {
+                        var div = document.createElement('div');
+                        div.innerHTML = `
+                            <center>
+                                <div class="loader">
+                                    <div class="loader-inner ball-clip-rotate">
+                                      <div></div>
+                                    </div>
+                                </div>
+                            </center>`;
+
+                        ulDrop.append(div);
+                    },
+                    success: function (data) {
+                        var option,
                         li,
                         sortieTown = 0;
-                    if (data.getEtat) {
-                        data.getObjet.map(town => {
-                            sortieTown++;
+                        if (data.getEtat) {
+                            data.getObjet.map(town => {
+                                sortieTown++;
 
-                            //Remplissage des options
-                            option = document.createElement('option');
-                            option.value = town._id;
-                            option.innerHTML = town.name;
-                            select.appendChild(option);
+                                //Remplissage des options
+                                option = document.createElement('option');
+                                option.value = town._id;
+                                option.innerHTML = town.name;
+                                select.appendChild(option);
 
-                            if (sortieTown == data.getObjet.length) {
-                                verrouTown = true;
-                                $("#inputTown").selectpicker('refresh');
-                            }
-                        });
+                                if (sortieTown == data.getObjet.length) {
+                                    verrouTown = true;
+                                    $("#inputTown").selectpicker('refresh');
+                                }
+                            });
+                        }
+                    },
+                    error: function (err) {
+                        
                     }
-                })
+                });
             }
         }
 
@@ -1270,7 +1315,7 @@ const activeAccount = (user_id) => {
                     }
                 },
                 error: function (err) {
-                    console.log(err);
+                    
                 }
             });
         }
@@ -1607,7 +1652,16 @@ const topFreelancer = (limit) => {
                 }
             },
             error: function (err) {
-                console.log(err);
+                $("#topFreelancer").html(`
+                    <div class="col-xl-12">
+                        <center>
+
+                            <img style="height:17em;" src="/images/svg/undraw_warning_cyit.svg">
+                            <p style="color:white" class="poppins-font">Oups! une erreur est survenue lors de la recuperation de ces données</p>
+                        </center>
+
+                    </div>
+                `);
             }
         });
     });
@@ -1625,18 +1679,21 @@ const getDropAnfooterJobs = (limit) => {
             var sortieElement = 0;
             data.getObjet.map(element => {
                 sortieElement++;
-                var contentDrop = `<li data-name="${element.name}" class="liste_category"><a href="/candidats/liste">${element.name}</a></li>`,
-                    contentFooter = `<li data-name="${element.name}" class="liste_category"><a href="/candidats/liste"><span>${element.name}</span></a></li>`;
-                $("#dropJob").append(contentDrop);
-                $("#footerJobs").append(contentFooter);
+                if (sortieElement <= 10) {
+                    var contentDrop = `<li data-name="${element.name}" class="liste_category"><a href="/candidats/liste">${element.name}</a></li>`,
+                        contentFooter = `<li data-name="${element.name}" class="liste_category"><a href="/candidats/liste"><span>${element.name}</span></a></li>`;
+                    $("#dropJob").append(contentDrop);
+                    $("#footerJobs").append(contentFooter);
 
-                if (sortieElement == data.getObjet.length) {
-                    $(".liste_category").on('click', function (e) {
-                        var value = e.currentTarget.getAttribute("data-name");
-                        sessionStorage.setItem("metier__search_item", value);
-                        sessionStorage.setItem("location__search_item", "");
-                    });
+                    if (sortieElement == data.getObjet.length) {
+                        $(".liste_category").on('click', function (e) {
+                            var value = e.currentTarget.getAttribute("data-name");
+                            sessionStorage.setItem("metier__search_item", value);
+                            sessionStorage.setItem("location__search_item", "");
+                        });
+                    }
                 }
+                
             });
         }
     });
@@ -1651,18 +1708,22 @@ const getDropAnfooterTown = () => {
             var sortieElement = 0;
             data.getObjet.map(element => {
                 sortieElement++;
-                var contentDrop = `<li data-name="${element.name}" class="liste_town"><a href="/candidats/liste">${element.name}</a></li>`,
-                    contentFooter = `<li data-name="${element.name}" class="liste_town"><a href="/candidats/liste"><span>${element.name}</span></a></li>`;
-                $("#dropTown").append(contentDrop);
-                $("#footerTown").append(contentFooter);
 
-                if (sortieElement == data.getObjet.length) {
-                    $(".liste_town").on('click', function (e) {
-                        var value = e.currentTarget.getAttribute("data-name");
-                        sessionStorage.setItem("location__search_item", value);
-                        sessionStorage.setItem("metier__search_item", "");
-                    });
+                if (sortieElement <= 10) {
+                    var contentDrop = `<li data-name="${element.name}" class="liste_town"><a href="/candidats/liste">${element.name}</a></li>`,
+                        contentFooter = `<li data-name="${element.name}" class="liste_town"><a href="/candidats/liste"><span>${element.name}</span></a></li>`;
+                    $("#dropTown").append(contentDrop);
+                    $("#footerTown").append(contentFooter);
+
+                    if (sortieElement == data.getObjet.length) {
+                        $(".liste_town").on('click', function (e) {
+                            var value = e.currentTarget.getAttribute("data-name");
+                            sessionStorage.setItem("location__search_item", value);
+                            sessionStorage.setItem("metier__search_item", "");
+                        });
+                    }
                 }
+                
             });
         }
     })
@@ -1743,7 +1804,7 @@ const detailsUser = (id) => {
                                             <div class="col-md-12">
                                                 <div class="single-page-header-inner">
                                                     <div class="left-side">
-                                                        <div class="header-image freelancer-avatar"><img src="${freelancer.avatar && freelancer.avatar.path ? freelancer.avatar.path : `images/svg/avatar-default.svg`}" alt="">
+                                                        <div class="header-image freelancer-avatar"><img src="${freelancer.avatar && freelancer.avatar.path ? freelancer.avatar.path : `/images/svg/avatar-default.svg`}" alt="">
                                                         </div>
                                                         <div class="header-details">
                                                             <h3 class="poppins-font-uppercase">${name()} </h3><span style="font-size: 1em; font-weight: 100; color: #ccc; display: block;">${freelancer.job && freelancer.job.icon ? `<i class="${freelancer.job.icon}" style="font-size: 1.6em"></i>&nbsp;` : ""}${freelancer.job ? freelancer.job.name : "---"}</span>
@@ -1950,7 +2011,7 @@ const detailsUser = (id) => {
                 }
             },
             error: function (err) {
-                console.log(err);
+                
             }
         });
     })
@@ -2004,7 +2065,7 @@ const submitOffer = (id_freelancer, screenUser) => {
                     }
                 },
                 error: function (err) {
-                    console.log(err);
+                    
                 }
             });
         } else {
@@ -2322,7 +2383,7 @@ const getFavourites = (state, session) => {
                 }
             },
             error: function (err) {
-                console.log(err);
+                
             }
         });
     } else { }
@@ -2559,7 +2620,7 @@ const getFreelancersForOffer = (state, session) => {
                 }
             },
             error: function (err) {
-                console.log(err);
+                
             }
         });
     }
@@ -2718,7 +2779,7 @@ const getReview = (state, user) => {
                 }
             },
             error: function (err) {
-                console.log(err);
+                
             }
         });
     }
@@ -2859,7 +2920,7 @@ const changePassword = () => {
                 },
                 error: function (err) {
                     $("#update-password-btn").html(`<i class="icon-line-awesome-mail-forward"></i>`);
-                    console.log(err);
+                    
                     Snackbar.show({
                         text: "Une erreur est survenue, verifiez votre connexion internet",
                         pos: 'top-center',
@@ -2953,4 +3014,4 @@ const setHourly = () => {
     })
 }
 
-export { login, register, getStatsUsers, getNav, activeAccount, statsInDashboard, topFreelancer, getDropAnfooterJobs, getDropAnfooterTown, sidebar, detailsUser, dropNav, recouveryAccount, changePassword }
+export { login, register, getStatsUsers, getNav, activeAccount, statsInDashboard, topFreelancer, getDropAnfooterJobs, getDropAnfooterTown, sidebar, detailsUser, dropNav, recouveryAccount, changePassword, boostrapSelect }

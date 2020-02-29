@@ -1,5 +1,5 @@
-import { getHostApi, getUserId, storageKeys, megaSearch } from './init.js';
-import { login, register, getStatsUsers as statsUsers, getNav, activeAccount, sidebar, statsInDashboard as miniStats, topFreelancer, getDropAnfooterJobs, getDropAnfooterTown, detailsUser, recouveryAccount, changePassword } from './users_api.js';
+import { getHostApi, getUserId, storageKeys, megaSearch, onProduction, zoneAuth } from './init.js';
+import { login, register, getStatsUsers as statsUsers, getNav, activeAccount, sidebar, statsInDashboard as miniStats, topFreelancer, getDropAnfooterJobs, getDropAnfooterTown, detailsUser, recouveryAccount, changePassword, boostrapSelect } from './users_api.js';
 import { getJobs } from './jobs.js';
 import { graph } from './view.js';
 import { messageList } from './offer.js';
@@ -7,6 +7,7 @@ import { getVIPFreelancers as VIP, boost } from './vip.js';
 
 
 (() => {
+    onProduction(false);
     login();
     register();
     getNav();
@@ -15,6 +16,7 @@ import { getVIPFreelancers as VIP, boost } from './vip.js';
     var pathName = window.location.pathname;
     //#region /
     if (pathName == "/") {
+        zoneAuth();
         statsUsers();
         getJobs(8);
         topFreelancer(15);
@@ -22,6 +24,12 @@ import { getVIPFreelancers as VIP, boost } from './vip.js';
         storageKeys("mega-search-home", (response) => {
             window.location.href = "candidats/liste";
         });
+
+        $(document).ready(function () {
+            $(window).load(function () {
+                boostrapSelect();
+            })
+        })
     }
     //#endregion
 
@@ -65,6 +73,13 @@ import { getVIPFreelancers as VIP, boost } from './vip.js';
             storageKeys("form-candidat-list", (response) => {
                 megaSearch();
             });
+
+            //Chargement des elements des inputs
+            $(document).ready(function () {
+                $(window).load(function () {
+                    boostrapSelect();
+                })
+            })
         }
     }
     //#endregion

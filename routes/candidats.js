@@ -7,6 +7,7 @@ router.get('/:id/profile', function(req, res, next) {
 	if (req.params.id == req.session.id_user_beni) {
 		res.redirect('/profile/dashboard');
 	} else {
+		res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
 		res.render('candidatDetails', { 
 			title: 'Profile details',
 			classWrapper: '',
@@ -19,6 +20,7 @@ router.get('/:id/profile', function(req, res, next) {
 
 /* List tous les candidats avec filtre. */
 router.get('/liste', function(req, res, next) {
+  res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
   res.render('candidatsList', { 
   	title: 'Decouvrez nos differents profiles',
   	classWrapper: '',

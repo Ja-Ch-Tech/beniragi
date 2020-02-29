@@ -4,8 +4,14 @@ const getHostApi = () => {
 }
 
 const getHostWeb = () => {
-    //return "http://localhost:3000/"; //Local
-    return "https://beniragi-service.herokuapp.com/"; //Online
+    return "http://localhost:3000/"; //Local
+    //return "https://beniragi-service.herokuapp.com/"; //Online
+}
+
+const onProduction = (state) => {
+    if (state) {
+        console.log = function(){};
+    }
 }
 
 //fonction de modélisation de la date
@@ -114,6 +120,11 @@ const getAllTowns = (callback) => {
         }
     });
 };
+
+//Ramene vers le bloc de connexion et inscription
+function zoneAuth() {
+    
+}
 
 //Recupere les metiers
 const getAllJob = (limit, callback) => {
@@ -341,17 +352,24 @@ const storageKeys = (id, callback) => {
         e.preventDefault();
 
         var inputs = e.target.elements,
-            sortieInput = 0;
-
+            sortieInput = 0,
+            obj = {},
+            name,
+            value,
+            text;
         for (var index = 0; index < inputs.length; index++) {
             sortieInput++;
-            if (/input/i.test(e.target.elements[index].localName)) {
-                sessionStorage.setItem(inputs[index].name, inputs[index].value);
+            name = inputs[index].name;
+            if (/select/i.test(inputs[index].localName)) {
+                value = inputs[index].options[inputs[index].selectedIndex].value;
+                text = value !== "" ? inputs[index].options[inputs[index].selectedIndex].innerHTML : null;
+                sessionStorage.setItem(name, text);
             }
 
             if (sortieInput == inputs.length) {
                 callback(true);
             }
+
         }
     })
 }
@@ -369,6 +387,7 @@ const megaSearch = () => {
                 "town": town
             },
             user_id = state ? session.user_id : null;
+
         //Gestion inputs
         $("#location__search_item").val(town);
         $("#metier__search_item").val(job);
@@ -578,4 +597,4 @@ const funFacts = () => {
 
 }
 
-export { getHostApi, customDate, getAllTypesUser, getUserId, getHostWeb, NoEmpty, getAllTowns, starRating, getAllJob, customDateForFeedBack as dateFeedBack, setFavoris, removeItem, isInArray, storageKeys, megaSearch, funFacts }
+export { getHostApi, customDate, getAllTypesUser, getUserId, getHostWeb, NoEmpty, getAllTowns, starRating, getAllJob, customDateForFeedBack as dateFeedBack, setFavoris, removeItem, isInArray, storageKeys, megaSearch, funFacts, onProduction, zoneAuth }

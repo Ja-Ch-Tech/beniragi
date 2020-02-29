@@ -3,6 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
   res.render('index', { 
   	title: 'Biensure sur Beniragi',
   	classWrapper: 'wrapper-with-transparent-header',
@@ -27,6 +28,7 @@ router.get("/logout", (req, res) => {
 
 /* Recuperation du mot de passe */
 router.get('/recuperation/mdp', function(req, res, next) {
+  res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
   res.render('recuperation_mdp', { 
     title: 'Recuperation mot de passe',
     classWrapper: '',
@@ -36,6 +38,7 @@ router.get('/recuperation/mdp', function(req, res, next) {
 
 /* Formulaire de modification du mot de passe */
 router.get('/activation', function(req, res, next) {
+  res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
   res.render('change_mdp', { 
     title: 'Nouveau mot de passe',
     classWrapper: '',
@@ -45,6 +48,7 @@ router.get('/activation', function(req, res, next) {
 
 /* Contrat beniragi */
 router.get('/contrat', function(req, res, next) {
+  res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
   res.render('contrat', { 
     title: 'Termes et contrat beniragi',
     classWrapper: '',

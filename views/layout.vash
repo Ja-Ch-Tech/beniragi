@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="/stylesheets/style.css">
 <link rel="stylesheet" href="/stylesheets/colors/blue.css">
 <link rel="stylesheet" href="/stylesheets/jach_style.css">
+<link rel="stylesheet" href="/stylesheets/loaders.css">
 
 <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
 </head>
@@ -56,10 +57,6 @@
 							</ul>
 						</li>
 
-						<li>
-							<a href="/about">A PROPOS</a>
-						</li>
-
 					</ul>
 				</nav>
 				<div class="clearfix"></div>
@@ -71,7 +68,11 @@
 
 			<!-- Right Side Content / End -->
 			<div id="navMenu" class="right-side">
-				<div class="lds-ripple"><div></div><div></div></div>
+                <div style="margin-top: 1.1em;" class="loader">
+                    <div class="loader-inner ball-clip-rotate">
+                      <div style="background-color: #fff;border-color: #fff;"></div>
+                    </div>
+                </div>
 				<!-- Mobile Navigation Button -->
 			</div>
 			<!-- Right Side Content / End -->
@@ -163,7 +164,7 @@
 					<div class="row">
 
 						<!-- Links -->
-						<div class="col-xl-3 col-lg-3 col-md-4">
+						<div class="col-xl-4 col-lg-4 col-md-4">
 							<div class="footer-links">
 								<h3>Par Metiers</h3>
 								<ul id="footerJobs">
@@ -172,7 +173,7 @@
 						</div>
 
 						<!-- Links -->
-						<div class="col-xl-3 col-lg-3 col-md-4">
+						<div class="col-xl-4 col-lg-4 col-md-4">
 							<div class="footer-links">
 								<h3>Par villes</h3>
 								<ul id="footerTown">
@@ -181,27 +182,15 @@
 						</div>
 
 						<!-- Links -->
-						<div class="col-xl-3 col-lg-3 col-md-4">
+						<div class="col-xl-4 col-lg-4 col-md-4">
 							<div class="footer-links">
 								<h3>Savoir plus sur nous ?</h3>
 								<ul>
-									<li><a href="#"><span>Contactez-nous</span></a></li>
-									<li><a href="#"><span>A propos</span></a></li>
-									<li><a href="#"><span>Termes et conditions générales</span></a></li>
+									<li><a href="/contact"><span>Contactez-nous</span></a></li>
+									<li><a href="/about"><span>A propos</span></a></li>
+									<li><a href="/contrat"><span>Termes et conditions générales</span></a></li>
 								</ul>
 							</div>
-						</div>
-
-						
-
-						<!-- Newsletter -->
-						<div class="col-xl-3 col-lg-3 col-md-12">
-							<h3><i class="icon-feather-mail"></i> Inscrivez-vous à notre newsletter</h3>
-							<p>Abonnez-vous à nos newsletters et restez informé des dernières nouvelles.</p>
-							<form action="#" method="get" class="newsletter">
-								<input type="text" name="fname" placeholder="Votre adresse email">
-								<button type="submit"><i class="icon-feather-arrow-right"></i></button>
-							</form>
 						</div>
 					</div>
 				</div>
@@ -349,57 +338,6 @@
 <script src="/javascripts/api/external.js"></script>
 
 <!-- Snackbar // documentation: https://www.polonel.com/snackbar/ -->
-<script>
-// Snackbar for user status switcher
-$('#snackbar-user-status label').click(function() { 
-	Snackbar.show({
-		text: 'Your status has been changed!',
-		pos: 'bottom-center',
-		showAction: false,
-		actionText: "Dismiss",
-		duration: 3000,
-		textColor: '#fff',
-		backgroundColor: '#383838'
-	}); 
-}); 
-</script>
-
-
-<!-- Google Autocomplete -->
-<script>
-	function initAutocomplete() {
-		 var options = {
-		  types: ['(cities)'],
-		  // componentRestrictions: {country: "us"}
-		 };
-
-		 var input = document.getElementById('autocomplete-input');
-		 var autocomplete = new google.maps.places.Autocomplete(input, options);
-	}
-
-	// Autocomplete adjustment for homepage
-	if ($('.intro-banner-search-form')[0]) {
-	    setTimeout(function(){ 
-	        $(".pac-container").prependTo(".intro-search-field.with-autocomplete");
-	    }, 300);
-	}
-
-</script>
-
-<script>
-// Snackbar for user status switcher
-$('#snackbar-user-status label').click(function() { 
-	Snackbar.show({
-		text: 'Your status has been changed!',
-		pos: 'bottom-center',
-		showAction: false,
-		actionText: "Dismiss",
-		duration: 3000,
-		textColor: '#fff',
-		backgroundColor: '#383838'
-	}); 
-}); 
-</script>
 
 <!-- Chart.js // documentation: http://www.chartjs.org/docs/latest/ -->
 <script src="/javascripts/chart.min.js"></script>

@@ -4,6 +4,7 @@ var router = express.Router();
 /*Activation d'un compte*/
 router.get('/activation', function(req, res, next) {
   if (req.session.id_user_beni) {
+      res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
       res.render('profile/activation', { 
         title: 'Activation compte',
         classWrapper: '',
@@ -18,13 +19,14 @@ router.get('/activation', function(req, res, next) {
 /* Dashboard candidat */
 router.get('/dashboard', function(req, res, next) {
   if (req.session.id_user_beni) {
-    res.render('profile/dashboard', { 
-      title: 'Votre tableau de bord',
-      classWrapper: '',
-      classHeader: '',
-      isEmployer : req.session.isEmployer,
-      footer: 'hide' 
-    });
+      res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
+      res.render('profile/dashboard', { 
+        title: 'Votre tableau de bord',
+        classWrapper: '',
+        classHeader: '',
+        isEmployer : req.session.isEmployer,
+        footer: 'hide' 
+      });
   } else {
     res.render('error');
   }
@@ -34,12 +36,13 @@ router.get('/dashboard', function(req, res, next) {
 /*Message*/
 router.get('/messages', function(req, res, next) {
   if (req.session.id_user_beni) {
-    res.render('profile/messages', { 
-      title: 'Messages',
-      classWrapper: '',
-      classHeader: '',
-      footer: 'hide' 
-    });
+      res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
+      res.render('profile/messages', { 
+        title: 'Messages',
+        classWrapper: '',
+        classHeader: '',
+        footer: 'hide' 
+      });
   } else {
     res.render('error');
   }
@@ -50,12 +53,13 @@ router.get('/messages', function(req, res, next) {
 /*Parametres*/
 router.get('/parametres', function(req, res, next) {
   if (req.session.id_user_beni) {
-    res.render('profile/parametres', { 
-      title: 'parametres',
-      classWrapper: '',
-      classHeader: '',
-      footer: 'hide' 
-    });
+      res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
+      res.render('profile/parametres', { 
+        title: 'parametres',
+        classWrapper: '',
+        classHeader: '',
+        footer: 'hide' 
+      });
   } else {
     res.render('error');
   }
@@ -64,16 +68,17 @@ router.get('/parametres', function(req, res, next) {
 
 /*Feedback*/
 router.get('/feedback', function(req, res, next) {
-  if (req.session.id_user_beni) {
-    res.render('profile/feedback', { 
-      title: 'feedback',
-      classWrapper: '',
-      classHeader: '',
-      footer: 'hide' 
-    });
-  } else {
-    res.render('error');
-  }
+    if (req.session.id_user_beni) {
+      res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
+      res.render('profile/feedback', { 
+        title: 'feedback',
+        classWrapper: '',
+        classHeader: '',
+        footer: 'hide' 
+      });
+    } else {
+      res.render('error');
+    }
   
 });
 

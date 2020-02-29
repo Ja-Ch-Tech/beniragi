@@ -56,7 +56,16 @@ const getJobs = (limit) => {
             }
         },
         error: function (err) {
-            console.log(err);
+            $("#listJobs").html(`
+                <div class="col-xl-12">
+                    <center>
+
+                        <img style="height:17em;" src="/images/svg/undraw_warning_cyit.svg">
+                        <p style="color:white" class="poppins-font">Oups! une erreur est survenue lors de la recuperation de ces données</p>
+                    </center>
+
+                </div>
+            `);
         }
     });
 }

@@ -59,7 +59,7 @@ const getMessagesList = () => {
             }
         },
         error: function (err) {
-            console.log(err);
+            
         }
     });
 }

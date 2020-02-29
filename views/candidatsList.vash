@@ -1,6 +1,12 @@
 @html.extend('layout', function(model) {
   @html.block('content', function(model) {
   		<!-- Spacer -->
+  		<style>
+  			.dropdown-menu{
+  				max-height: 280px;
+  				overflow: hidden;
+  			}
+  		</style>
 		<div class="margin-top-90"></div>
     	<div class="container">
 			<div class="row">
@@ -12,9 +18,9 @@
 								<h3>Localisation</h3>
 								<div class="input-with-icon">
 									<div id="autocomplete-container">
-										<input name="location__search_item" id="location__search_item" type="text" placeholder="Localisation, ville">
+										<select name="location__search_item" id="inputTown" class="selectpicker with-border" data-size="7" title="Localisation ou ville" data-live-search="true">
+				                    	</select>
 									</div>
-									<i class="icon-material-outline-location-on"></i>
 								</div>
 							</div>
 
@@ -23,7 +29,8 @@
 								<h3>Metier</h3>
 								<div class="input-with-icon">
 									<div id="autocomplete-container">
-										<input id="metier__search_item" name="metier__search_item" type="text" placeholder="Metier">
+										<select name="metier__search_item" id="inputJob" class="selectpicker with-border" data-size="7" title="Tapez le Metier que vous cherchez" data-live-search="true">
+				                    	</select>
 									</div>
 								</div>
 							</div>

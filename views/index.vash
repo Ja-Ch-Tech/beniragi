@@ -1,6 +1,27 @@
 @html.extend('layout', function(model) {
   @html.block('content', function(model) {
-    	<div class="intro-banner dark-overlay" data-background-image="images/IMG_1084.PNG">
+  		<style>
+  			.bootstrap-select.btn-group button{
+  				background: #fff;
+  			}
+  			.with-border .dropdown-menu, .with-border.bootstrap-select.btn-group button{
+  				border-color: #fff;
+  				box-shadow : none;
+  			}
+  			.dropdown-menu{
+  				background: #fff;
+  				max-height: 305px;
+  				overflow: hidden;
+  			}
+  			.bs-searchbox .form-control:focus, .bs-searchbox .form-control{
+  				background: #f5f5f5;
+  			}
+  			.bootstrap-select:before{
+  				background: #fff;
+  			}
+
+  		</style>
+    	<div class="intro-banner dark-overlay" data-background-image="/images/svg/undraw_interview_rmcf.png">
 			<div class="container">
 				<!-- Transparent Header Spacer -->
 			<div class="transparent-header-spacer"></div>
@@ -22,22 +43,19 @@
 				<div class="row">
 					<div class="col-md-12">
 						<form method="post" id="mega-search-home">
-							<div class="intro-banner-search-form margin-top-95">
-
+							<div id="bannerSearchHome" class="intro-banner-search-form margin-top-95">
 								<!-- Search Field -->
 								<div class="intro-search-field with-autocomplete">
 									<label for="location__search_item" class="field-title ripple-effect">Où ?</label>
-									<div class="input-with-icon">
-										<input name="location__search_item" style="background-color:#fff;" id="location__search_items" type="text" placeholder="Localisation ou ville">
-										<i class="icon-material-outline-location-on"></i>
-										
-									</div>
+				                    <select required name="location__search_item" id="inputTown" class="selectpicker with-border" data-size="7" title="Localisation ou ville" data-live-search="true">
+				                    </select>
 								</div>
 
 								<!-- Search Field -->
 								<div class="intro-search-field">
 									<label for ="metier__search_item" class="field-title ripple-effect">Metier</label>
-									<input name="metier__search_item" style="background-color:#fff;" id="metier__search_item" type="text" placeholder="Tapez le Metier que vous cherchez">
+									<select required name="metier__search_item" id="inputJob" class="selectpicker with-border" data-size="7" title="Tapez le Metier que vous cherchez" data-live-search="true">
+				                    </select>
 								</div>
 
 								<!-- Button -->
@@ -89,7 +107,7 @@
 		</div>
 		@{
     	if(model.user_session == null){ 
-		<div class="section padding-top-60 padding-bottom-75 bg_noir_secondaire">
+		<div id="account_section" class="section padding-top-60 padding-bottom-75 bg_noir_secondaire">
 			<div class="container">
 				<div class="row">
 
@@ -113,8 +131,7 @@
 											<b style="color: #fff;" class="poppins-font">Entreprise</b>
 										</h2><br>
 										<p style="color: #888;">
-											Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-											tempor incididunt ut labore et dolore magna aliqua.
+											Quels que soient vos besoins, il y aura un prestataire pour le faire.
 										</p>
 										<a href="#sign-in-dialog" class="button full-width margin-top-20 ripple-effect button-sliding-icon popup-with-zoom-anim">JE CREE MON COMPTE <i class="icon-material-outline-arrow-right-alt"></i></a>
 									</center>
@@ -129,8 +146,7 @@
 											<b style="color: #fff;" class="poppins-font">Prestataire de service</b>
 										</h2><br>
 										<p style="color: #888;">
-											Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-											tempor incididunt ut labore et dolore magna aliqua.
+											faites-vous décrocher un contrat de prestation en créant un compte maintenant
 										</p>
 										<a style="background-color: #ad344b" href="#sign-in-dialog" class="button outline full-width margin-top-20 ripple-effect button-sliding-icon popup-with-zoom-anim">JE CREE MON COMPTE <i class="icon-material-outline-arrow-right-alt"></i></a>
 										
