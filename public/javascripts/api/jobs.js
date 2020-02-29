@@ -15,9 +15,9 @@ const getJobs = (limit) => {
                                             </div>
                                         </div>
                                         `;
-                    
+
                     $("#listJobs").html(contentHead);
-                    
+
                     data.getObjet.map(job => {
                         sortieElement++;
                         if (job.name != "") {
@@ -25,7 +25,7 @@ const getJobs = (limit) => {
                                                 <div class="category-box-icon">
                                                     <i class="${job.icon}"></i>
                                                 </div>
-                                                <div class="category-box-counter">${job.nbre}</div>
+                                                ${job.nbre > 0 ? `<div class="category-box-counter">${job.nbre}</div>` : ""}
                                                 <div class="category-box-content">
                                                     <h3>${job.name}</h3>
                                                     <p>${job.describe}</p>

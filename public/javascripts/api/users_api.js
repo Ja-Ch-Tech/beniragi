@@ -1451,7 +1451,7 @@ const topFreelancer = (limit) => {
                 if (data.getEtat) {
                     const contentHead = `<div class="col-xl-12">
                                             <div class="section-headline margin-top-0 margin-bottom-25">
-                                                <h3 class="poppins-font-uppercase">Top Freelancer</h3>
+                                                <h3 class="poppins-font-uppercase">Top Prestataire</h3>
                                                 <a href="/candidats/liste" class="headline-link color_blue candidat-all-liste">Voir tous nos candidats</a>
                                             </div>
                                         </div>
