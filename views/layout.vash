@@ -164,7 +164,7 @@
 					<div class="row">
 
 						<!-- Links -->
-						<div class="col-xl-4 col-lg-4 col-md-4">
+						<div class="col-xl-3 col-lg-3 col-md-4">
 							<div class="footer-links">
 								<h3>Par Metiers</h3>
 								<ul id="footerJobs">
@@ -173,7 +173,7 @@
 						</div>
 
 						<!-- Links -->
-						<div class="col-xl-4 col-lg-4 col-md-4">
+						<div class="col-xl-3 col-lg-3 col-md-4">
 							<div class="footer-links">
 								<h3>Par villes</h3>
 								<ul id="footerTown">
@@ -182,13 +182,28 @@
 						</div>
 
 						<!-- Links -->
-						<div class="col-xl-4 col-lg-4 col-md-4">
+						<div class="col-xl-3 col-lg-3 col-md-4">
 							<div class="footer-links">
 								<h3>Savoir plus sur nous ?</h3>
 								<ul>
-									<li><a href="/contact"><span>Contactez-nous</span></a></li>
 									<li><a href="/about"><span>A propos</span></a></li>
 									<li><a href="/contrat"><span>Termes et conditions générales</span></a></li>
+								</ul>
+							</div>
+						</div>
+
+						<div class="col-xl-3 col-lg-3 col-md-4">
+							<div class="footer-links">
+								<h3>Contact</h3>
+								<ul>
+									<li>
+										<a href="#">
+											<i class="icon-feather-phone-call"></i>&nbsp;+243 829 966 462</li>
+										</a>
+										
+									<li>
+										<a href="mailto:info@beniragiservices.com"><i class="icon-feather-message-square"></i>&nbsp;info@beniragiservices.com</a>
+									</li>
 								</ul>
 							</div>
 						</div>
