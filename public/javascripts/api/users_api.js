@@ -994,7 +994,6 @@ const boostrapSelect = () => {
         select = btn.nextSibling.nextSibling;
         dropdown = btn.nextSibling;
         ulDrop = dropdown.getElementsByTagName("ul")[0];
-
         //Si on clique sur le button 
         if (btnId == "inputJob") {
             if (!verrouJob) {
@@ -1062,6 +1061,7 @@ const boostrapSelect = () => {
                         ulDrop.append(div);
                     },
                     success: function (data) {
+                        console.log(data);
                         var option,
                         li,
                         sortieTown = 0;

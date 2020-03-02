@@ -7,7 +7,7 @@ import { getVIPFreelancers as VIP, boost } from './vip.js';
 
 
 (() => {
-    onProduction(true);
+    onProduction(false);
     login();
     register();
     getNav();
@@ -25,10 +25,8 @@ import { getVIPFreelancers as VIP, boost } from './vip.js';
             window.location.href = "candidats/liste";
         });
 
-        $(document).ready(function () {
-            $(window).load(function () {
-                boostrapSelect();
-            })
+        $(window).load(function () {
+            boostrapSelect();
         })
     }
     //#endregion
@@ -75,10 +73,8 @@ import { getVIPFreelancers as VIP, boost } from './vip.js';
             });
 
             //Chargement des elements des inputs
-            $(document).ready(function () {
-                $(window).load(function () {
-                    boostrapSelect();
-                })
+            $(window).load(function () {
+                boostrapSelect();
             })
         }
     }
