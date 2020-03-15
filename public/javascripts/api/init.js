@@ -1,16 +1,16 @@
 const getHostApi = () => {
-    //return "http://localhost:3456/";
-    return "https://api-beniragi-service.herokuapp.com/";
+    return "http://localhost:3456/";
+    //return "https://api-beniragi-service.herokuapp.com/";
 }
 
 const getHostWeb = () => {
-    //return "http://localhost:3000/"; //Local
-    return "https://beniragi-service.herokuapp.com/"; //Online
+    return "http://localhost:3000/"; //Local
+    //return "https://beniragiservices.com/"; //Online
 }
 
 const onProduction = (state) => {
     if (state) {
-        console.log = function(){};
+        console.log = function () { };
     }
 }
 
@@ -123,7 +123,7 @@ const getAllTowns = (callback) => {
 
 //Ramene vers le bloc de connexion et inscription
 function zoneAuth() {
-    
+
 }
 
 //Recupere les metiers
