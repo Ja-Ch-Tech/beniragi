@@ -1,11 +1,11 @@
 const getHostApi = () => {
-    return "http://localhost:3456/";
-    //return "https://api-beniragi-service.herokuapp.com/";
+    //return "http://localhost:3456/";
+    return "https://api-beniragi-service.herokuapp.com/";
 }
 
 const getHostWeb = () => {
-    return "http://localhost:3000/"; //Local
-    //return "https://beniragiservices.com/"; //Online
+    //return "http://localhost:3000/"; //Local
+    return "https://beniragiservices.com/"; //Online
 }
 
 const onProduction = (state) => {
