@@ -19077,3 +19077,11 @@ a.headline-link:after {
 .padding-left-100 {
     padding-left: 100px !important;
 }
+
+.badgePremium {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 50px;
+    width: 50px;
+}

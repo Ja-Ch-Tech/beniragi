@@ -328,14 +328,14 @@ const getNav = () => {
                     <a href="#sign-in-dialog" class="popup-with-zoom-anim log-in-button"><i class="icon-feather-log-in"></i> <span>Connexion / Inscription</span></a>
                 </div>`;
             $("#navMenu").html(navContent);
-            $('#ZoneAuthBtn').on('click', function(){
+            $('#ZoneAuthBtn').on('click', function () {
 
                 if (pathName == "/") {
                     //Recupere la position de l'element
                     var account_section_position = $("#account_section")[0].offsetTop - 80;
-                    $('html, body').animate({scrollTop:account_section_position}, 500);
-                } else {window.location.assign('/')}
-                
+                    $('html, body').animate({ scrollTop: account_section_position }, 500);
+                } else { window.location.assign('/') }
+
             });
             //chargement du popup de connexion et inscription
             $('.popup-with-zoom-anim').magnificPopup({
@@ -1001,7 +1001,7 @@ const boostrapSelect = () => {
                     type: 'GET',
                     url: `/api/jobs/gets/` + null,
                     dataType: "json",
-                    beforeSend : function () {
+                    beforeSend: function () {
                         var div = document.createElement('div');
                         div.innerHTML = `
                             <center>
@@ -1013,7 +1013,7 @@ const boostrapSelect = () => {
                             </center>`;
 
                         ulDrop.append(div);
-                        
+
                     },
                     success: function (data) {
                         var option,
@@ -1036,7 +1036,7 @@ const boostrapSelect = () => {
                         }
                     },
                     error: function (err) {
-                        
+
                     }
                 });
             }
@@ -1047,7 +1047,7 @@ const boostrapSelect = () => {
                     type: 'GET',
                     url: "/api/getAllTowns",
                     dataType: "json",
-                    beforeSend : function () {
+                    beforeSend: function () {
                         var div = document.createElement('div');
                         div.innerHTML = `
                             <center>
@@ -1063,8 +1063,8 @@ const boostrapSelect = () => {
                     success: function (data) {
                         console.log(data);
                         var option,
-                        li,
-                        sortieTown = 0;
+                            li,
+                            sortieTown = 0;
                         if (data.getEtat) {
                             data.getObjet.map(town => {
                                 sortieTown++;
@@ -1083,7 +1083,7 @@ const boostrapSelect = () => {
                         }
                     },
                     error: function (err) {
-                        
+
                     }
                 });
             }
@@ -1315,7 +1315,7 @@ const activeAccount = (user_id) => {
                     }
                 },
                 error: function (err) {
-                    
+
                 }
             });
         }
@@ -1497,10 +1497,13 @@ const topFreelancer = (limit) => {
                                         return `<br/>`;
                                     }
                                 },
+                                badgePremium = () => {
+                                    return freelancer.isVIP ? `<img src="/images/badge_premium.png" class="badgePremium" title="Compte premium" data-tippy-placement="top">` : "";
+                                },
                                 content = `<!--Freelancer -->
-							<div style="background-color: #2c2b2b" class="freelancer">
-
-								<!-- Overview -->
+                            <div style="background-color: #2c2b2b; position: relative" class="freelancer">
+                                ${badgePremium()}
+                                <!-- Overview -->
 								<div class="freelancer-overview">
 									<div class="freelancer-overview-inner">
 										
@@ -1509,7 +1512,7 @@ const topFreelancer = (limit) => {
 										
 										<!-- Avatar -->
 										<div class="freelancer-avatar">
-											${freelancer.certificate && freelancer.certificate.certified == true ? `<div class="verified-badge"></div>` : ''}
+											${freelancer.certificate && freelancer.certificate.certified == true ? `<div class="verified-badge" title="Compte certifié" data-tippy-placement="bottom"></div>` : ''}
 											<a href="/candidats/${freelancer._id}/profile"><img src="${freelancer.avatar && freelancer.avatar.path ? freelancer.avatar.path : `images/svg/avatar-default.svg`}" alt="" style="width: 110px; height: 110px"></a>
 										</div>
 
@@ -1693,7 +1696,7 @@ const getDropAnfooterJobs = (limit) => {
                         });
                     }
                 }
-                
+
             });
         }
     });
@@ -1723,7 +1726,7 @@ const getDropAnfooterTown = () => {
                         });
                     }
                 }
-                
+
             });
         }
     })
@@ -2011,7 +2014,7 @@ const detailsUser = (id) => {
                 }
             },
             error: function (err) {
-                
+
             }
         });
     })
@@ -2065,7 +2068,7 @@ const submitOffer = (id_freelancer, screenUser) => {
                     }
                 },
                 error: function (err) {
-                    
+
                 }
             });
         } else {
@@ -2383,7 +2386,7 @@ const getFavourites = (state, session) => {
                 }
             },
             error: function (err) {
-                
+
             }
         });
     } else { }
@@ -2620,7 +2623,7 @@ const getFreelancersForOffer = (state, session) => {
                 }
             },
             error: function (err) {
-                
+
             }
         });
     }
@@ -2779,7 +2782,7 @@ const getReview = (state, user) => {
                 }
             },
             error: function (err) {
-                
+
             }
         });
     }
@@ -2920,7 +2923,7 @@ const changePassword = () => {
                 },
                 error: function (err) {
                     $("#update-password-btn").html(`<i class="icon-line-awesome-mail-forward"></i>`);
-                    
+
                     Snackbar.show({
                         text: "Une erreur est survenue, verifiez votre connexion internet",
                         pos: 'top-center',

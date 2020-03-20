@@ -4,8 +4,6 @@ const getVIPFreelancers = (limit) => {
         url: `/api/vip/${limit}`,
         dataType: "json",
         success: function (data) {
-            console.log(data);
-            
             if (data.getEtat) {
                 var contentHead = `<div class="container">
                                     <div class="row">
@@ -29,14 +27,15 @@ const getVIPFreelancers = (limit) => {
                                 return freelancer.email;
                             }
                         },
-                        job = () => {
-                            if (freelancer.job && freelancer.job.name) {
-                                return `<span><i class="${freelancer.job.icon}" style="font-size: 1.2em"></i>&nbsp;${freelancer.job.name}</span>`;
-                            } else {
-                                return `<br/>`;
-                            }
-                        },
-                        content = `<div style="background-color: transparent;" class="freelancer">
+                            job = () => {
+                                if (freelancer.job && freelancer.job.name) {
+                                    return `<span><i class="${freelancer.job.icon}" style="font-size: 1.2em"></i>&nbsp;${freelancer.job.name}</span>`;
+                                } else {
+                                    return `<br/>`;
+                                }
+                            },
+                            content = `<div style="background-color: transparent; position: relative" class="freelancer">
+                                        <img src="/images/badge_premium.png" class="badgePremium">
                                         <a href="/candidats/${freelancer._id}/profile" class="photo-box" data-background-image="${freelancer.avatar && freelancer.avatar.path ? freelancer.avatar.path : `/images/svg/avatar-default.svg`}">
                                             <div class="photo-box-content">
                                                 <h3>${name()}</h3>
@@ -120,7 +119,7 @@ const boost = () => {
             dataType: "json",
             success: function (data) {
                 if (data.getEtat) {
-                    window.location.href = '/profile/dashboard';                    
+                    window.location.href = '/profile/dashboard';
                 }
             },
             error: function (err) {
