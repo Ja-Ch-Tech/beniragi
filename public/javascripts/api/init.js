@@ -422,6 +422,16 @@ const megaSearch = () => {
 
                                            </div>`;
                     $("#resultat-recherche").html(content);
+
+                    //Tri côté client
+                    data.getObjet.sort((user1, user2) => {
+                        if (user1.average > user2.average) {
+                            return -1;
+                        }
+
+                        return 1;
+                    });
+
                     data.getObjet.map(element => {
 
                         sortieRecherche++;
@@ -446,46 +456,50 @@ const megaSearch = () => {
                                 }
 
                             },
+                            badgePremium = () => {
+                                return element.isVIP ? `<img src="/images/badge_premium.png" class="badgePremium" style="left: 0; height: 35px; width: 35px;" title="Compte premium" data-tippy-placement="top">` : "";
+                            },
                             contentElement = `
-                                                            <!--Freelancer -->
-                                                            <div class="freelancer">
-                                                                <!-- Overview -->
-                                                                <div class="freelancer-overview">
-                                                                    <div class="freelancer-overview-inner">
-                                                                        <!-- Bookmark Icon -->
-                                                                        ${favorite()}
-                                                                        <!-- Avatar -->
-                                                                        <div class="freelancer-avatar">
-                                                                            ${element.certificate && element.certificate.certified == true ? `<div class="verified-badge"></div>` : ''}
-                                                                            <a href="/candidats/${element._id}/profile"><img src="${element.avatar && element.avatar.path ? element.avatar.path : `/images/svg/avatar-default.svg`}" style="width: 110px; height: 110px" alt=""></a>
-                                                                        </div>
+                                                <!--Freelancer -->
+                                                <div class="freelancer">
+                                                    ${badgePremium()}
+                                                    <!-- Overview -->
+                                                    <div class="freelancer-overview">
+                                                        <div class="freelancer-overview-inner">
+                                                            <!-- Bookmark Icon -->
+                                                            ${favorite()}
+                                                            <!-- Avatar -->
+                                                            <div class="freelancer-avatar">
+                                                                ${element.certificate && element.certificate.certified == true ? `<div class="verified-badge"></div>` : ''}
+                                                                <a href="/candidats/${element._id}/profile"><img src="${element.avatar && element.avatar.path ? element.avatar.path : `/images/svg/avatar-default.svg`}" style="width: 110px; height: 110px" alt=""></a>
+                                                            </div>
 
-                                                                        <!-- Name -->
-                                                                        <div class="freelancer-name">
-                                                                            <h4><a href="/candidats/${element._id}/profile">${name()}<img class="flag" src="/images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top"></a></h4>
-                                                                            <span>${element.job ? element.job.name : `---`}</span>
-                                                                            <!-- Rating -->
-                                                                            <div class="freelancer-rating">
-                                                                                <div class="star-rating" data-rating="${element.average}"></div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                
-                                                                <!-- Details -->
-                                                                <div class="freelancer-details">
-                                                                    <div class="freelancer-details-list">
-                                                                        <ul>
-                                                                            <li>Localisation <strong><i class="icon-material-outline-location-on"></i> ${element.town ? element.town : `---`}</strong></li>
-                                                                            <li>Taux horaire <strong>$${element.hourly ? element.hourly.rate : "0"} / hr</strong></li>
-                                                                            <li>A temps <strong>${element.inTime ? element.inTime + '%' : `---`}</strong></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                    <a href="/candidats/${element._id}/profile" class="button button-sliding-icon ripple-effect">Voir le profile <i class="icon-material-outline-arrow-right-alt"></i></a>
-
+                                                            <!-- Name -->
+                                                            <div class="freelancer-name">
+                                                                <h4><a href="/candidats/${element._id}/profile">${name()}<img class="flag" src="/images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top"></a></h4>
+                                                                <span>${element.job ? element.job.name : `---`}</span>
+                                                                <!-- Rating -->
+                                                                <div class="freelancer-rating">
+                                                                    <div class="star-rating" data-rating="${element.average}"></div>
                                                                 </div>
                                                             </div>
-                                                            <!-- Freelancer / End -->`;
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- Details -->
+                                                    <div class="freelancer-details">
+                                                        <div class="freelancer-details-list">
+                                                            <ul>
+                                                                <li>Localisation <strong><i class="icon-material-outline-location-on"></i> ${element.town ? element.town : `---`}</strong></li>
+                                                                <li>Taux horaire <strong>$${element.hourly ? element.hourly.rate : "0"} / hr</strong></li>
+                                                                <li>A temps <strong>${element.inTime ? element.inTime + '%' : `---`}</strong></li>
+                                                            </ul>
+                                                        </div>
+                                                        <a href="/candidats/${element._id}/profile" class="button button-sliding-icon ripple-effect">Voir le profile <i class="icon-material-outline-arrow-right-alt"></i></a>
+
+                                                    </div>
+                                                </div>
+                                                <!-- Freelancer / End -->`;
 
                         $("#freelancer__list").append(contentElement);
 

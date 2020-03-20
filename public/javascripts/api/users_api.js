@@ -1498,7 +1498,7 @@ const topFreelancer = (limit) => {
                                     }
                                 },
                                 badgePremium = () => {
-                                    return freelancer.isVIP ? `<img src="/images/badge_premium.png" class="badgePremium" title="Compte premium" data-tippy-placement="top">` : "";
+                                    return freelancer.isVIP ? `<img src="/images/badge_premium.png" class="badgePremium" title="Compte premium" data-tippy-placement="right" style="left: 0">` : "";
                                 },
                                 content = `<!--Freelancer -->
                             <div style="background-color: #2c2b2b; position: relative" class="freelancer">
