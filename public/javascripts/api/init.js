@@ -457,7 +457,7 @@ const megaSearch = () => {
 
                             },
                             badgePremium = () => {
-                                return element.isVIP ? `<img src="/images/badge_premium.png" class="badgePremium" style="left: 0; height: 35px; width: 35px;" title="Compte premium" data-tippy-placement="top">` : "";
+                                return element.isVIP ? `<img src="/images/badge_premium.jpeg" class="badgePremium" style="left: 0; height: 35px; width: 35px;" title="Compte premium" data-tippy-placement="top">` : "";
                             },
                             contentElement = `
                                                 <!--Freelancer -->
