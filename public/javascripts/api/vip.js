@@ -34,7 +34,7 @@ const getVIPFreelancers = (limit) => {
                                     return `<br/>`;
                                 }
                             },
-                            content = `<div style="background-color: transparent; position: relative" class="freelancer">
+                            content = `<div style="background-color: transparent; position: relative; overflow: hidden;" class="freelancer">
                                         <img src="/images/badge_premium.jpeg" class="badgePremium">
                                         <a href="/candidats/${freelancer._id}/profile" class="photo-box" data-background-image="${freelancer.avatar && freelancer.avatar.path ? freelancer.avatar.path : `/images/svg/avatar-default.svg`}">
                                             <div class="photo-box-content">
