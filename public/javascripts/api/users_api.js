@@ -1744,6 +1744,7 @@ const detailsUser = (id) => {
             dataType: "json",
             success: function (data) {
                 if (data.getEtat) {
+                    console.log(data.getObjet);
 
                     var freelancer = data.getObjet,
                         name = () => {
@@ -1807,7 +1808,9 @@ const detailsUser = (id) => {
                                             <div class="col-md-12">
                                                 <div class="single-page-header-inner">
                                                     <div class="left-side">
-                                                        <div class="header-image freelancer-avatar"><img src="${freelancer.avatar && freelancer.avatar.path ? freelancer.avatar.path : `/images/svg/avatar-default.svg`}" alt="">
+                                                        
+                                                        <div class="header-image freelancer-avatar">
+                                                            <img src="${freelancer.avatar && freelancer.avatar.path ? freelancer.avatar.path : `/images/svg/avatar-default.svg`}" alt="">
                                                         </div>
                                                         <div class="header-details">
                                                             <h3 class="poppins-font-uppercase">${name()} </h3><span style="font-size: 1em; font-weight: 100; color: #ccc; display: block;">${freelancer.job && freelancer.job.icon ? `<i class="${freelancer.job.icon}" style="font-size: 1.6em"></i>&nbsp;` : ""}${freelancer.job ? freelancer.job.name : "---"}</span>
@@ -1815,10 +1818,11 @@ const detailsUser = (id) => {
                                                                 <li>
                                                                     <div class="star-rating" data-rating="${freelancer.average}"></div>
                                                                 </li>
-                                                                ${freelancer.certificate && freelancer.certificate.certified == true ? `<li><div class="verified-badge-with-title">Certifié</div></li>` : ''}
+                                                                ${freelancer.isBoost == true ? `<li><div class="verified-badge-with-title">Premium</div></li>` : ''}
                                                                 <li style="text-transform: capitalize">
                                                                     ${freelancer.town ? `${freelancer.town}&nbsp;&nbsp;<img class="flag" src="/images/flags/cd.svg" alt="" title="Congo-Kinshasa" data-tippy-placement="top">` : ""}
                                                                 </li>
+                                                                ${freelancer.certificate && freelancer.certificate.certified == true ? `<li><img class="flag" src="/images/certifié.png" style="width: 30px; height: 30px; border: none;" alt="" title="Compte certifié" data-tippy-placement="right">` : ''}
                                                             </ul>
                                                         </div>
                                                     </div>

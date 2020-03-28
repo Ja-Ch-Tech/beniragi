@@ -7563,7 +7563,7 @@ table.basic-table {
     color: #fff;
     font-weight: 500;
     font-size: 14px;
-    background-color: #30ab4a;
+    background-color: #ad344b;
     text-align: center;
     z-index: 10;
     font-weight: 500;
@@ -7576,10 +7576,10 @@ table.basic-table {
 }
 
 .verified-badge-with-title:before {
-    content: "\e92b";
+    content: "\e9d5";
     font-family: "Feather-Icons";
     font-size: 16px;
-    color: #fff;
+    color: gold;
     position: absolute;
     top: 0;
     left: 0;
@@ -7587,7 +7587,7 @@ table.basic-table {
     height: 26px;
     width: 26px;
     display: inline-block;
-    background-color: #38b653;
+    background-color: #ad344b;
 }
 
 
