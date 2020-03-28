@@ -1813,7 +1813,7 @@ const detailsUser = (id) => {
                                                             <img src="${freelancer.avatar && freelancer.avatar.path ? freelancer.avatar.path : `/images/svg/avatar-default.svg`}" alt="">
                                                         </div>
                                                         <div class="header-details">
-                                                            <h3 class="poppins-font-uppercase">${name()} </h3><span style="font-size: 1em; font-weight: 100; color: #ccc; display: block;">${freelancer.job && freelancer.job.icon ? `<i class="${freelancer.job.icon}" style="font-size: 1.6em"></i>&nbsp;` : ""}${freelancer.job ? freelancer.job.name : "---"}</span>
+                                                            <h3 class="poppins-font-uppercase">${name()} </h3><span class="profile-details-metier" style="font-size: 1em; font-weight: 100; color: #ccc; display: block;">${freelancer.job && freelancer.job.icon ? `<i class="${freelancer.job.icon}" style="font-size: 1.6em"></i>&nbsp;` : ""}${freelancer.job ? freelancer.job.name : "---"}</span>
                                                             <ul>
                                                                 <li>
                                                                     <div class="star-rating" data-rating="${freelancer.average}"></div>

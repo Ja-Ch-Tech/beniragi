@@ -3647,7 +3647,7 @@ screen and (-ms-high-contrast: none) {
 @media (max-width: 768px) {
     .single-page-header:after,
     .single-page-header:before {
-        background: #f7f7f7;
+        background: #333;
     }
     .single-page-header.freelancer-header .header-image {
         height: 70px;
@@ -3657,6 +3657,7 @@ screen and (-ms-high-contrast: none) {
     }
     .single-page-header.freelancer-header .header-details h3 {
         margin-left: 90px;
+        font-size: 15px;
     }
 }
 

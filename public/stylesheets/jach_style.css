@@ -338,3 +338,9 @@
 .poppins-font{
     font-family: "Poppins", "Segoe UI Black", sans-serif;
 }
+
+@media (max-width: 768px){
+    .profile-details-metier{
+        margin-top: 2em;
+    }
+}
