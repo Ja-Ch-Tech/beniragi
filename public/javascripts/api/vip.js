@@ -9,7 +9,7 @@ const getVIPFreelancers = (limit) => {
                                     <div class="row">
 
                                         <div class="col-xl-12">
-                                            <h2 class="poppins-font-uppercase" style="margin-bottom: 15px; color: #ad344b">Premium</h2>
+                                            <h2 class="poppins-font-uppercase" style="margin-bottom: 15px; display: inline-block;">Premium<img src="/images/badge_premium.png" style="width: 35px; height: 30px;"/></h2>
                                             <div class="vip-slick-carousel freelancers-container freelancers-grid-layout" id="vipFreelancers">
                                             </div>
                                         </div>
