@@ -114,23 +114,13 @@
 										<div class="footer-row-inner">
 											<ul class="footer-social-links">
 												<li>
-													<a href="#" title="Facebook" data-tippy-placement="bottom" data-tippy-theme="light">
+													<a href="https://www.facebook.com/Beniragi_service-110075610610806/" title="Facebook" data-tippy-placement="bottom" data-tippy-theme="light">
 														<i class="icon-brand-facebook-f"></i>
 													</a>
 												</li>
 												<li>
-													<a href="#" title="Twitter" data-tippy-placement="bottom" data-tippy-theme="light">
-														<i class="icon-brand-twitter"></i>
-													</a>
-												</li>
-												<li>
-													<a href="#" title="Google Plus" data-tippy-placement="bottom" data-tippy-theme="light">
-														<i class="icon-brand-google-plus-g"></i>
-													</a>
-												</li>
-												<li>
-													<a href="#" title="LinkedIn" data-tippy-placement="bottom" data-tippy-theme="light">
-														<i class="icon-brand-linkedin-in"></i>
+													<a href="https://instagram.com/beniragiservices?igshid=1w9k4t6r7wdct" title="Instagram" data-tippy-placement="bottom" data-tippy-theme="light">
+														<i class="icon-brand-instagram"></i>
 													</a>
 												</li>
 											</ul>
@@ -219,7 +209,7 @@
 					<div class="row">
 						<div class="col-xl-12">
 							<p>
-		                          Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Designed by <a href="#" style="color: #fff" target="_blank">Ja'Ch Technologies</a>
+		                          Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Designed by <a href="https://jachtechnologies.com/" style="color: #fff" target="_blank">Ja'Ch Technologies</a>
 		                     </p>
 						</div>
 					</div>
