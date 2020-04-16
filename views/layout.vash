@@ -296,7 +296,7 @@
 					
 					<div class="input-with-icon-left">
 						<i class="icon-material-baseline-mail-outline"></i>
-						<input style="background-color:#fff;border-color:#ccc;"  type="email" class="input-text with-border" name="email" id="emailaddress-register" placeholder="Adresse email" required/>
+						<input style="background-color:#fff;border-color:#ccc;"  type="text" class="input-text with-border" name="email" id="emailaddress-register" placeholder="Adresse email" required/>
 					</div>
 
 					<div class="input-with-icon-left" title="Doit avoir aumoins 5 caracteres" data-tippy-placement="bottom">

@@ -7,7 +7,7 @@ import { getVIPFreelancers as VIP, boost } from './vip.js';
 
 
 (() => {
-    onProduction(true);
+    onProduction(false);
     login();
     register();
     getNav();
