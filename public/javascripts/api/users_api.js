@@ -516,7 +516,7 @@ const userParameters = (user, details) => {
 
         <!-- Headline -->
         <div class="headline">
-          <h3><i class="icon-material-outline-account-circle"></i> Mon compte</h3>
+          <h3><i class="icon-material-outline-account-circle"></i> Profile</h3>
         </div>
 
         <div class="content with-padding padding-bottom-0">
@@ -609,7 +609,7 @@ const userParameters = (user, details) => {
 
         <!-- Headline -->
         <div class="headline">
-          <h3><i class="icon-material-outline-face"></i>Mon profile </h3> 
+          <h3><i class="icon-material-outline-face"></i>Compte </h3> 
         </div>
 
         <div class="content">
@@ -645,7 +645,17 @@ const userParameters = (user, details) => {
                 </div>
               </div>
             </li>
+            <li>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>Supprimer votre compte<h4>
+                        <p style="color:#888;">En supprimant votre compte, toutes vos informations serons effacées</p>
+                        <button id="deleteAccount" class="button ripple-effect margin-top-5 float-right">Supprimer mon compte</ button>
+                    </div>
+                </div>
+            </li>
           </ul>
+          
         </div>
       </div>
     </div>
@@ -696,6 +706,23 @@ const userParameters = (user, details) => {
     })
     submitSkills(user, details.getObjet.jobs ? details.getObjet.jobs.id_job : null, details);
 
+    //Pour le bouton de suppression d'un compte
+    $("#deleteAccount").on('click', (e) => {
+        e.preventDefault();
+        swal({
+            title: "Suppression compte",
+            text: "Etes vous sûre de vouloir supprimer definitivement compte ?",
+            icon: "warning",
+            buttons: true,
+            buttons: ["NON", "OUI"]
+        })
+        .then((willDelete) => {
+            if (willDelete) {
+                //Au cas ou la personne clique sur "OUI"
+                console.log("Suppression in process")
+            }
+        });
+    })
 }
 
 /**
