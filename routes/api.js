@@ -752,4 +752,15 @@ router.post('/users/setAvatar', (req, res) => {
     }
 })
 
+//Route pour la suppression du compte d'un utilisateur, cette route à nom bizarre c'est fait exprès pour qu'aucun utilisateur n'y tombe au hasard
+router.get("/users/kjfgkegzjlm", (req, res) => {
+    axios.delete(`${API}/users/delete/${req.session.id_user_beni}`)
+        .then(response => {
+            res.status(200).send(response.data);
+        })
+        .catch(err => {
+            res.status(500).send(err);
+        })
+})
+
 module.exports = router;
