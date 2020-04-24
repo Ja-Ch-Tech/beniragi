@@ -38,11 +38,12 @@ router.post('/register', (req, res) => {
     var data = {
         email: req.body.email,
         password: req.body.password,
-        id_type: req.body.id_type
+        id_type: req.body.id_type,
+        id_town : req.body.location__register
     };
 
     if (Empty(data)) {
-
+        data["id_job"] = req.body.job__register;
         axios.post(`${API}/users/register`, data)
             .then(inscription => {
 

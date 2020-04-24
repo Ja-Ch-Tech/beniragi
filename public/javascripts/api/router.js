@@ -1,4 +1,4 @@
-import { getHostApi, getUserId, storageKeys, megaSearch, onProduction, zoneAuth } from './init.js';
+import { getHostApi, getUserId, storageKeys, megaSearch, onProduction, zoneAuth, customizeSelect } from './init.js';
 import { login, register, getStatsUsers as statsUsers, getNav, activeAccount, sidebar, statsInDashboard as miniStats, topFreelancer, getDropAnfooterJobs, getDropAnfooterTown, detailsUser, recouveryAccount, changePassword, boostrapSelect } from './users_api.js';
 import { getJobs } from './jobs.js';
 import { graph } from './view.js';
@@ -15,6 +15,9 @@ import { getVIPFreelancers as VIP, boost } from './vip.js';
     getDropAnfooterTown();
     var pathName = window.location.pathname;
     //#region /
+    
+
+    
     if (pathName == "/") {
         zoneAuth();
         statsUsers();
@@ -27,7 +30,9 @@ import { getVIPFreelancers as VIP, boost } from './vip.js';
 
         $(window).load(function () {
             boostrapSelect();
-        })
+            //Customize le style du select ville et metier lors de l'inscription
+            customizeSelect()
+        });
     }
     //#endregion
 

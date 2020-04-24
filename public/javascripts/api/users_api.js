@@ -64,7 +64,7 @@ const register = () => {
     getAllTypesUser(function (types) {
         if (types) {
             var sortieType = 0;
-            types.map(type => {
+            types.map((type, index, tab) => {
                 sortieType++;
                 var typeChecked = function () {
                     if (sortieType == 1) {
@@ -75,10 +75,23 @@ const register = () => {
                 },
                     type = `<div>
 						<input type="radio" name="id_type" id="${type.intitule}-radio" class="account-type-radio" ${typeChecked()} value="${type._id}" />
-						<label for="${type.intitule}-radio" class="ripple-effect-dark">${type.intitule}</label>
+						<label data-action="key_${index}" for="${type.intitule}-radio" class="ripple-effect-dark label_type_register">${type.intitule}</label>
 					</div>`;
 
                 $("#accountTypes").append(type);
+
+                if (sortieType == types.length) {
+                    $(".label_type_register").on('click', (e) => {
+                        var label = e.currentTarget,
+                            key = label.getAttribute('data-action');
+                        
+                        if (key == "key_0") {
+                            $("#containerJob").fadeIn();
+                        }else if (key == "key_1") {
+                            $("#containerJob").fadeOut();
+                        }
+                    });
+                }
             });
 
         }
@@ -102,6 +115,10 @@ const register = () => {
                     objData[name] = e.target.elements[index].value;
                 }
 
+            }
+
+            if (/select/i.test(e.target.elements[index].localName)) {
+                objData[name] = inputs[index].options[inputs[index].selectedIndex].value;
             }
 
         }
@@ -1086,6 +1103,8 @@ const boostrapSelect = () => {
                             </center>`;
 
                         ulDrop.append(div);
+
+                        
                     },
                     success: function (data) {
                         console.log(data);

@@ -611,4 +611,17 @@ const funFacts = () => {
 
 }
 
-export { getHostApi, customDate, getAllTypesUser, getUserId, getHostWeb, NoEmpty, getAllTowns, starRating, getAllJob, customDateForFeedBack as dateFeedBack, setFavoris, removeItem, isInArray, storageKeys, megaSearch, funFacts, onProduction, zoneAuth }
+/**
+ * Cette focntion customize les select de l'inscription
+ */
+const customizeSelect = () => {
+    var button = $(".townRegister .bootstrap-select.btn-group button"),
+        dropdown = $(".townRegister .bootstrap-select.open .dropdown-menu"),
+        span = $(".townRegister .bootstrap-select.btn-group .dropdown-toggle .filter-option");
+    button.css("background-color", "transparent");
+    button.css("border", "1px solid #ccc");
+    dropdown.css("border", "1px solid #ccc");
+    span.css("padding-left", "3em");
+}
+
+export { getHostApi, customDate, getAllTypesUser, getUserId, getHostWeb, NoEmpty, getAllTowns, starRating, getAllJob, customDateForFeedBack as dateFeedBack, setFavoris, removeItem, isInArray, storageKeys, megaSearch, funFacts, onProduction, zoneAuth, customizeSelect }

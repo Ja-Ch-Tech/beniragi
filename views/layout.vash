@@ -17,7 +17,6 @@
 <link rel="stylesheet" href="/stylesheets/loaders.css">
 
 <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
-<link rel="stylesheet" type="text/css" media="screen" href="/vendor/sweetalert/sweetalert.css" />
 <script data-ad-client="ca-pub-1392841452146936" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
 <body>
@@ -231,8 +230,8 @@
 	<div class="sign-in-form">
 
 		<ul class="popup-tabs-nav">
-			<li><a href="#login">Log In</a></li>
-			<li><a href="#register">Register</a></li>
+			<li><a href="#login">Connexion</a></li>
+			<li><a href="#register">Inscription</a></li>
 		</ul>
 
 		<div class="popup-tabs-container">
@@ -299,7 +298,17 @@
 						<i class="icon-material-baseline-mail-outline"></i>
 						<input style="background-color:#fff;border-color:#ccc;"  type="text" class="input-text with-border" name="email" id="emailaddress-register" placeholder="Adresse email ou N° Téléphone" required/>
 					</div>
-
+					
+					<div class="input-with-icon-left townRegister">
+						<i class="icon-material-outline-location-on"></i>
+						<select name="location__register" id="inputTown" class="selectpicker with-border" data-size="7" title="Ville de residence" data-live-search="true">
+						</select><br>
+					</div>
+					<div id="containerJob" class="input-with-icon-left townRegister">
+						<i class="icon-material-baseline-mail-outline"></i>
+						<select name="job__register" id="inputJob" class="selectpicker with-border" data-size="7" title="Votre metier ou domaine" data-live-search="true">
+						</select><br>
+					</div>
 					<div class="input-with-icon-left" title="Doit avoir aumoins 5 caracteres" data-tippy-placement="bottom">
 						<i class="icon-material-outline-lock"></i>
 						<input style="background-color:#fff;border-color:#ccc;"  min="5" type="password" class="input-text with-border" name="password" id="password-register" placeholder="Creez un mot de passe" required/>
