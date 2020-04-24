@@ -728,15 +728,26 @@ const userParameters = (user, details) => {
         e.preventDefault();
         swal({
             title: "Suppression compte",
-            text: "Etes vous sûre de vouloir supprimer definitivement compte ?",
+            text: "Etes-vous sûre de vouloir supprimer definitivement compte ?",
             icon: "warning",
             buttons: true,
             buttons: ["NON", "OUI"]
         })
         .then((willDelete) => {
             if (willDelete) {
-                //Au cas ou la personne clique sur "OUI"
-                console.log("Suppression in process")
+                $.ajax({
+                    type: 'GET',
+                    url: `/api/users/kjfgkegzjlm`,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.getEtat) {
+                            window.location.href = '/logout';
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err)
+                    }
+                });
             }
         });
     })
