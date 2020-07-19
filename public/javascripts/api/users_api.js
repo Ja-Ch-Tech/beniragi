@@ -132,7 +132,7 @@ const register = () => {
                 $("#register-button").html("Veuillez patienter ...");
             },
             success: function (data) {
-
+                console.log(data);
                 $("#register-button").html(`Terminer <i class="icon-material-outline-arrow-right-alt"></i>`);
                 if (data.getEtat) {
                     window.location.href = '/profile/activation';
@@ -1505,6 +1505,7 @@ const topFreelancer = (limit) => {
             url: `/api/users/top/${limit}`,
             dataType: "json",
             success: function (data) {
+                
                 if (data.getEtat) {
                     const contentHead = `<div class="col-xl-12">
                                             <div class="section-headline margin-top-0 margin-bottom-25">
